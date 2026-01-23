@@ -10,27 +10,44 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-    {
-        Schema::table('certificate_templates', function (Blueprint $table) {
-            $table->decimal('aspect_ratio', 5, 2)->nullable()->after('text_align');
-            $table->boolean('is_recommended')->default(true)->after('aspect_ratio');
-            $table->integer('width_px')->nullable()->after('is_recommended');
-            $table->integer('height_px')->nullable()->after('width_px');
-        });
-    }
+{
+    Schema::table('certificate_templates', function (Blueprint $table) {
+
+        if (!Schema::hasColumn('certificate_templates', 'aspect_ratio')) {
+            $table->decimal('aspect_ratio', 5, 2)->nullable();
+        }
+
+        if (!Schema::hasColumn('certificate_templates', 'width_px')) {
+            $table->integer('width_px')->nullable();
+        }
+
+        if (!Schema::hasColumn('certificate_templates', 'height_px')) {
+            $table->integer('height_px')->nullable();
+        }
+
+    });
+}
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
-    {
-        Schema::table('certificate_templates', function (Blueprint $table) {
-            $table->dropColumn([
-                'aspect_ratio',
-                'is_recommended',
-                'width_px',
-                'height_px',
-            ]);
-        });
-    }
+{
+    Schema::table('certificate_templates', function (Blueprint $table) {
+
+        if (Schema::hasColumn('certificate_templates', 'aspect_ratio')) {
+            $table->dropColumn('aspect_ratio');
+        }
+
+        if (Schema::hasColumn('certificate_templates', 'width_px')) {
+            $table->dropColumn('width_px');
+        }
+
+        if (Schema::hasColumn('certificate_templates', 'height_px')) {
+            $table->dropColumn('height_px');
+        }
+
+    });
+}
+
 };

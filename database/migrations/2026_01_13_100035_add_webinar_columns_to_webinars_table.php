@@ -10,7 +10,7 @@ return new class extends Migration {
     {
         Schema::table('webinars', function (Blueprint $table) {
             // TAMBAH KOLUMN BARU SETELAH "tanggal" (karena ini ADA)
-            $table->time('waktu')->nullable()->after('tanggal');
+            $table->time('waktu')->nullable();
             $table->string('narasumber')->nullable()->after('waktu');
             $table->string('media')->nullable()->after('narasumber');
         });

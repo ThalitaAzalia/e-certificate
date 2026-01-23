@@ -10,14 +10,22 @@ class AddMoreColumnsToWebinarsTable extends Migration
     {
         Schema::table('webinars', function (Blueprint $table) {
 
-            $table->enum('status', ['draft', 'published'])
-                  ->default('draft')
-                  ->after('media');
+            if (!Schema::hasColumn('webinars', 'status')) {
+                $table->enum('status', ['draft', 'published'])
+                      ->default('draft');
+            }
 
-            $table->string('poster')->nullable()->after('status');
+            if (!Schema::hasColumn('webinars', 'poster')) {
+                $table->string('poster')->nullable();
+            }
 
-            $table->string('link_absensi')->nullable()->after('poster');
-            $table->string('link_detail')->nullable()->after('link_absensi');
+            if (!Schema::hasColumn('webinars', 'link_absensi')) {
+                $table->string('link_absensi')->nullable();
+            }
+
+            if (!Schema::hasColumn('webinars', 'link_detail')) {
+                $table->string('link_detail')->nullable();
+            }
 
         });
     }
@@ -25,12 +33,23 @@ class AddMoreColumnsToWebinarsTable extends Migration
     public function down(): void
     {
         Schema::table('webinars', function (Blueprint $table) {
-            $table->dropColumn([
-                'status',
-                'poster',
-                'link_absensi',
-                'link_detail',
-            ]);
+
+            if (Schema::hasColumn('webinars', 'status')) {
+                $table->dropColumn('status');
+            }
+
+            if (Schema::hasColumn('webinars', 'poster')) {
+                $table->dropColumn('poster');
+            }
+
+            if (Schema::hasColumn('webinars', 'link_absensi')) {
+                $table->dropColumn('link_absensi');
+            }
+
+            if (Schema::hasColumn('webinars', 'link_detail')) {
+                $table->dropColumn('link_detail');
+            }
+
         });
     }
 }

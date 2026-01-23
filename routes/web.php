@@ -33,7 +33,7 @@ use App\Http\Controllers\Admin\ProfileController;
 // LANDING PAGE
 Route::get('/', function () {
     $webinars = Webinar::where('status', 'published')
-        ->orderBy('tanggal', 'desc')
+        ->orderBy('created_at', 'desc')
         ->get();
 
     return view('landing', compact('webinars'));

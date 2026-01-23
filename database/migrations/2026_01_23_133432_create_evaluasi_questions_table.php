@@ -5,8 +5,14 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
+
     public function up(): void
     {
+        // JIKA SUDAH ADA → JANGAN CREATE
+        if (Schema::hasTable('evaluasi_questions')) {
+            return;
+        }
+
         Schema::create('evaluasi_questions', function (Blueprint $table) {
             $table->id();
             $table->string('question');
@@ -18,6 +24,8 @@ return new class extends Migration {
 
     public function down(): void
     {
-        Schema::dropIfExists('evaluasi_questions');
+        if (Schema::hasTable('evaluasi_questions')) {
+            Schema::drop('evaluasi_questions');
+        }
     }
 };

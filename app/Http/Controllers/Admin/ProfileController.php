@@ -4,31 +4,43 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
+    // ======================
+    // HALAMAN PROFIL
+    // ======================
     public function index()
     {
         return view('admin.profil', [
-            'user' => auth()->user()
+            'user' => Auth::guard('admin')->user()
         ]);
     }
 
+    // ======================
+    // UPDATE USERNAME
+    // ======================
     public function updateUsername(Request $request)
     {
         $request->validate([
-            'username' => 'required|min:4|unique:users,username,' . auth()->id(),
+            'username' => 'required|min:4|unique:admins,username,' . Auth::guard('admin')->id(),
         ]);
 
-        auth()->user()->update([
+        Auth::guard('admin')->user()->update([
             'username' => $request->username
         ]);
 
-        return back()->with('success', 'Username berhasil diperbarui');
+        return redirect()
+            ->route('admin.profil')
+            ->with('success', 'Username berhasil diperbarui');
     }
 
+    // ======================
+    // UPDATE PASSWORD
+    // ======================
     public function updatePassword(Request $request)
     {
         $request->validate([
@@ -36,48 +48,63 @@ class ProfileController extends Controller
             'password' => 'required|min:8|confirmed',
         ]);
 
-        if (!Hash::check($request->old_password, auth()->user()->password)) {
+        $admin = Auth::guard('admin')->user();
+
+        if (!Hash::check($request->old_password, $admin->password)) {
             return back()->withErrors(['old_password' => 'Password lama salah']);
         }
 
-        auth()->user()->update([
+        $admin->update([
             'password' => Hash::make($request->password)
         ]);
 
-        return back()->with('success', 'Password berhasil diperbarui');
+        return redirect()
+            ->route('admin.profil')
+            ->with('success', 'Password berhasil diperbarui');
     }
 
+    // ======================
+    // UPLOAD FOTO PROFIL
+    // ======================
     public function uploadPhoto(Request $request)
     {
         $request->validate([
             'photo' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048'
         ]);
 
-        $user = auth()->user();
+        $admin = Auth::guard('admin')->user();
 
-        if ($user->photo && Storage::disk('public')->exists($user->photo)) {
-            Storage::disk('public')->delete($user->photo);
+        // Hapus foto lama jika ada
+        if ($admin->photo && Storage::disk('public')->exists($admin->photo)) {
+            Storage::disk('public')->delete($admin->photo);
         }
 
+        // Simpan foto baru
         $path = $request->file('photo')->store('admins', 'public');
 
-        $user->update(['photo' => $path]);
+        // Update DB
+        $admin->update(['photo' => $path]);
 
-        return response()->json([
-            'url' => asset('storage/' . $path)
-        ]);
+        return redirect()
+            ->route('admin.profil')
+            ->with('success', 'Foto profil berhasil diperbarui');
     }
 
+    // ======================
+    // HAPUS FOTO PROFIL
+    // ======================
     public function removePhoto()
     {
-        $user = auth()->user();
+        $admin = Auth::guard('admin')->user();
 
-        if ($user->photo && Storage::disk('public')->exists($user->photo)) {
-            Storage::disk('public')->delete($user->photo);
+        if ($admin->photo && Storage::disk('public')->exists($admin->photo)) {
+            Storage::disk('public')->delete($admin->photo);
         }
 
-        $user->update(['photo' => null]);
+        $admin->update(['photo' => null]);
 
-        return response()->json(['status' => 'ok']);
+        return redirect()
+            ->route('admin.profil')
+            ->with('success', 'Foto profil berhasil dihapus');
     }
 }

@@ -83,6 +83,7 @@ Route::post('/admin/forgot-password', [AuthController::class, 'resetPassword'])
 */
 
 Route::prefix('admin')
+    ->middleware('auth:admin')
     ->name('admin.')
     ->group(function () {
 

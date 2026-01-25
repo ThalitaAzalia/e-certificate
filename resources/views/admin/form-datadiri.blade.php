@@ -403,7 +403,7 @@
         </div>
 
         <div class="modal-footer">
-          <button class="btn btn-ghost rounded-16" data-bs-dismiss="modal">Batal</button>
+          <button  type="button" class="btn btn-ghost rounded-16" data-bs-dismiss="modal">Batal</button>
           <button class="btn btn-outline-danger rounded-16">Ya, Hapus</button>
         </div>
 

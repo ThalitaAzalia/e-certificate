@@ -866,7 +866,7 @@
         </div>
 
         <div class="modal-footer">
-          <button class="btn btn-ghost" data-bs-dismiss="modal">Batal</button>
+          <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">Batal</button>
           <button class="btn btn-outline-danger" type="submit">Ya, Hapus</button>
         </div>
       </form>

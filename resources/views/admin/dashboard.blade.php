@@ -561,7 +561,7 @@
     border: 1px solid rgba(155,0,0,.10);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow);
-    padding: 14px 14px;
+    padding: 18px 18px;
     backdrop-filter: blur(10px);
     animation: fadeInUp 0.6s ease-out 0.5s both;
     transition: all 0.3s ease;
@@ -570,9 +570,64 @@
     box-shadow: 0 22px 55px rgba(20,24,31,.12);
   }
 
+  /* ACTIVITY LIST */
+  .activity-list{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 16px;
+  }
+
+  .activity-item{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 14px;
+    border-radius: 14px;
+    background: rgba(255,255,255,.75);
+    border: 1px solid rgba(155,0,0,.08);
+    transition: all 0.25s ease;
+  }
+
+  .activity-item:hover{
+    background: rgba(255,255,255,1);
+    border-color: rgba(155,0,0,.16);
+    transform: translateX(4px);
+  }
+
+  .activity-dot{
+    width: 10px;
+    height: 10px;
+    border-radius: 999px;
+    background: var(--red-700);
+    flex-shrink: 0;
+    box-shadow: 0 0 0 3px rgba(155,0,0,.15);
+  }
+
+  .activity-content{
+    flex: 1;
+    min-width: 0;
+  }
+
+  .activity-content .title{
+    font-weight: 900;
+    font-size: 12px;
+    color: var(--ink);
+    margin-bottom: 3px;
+    line-height: 1.4;
+  }
+
+  .activity-content .time{
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
   @media (max-width: 1140px){
     .dash-shell{ grid-template-columns: 270px 1fr; }
   }
+  
   @media (max-width: 860px){
     .dash-shell{ grid-template-columns: 1fr; }
     .side{ position:relative; height:auto; }
@@ -684,13 +739,58 @@
         </div>
       </div>
 
-      {{-- NOTE --}}
+      {{-- AKTIVITAS TERBARU --}}
       <section class="panel">
-        <h3 style="margin:0 0 8px; font-weight:1000; color:var(--ink); font-size:14px;">Catatan</h3>
-        <p style="color:#6b7280;font-size:13px; margin:0; line-height:1.6;">
-          Dashboard ini sudah terhubung langsung ke database.
-          Grafik & laporan lanjutan akan dikembangkan bertahap.
-        </p>
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap; margin-bottom: 4px;">
+          <div>
+            <h3 style="margin:0 0 5px; font-weight:1000; color:var(--ink); font-size:15px;">
+              Aktivitas Terbaru
+            </h3>
+            <p style="color:#6b7280; font-size:12px; margin:0; line-height:1.4; font-weight:600;">
+              Log aktivitas sistem 7 hari terakhir
+            </p>
+          </div>
+
+          <a href="{{ route('admin.webinars.index') }}"
+            class="btn-red"
+            style="width:auto; padding:10px 16px; white-space:nowrap; font-size:12px;">
+            Kelola Webinar
+          </a>
+        </div>
+
+        <div class="activity-list">
+          <div class="activity-item">
+            <div class="activity-dot"></div>
+            <div class="activity-content">
+              <div class="title">{{ $totalPeserta }} peserta terdaftar di sistem</div>
+              <div class="time">Total keseluruhan data</div>
+            </div>
+          </div>
+
+          <div class="activity-item">
+            <div class="activity-dot" style="background:#059669; box-shadow: 0 0 0 3px rgba(5,150,105,.15);"></div>
+            <div class="activity-content">
+              <div class="title">{{ $totalEvaluasi }} evaluasi berhasil dikumpulkan</div>
+              <div class="time">Dari seluruh webinar yang telah dilaksanakan</div>
+            </div>
+          </div>
+
+          <div class="activity-item">
+            <div class="activity-dot" style="background:#7c3aed; box-shadow: 0 0 0 3px rgba(124,58,237,.15);"></div>
+            <div class="activity-content">
+              <div class="title">{{ $totalSertifikat }} sertifikat siap diunduh peserta</div>
+              <div class="time">Berdasarkan asumsi 1 peserta = 1 sertifikat</div>
+            </div>
+          </div>
+
+          <div class="activity-item">
+            <div class="activity-dot" style="background:#0891b2; box-shadow: 0 0 0 3px rgba(8,145,178,.15);"></div>
+            <div class="activity-content">
+              <div class="title">Sistem evaluasi dan template sertifikat aktif</div>
+              <div class="time">Siap digunakan untuk webinar mendatang</div>
+            </div>
+          </div>
+        </div>
       </section>
 
     </main>

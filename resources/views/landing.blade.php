@@ -4,7 +4,33 @@
 @push('styles')
 <style>
   /* ===========================
-     KONTAK: 2x2 kartu + hover merah
+     FLOATING CARD: KHUSUS LANDING PAGE
+     (biar card di halaman lain nggak ikut melayang)
+     =========================== */
+  @keyframes floatCard{
+    0%, 100% { transform: translateY(0px); }
+    50%      { transform: translateY(-8px); }
+  }
+
+  /* Target hanya card yg ada di landing (card-shadow), bukan semua .card global */
+  .landing-page .card.card-shadow{
+    animation: floatCard 4s ease-in-out infinite;
+    will-change: transform;
+  }
+
+  /* beda timing biar nggak bareng */
+  .landing-page .card.card-shadow:nth-of-type(2){ animation-duration: 4.6s; }
+  .landing-page .card.card-shadow:nth-of-type(3){ animation-duration: 5.2s; }
+  .landing-page .card.card-shadow:nth-of-type(4){ animation-duration: 5.8s; }
+
+  /* hover (landing saja) */
+  .landing-page .card.card-shadow:hover{
+    transform: translateY(-8px) scale(1.01);
+    transition: transform .25s ease, box-shadow .25s ease;
+  }
+
+  /* ===========================
+     KONTAK: FIX jadi 2x2 kartu
      =========================== */
   #kontak .contact-card{
     background:#fff;
@@ -45,6 +71,7 @@
     flex: 0 0 auto;
   }
 
+  /* Hover jadi merah */
   #kontak .contact-card:hover{
     background:#9b0000;
     border-color: rgba(155,0,0,.35);
@@ -57,32 +84,48 @@
     color:#fff !important;
   }
 
+  /* click feel */
   #kontak .contact-card:active{
     transform: translateY(-1px) scale(.99);
   }
 
-  /* ====== KECILIN NAVBAR (opsional, tapi ini landing-only) ====== */
+  /* default merah (Kontak Kami) */
+  #kontak .contact-card.is-red{
+    background:#9b0000;
+    border-color: rgba(155,0,0,.35);
+    box-shadow: 0 22px 48px rgba(155,0,0,.22);
+  }
+  #kontak .contact-card.is-red .contact-title,
+  #kontak .contact-card.is-red .contact-desc,
+  #kontak .contact-card.is-red .contact-ico{
+    color:#fff !important;
+  }
+
+  /* ====== KECILIN NAVBAR (HEADER MENU) ====== */
   .navbar{
     padding-top: 8px !important;
     padding-bottom: 8px !important;
     min-height: 64px;
   }
+
   .navbar .navbar-nav .nav-link{
     padding: 8px 12px !important;
     font-size: 15px !important;
     line-height: 1.2 !important;
   }
+
   .navbar .btn,
   .navbar .nav-item .btn{
     padding: 8px 12px !important;
     font-size: 15px !important;
   }
+
   .navbar .navbar-toggler{
     padding: 6px 10px !important;
   }
 
   /* ===========================
-     HERO: aksen merah diagonal
+     HERO: AKSEN MERAH DIAGONAL
      =========================== */
   .hero{
     position: relative;
@@ -108,8 +151,15 @@
     z-index: 2;
   }
 
-  .hero-left-inner{ max-width: 640px; }
-  .hero-title{ margin-bottom: 16px !important; }
+  .hero-left-inner{
+    max-width: 640px;
+    padding-bottom: 20px;
+  }
+
+  .hero-title{
+    margin-bottom: 16px !important;
+  }
+
   .hero-subtitle{
     margin-bottom: 22px !important;
     color: rgba(31,41,55,.78) !important;
@@ -119,53 +169,53 @@
     box-shadow: 0 12px 26px rgba(155,0,0,.28);
     margin-top: 6px;
   }
+
   /* ===== FIX NAVBAR JADI KECIL (logo + tinggi) ===== */
-.navbar .container{
-  padding-top: 6px !important;
-  padding-bottom: 6px !important;
-}
+  .navbar .container{
+    padding-top: 6px !important;
+    padding-bottom: 6px !important;
+  }
 
-.navbar{
-  min-height: 54px !important;
-}
+  .navbar{
+    min-height: 54px !important;
+  }
 
-/* paksa logo supaya gak ikut ukuran asli gambar */
-.navbar .navbar-brand img,
-.navbar .brand-logo{
-  width: 34px !important;
-  height: 34px !important;
-  max-width: 34px !important;
-  max-height: 34px !important;
-  object-fit: contain !important;
-}
+  /* paksa logo supaya gak ikut ukuran asli gambar */
+  .navbar .navbar-brand img,
+  .navbar .brand-logo{
+    width: 34px !important;
+    height: 34px !important;
+    max-width: 34px !important;
+    max-height: 34px !important;
+    object-fit: contain !important;
+  }
 
-/* kecilin teks brand */
-.navbar .navbar-brand .fw-bold{
-  font-size: 14px !important;
-  line-height: 1.1 !important;
-}
-.navbar .navbar-brand .small{
-  font-size: 12px !important;
-  line-height: 1.1 !important;
-}
+  /* kecilin teks brand */
+  .navbar .navbar-brand .fw-bold{
+    font-size: 14px !important;
+    line-height: 1.1 !important;
+  }
+  .navbar .navbar-brand .small{
+    font-size: 12px !important;
+    line-height: 1.1 !important;
+  }
 
-/* kecilin menu kanan */
-.navbar .navbar-nav .nav-link{
-  padding: 6px 10px !important;
-  font-size: 13px !important;
-  line-height: 1.1 !important;
-}
+  /* kecilin menu kanan */
+  .navbar .navbar-nav .nav-link{
+    padding: 6px 10px !important;
+    font-size: 13px !important;
+    line-height: 1.1 !important;
+  }
 
-/* kecilin tombol hamburger */
-.navbar .navbar-toggler{
-  padding: 4px 8px !important;
-}
-
+  /* kecilin tombol hamburger */
+  .navbar .navbar-toggler{
+    padding: 4px 8px !important;
+  }
 </style>
 @endpush
 
 @section('content')
-
+<div class="landing-page">
 <!-- HERO -->
 <section class="hero py-5">
   <div class="container">
@@ -191,11 +241,7 @@
 
       <div class="col-lg-6">
         <div class="card card-shadow rounded-16 overflow-hidden hero-card">
-          <img
-            src="{{ asset('images/hero.jpg') }}"
-            class="hero-img"
-            alt="Hero Badiklat"
-          >
+          <img src="{{ asset('images/hero.jpg') }}" class="hero-img" alt="Hero Badiklat">
           <div class="p-3 bg-white">
             <div class="fw-semibold">Badiklat Hukum Jawa Tengah</div>
             <div class="small text-muted">Pusat pengembangan kompetensi & pelatihan hukum.</div>
@@ -240,7 +286,7 @@
   </div>
 </section>
 
-<!-- WEBINAR TERBARU (✅ pakai DATABASE dari kode pertama) -->
+<!-- WEBINAR TERBARU (✅ tetap pakai DATABASE) -->
 <section id="webinar" class="py-5 bg-soft">
   <div class="container">
     <div class="d-flex align-items-end justify-content-between flex-wrap gap-2 mb-3">
@@ -265,7 +311,10 @@
 
           <div class="col-lg-8">
             <div class="p-4">
-              <h3 class="h5 fw-bold mb-2">{{ $webinar->judul }}</h3>
+
+              <h3 class="h5 fw-bold mb-2">
+                {{ $webinar->judul }}
+              </h3>
 
               <p class="text-muted mb-3">
                 {{ $webinar->deskripsi }}
@@ -304,16 +353,19 @@
               </div>
 
               <div class="d-flex gap-2 flex-wrap mt-4">
-                <a href="{{ url('/absensi?webinar_id='.$webinar->id) }}" class="btn btn-brand rounded-16">
+                <a href="{{ url('/absensi?webinar_id='.$webinar->id) }}"
+                   class="btn btn-brand rounded-16">
                   Isi Absensi
                 </a>
 
                 @if($webinar->link_detail)
-                  <a href="{{ $webinar->link_detail }}" class="btn btn-outline-danger rounded-16">
+                  <a href="{{ $webinar->link_detail }}"
+                     class="btn btn-outline-danger rounded-16">
                     Lihat Detail
                   </a>
                 @endif
               </div>
+
             </div>
           </div>
 
@@ -345,7 +397,7 @@
       </div>
 
       <div class="col-lg-5">
-        <div class="card card-shadow rounded-16 p-4 h-100">
+        <div class="card card-shadowsadow rounded-16 p-4 h-100">
           <div class="fw-bold mb-2 text-brand">Alamat</div>
           <div class="text-muted">
             Jl. Raya Mr. Moch Ichsan No.114, Wates, Kec. Ngaliyan, Kota Semarang, Jawa Tengah 50188, Indonesia
@@ -364,7 +416,7 @@
   </div>
 </section>
 
-<!-- KONTAK (✅ versi kode kedua: 2x2 kartu) -->
+<!-- KONTAK (2x2 KARTU + hover merah, telepon default merah) -->
 <section id="kontak" class="py-5">
   <div class="container">
     <div class="d-flex align-items-end justify-content-between flex-wrap gap-2 mb-4">
@@ -424,7 +476,8 @@
             Kontak Kami
           </div>
           <p class="contact-desc fw-bold">
-            (+62)811-2896-960
+            (024) 35320020<br>
+            0811-2896-960
           </p>
         </div>
       </div>
@@ -452,7 +505,7 @@
 </section>
 
 <!-- FOOTER -->
-<footer class="footer py-3">
+<footer class="footer py-4">
   <div class="container">
     <div class="row g-3 align-items-center">
       <div class="col-md-6 d-flex align-items-center gap-2">
@@ -473,7 +526,7 @@
   </div>
 </footer>
 
-<!-- MODAL detail webinar (tetap aman) -->
+<!-- MODAL detail webinar -->
 <div class="modal fade" id="detailWebinarModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content rounded-16">
@@ -493,5 +546,5 @@
     </div>
   </div>
 </div>
-
+</div>
 @endsection

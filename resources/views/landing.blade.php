@@ -222,7 +222,7 @@
     <div class="row g-4 hero-row">
       <div class="col-lg-6 hero-left">
         <div class="hero-left-inner">
-          <h1 class="hero-title mb-3">
+          <h1 class="section-title mb-3">
             Platform Webinar Terintegrasi dengan Sistem E-Sertifikat Otomatis
           </h1>
 
@@ -353,18 +353,26 @@
               </div>
 
               <div class="d-flex gap-2 flex-wrap mt-4">
-                <a href="{{ url('/absensi?webinar_id='.$webinar->id) }}"
-                   class="btn btn-brand rounded-16">
-                  Isi Absensi
-                </a>
+              <a href="{{ url('/absensi?webinar_id='.$webinar->id) }}"
+                class="btn btn-brand rounded-16">
+                Isi Absensi
+              </a>
 
-                @if($webinar->link_detail)
-                  <a href="{{ $webinar->link_detail }}"
-                     class="btn btn-outline-danger rounded-16">
-                    Lihat Detail
-                  </a>
-                @endif
-              </div>
+              <button type="button"
+                      class="btn btn-outline-danger rounded-16"
+                      data-bs-toggle="modal"
+                      data-bs-target="#detailWebinarModal"
+                      data-judul="{{ $webinar->judul }}"
+                      data-deskripsi="{{ $webinar->deskripsi }}"
+                      data-tanggal="{{ \Carbon\Carbon::parse($webinar->tanggal)->translatedFormat('d F Y') }}"
+                      data-waktu="{{ $webinar->waktu ? \Carbon\Carbon::parse($webinar->waktu)->format('H:i').' WIB' : '-' }}"
+                      data-narasumber="{{ $webinar->narasumber ?? '-' }}"
+                      data-media="{{ $webinar->media ?? '-' }}"
+                      data-absensi-url="{{ url('/absensi?webinar_id='.$webinar->id) }}">
+                Lihat Detail
+              </button>
+            </div>
+
 
             </div>
           </div>
@@ -531,20 +539,49 @@
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content rounded-16">
       <div class="modal-header">
-        <h5 class="modal-title fw-bold">Detail Webinar</h5>
+        <h5 class="modal-title fw-bold" id="modalWebinarTitle">Detail Webinar</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
+
       <div class="modal-body">
-        <p class="text-muted mb-0">
-          (Di sini nanti bisa menampilkan detail webinar lebih panjang, agenda, link zoom, dsb.)
-        </p>
+        <p class="text-muted mb-3" id="modalWebinarDesc"></p>
+
+        <div class="row g-2 small text-muted">
+          <div class="col-md-6"><span class="fw-semibold">Tanggal:</span> <span id="modalTanggal"></span></div>
+          <div class="col-md-6"><span class="fw-semibold">Waktu:</span> <span id="modalWaktu"></span></div>
+          <div class="col-md-6"><span class="fw-semibold">Narasumber:</span> <span id="modalNarasumber"></span></div>
+          <div class="col-md-6"><span class="fw-semibold">Media:</span> <span id="modalMedia"></span></div>
+        </div>
       </div>
+
       <div class="modal-footer">
-        <a href="/absensi" class="btn btn-brand rounded-16" data-bs-dismiss="modal">Isi Data Diri</a>
+        <a href="#" id="modalAbsensiBtn" class="btn btn-brand rounded-16">Isi Data Diri</a>
         <button type="button" class="btn btn-outline-secondary rounded-16" data-bs-dismiss="modal">Tutup</button>
       </div>
     </div>
   </div>
 </div>
-</div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const modal = document.getElementById('detailWebinarModal');
+  if (!modal) return;
+
+  modal.addEventListener('show.bs.modal', function (event) {
+    const btn = event.relatedTarget;
+    if (!btn) return;
+
+    document.getElementById('modalWebinarTitle').textContent = btn.getAttribute('data-judul') || 'Detail Webinar';
+    document.getElementById('modalWebinarDesc').textContent  = btn.getAttribute('data-deskripsi') || '-';
+
+    document.getElementById('modalTanggal').textContent    = btn.getAttribute('data-tanggal') || '-';
+    document.getElementById('modalWaktu').textContent      = btn.getAttribute('data-waktu') || '-';
+    document.getElementById('modalNarasumber').textContent = btn.getAttribute('data-narasumber') || '-';
+    document.getElementById('modalMedia').textContent      = btn.getAttribute('data-media') || '-';
+
+    const absensiUrl = btn.getAttribute('data-absensi-url') || '#';
+    document.getElementById('modalAbsensiBtn').setAttribute('href', absensiUrl);
+  });
+});
+</script>
+
 @endsection

@@ -495,6 +495,22 @@
                 elseif ($field->type === 'date') $iconSvg = 'calendar';
                 elseif ($field->type === 'textarea') $iconSvg = 'note';
                 else $iconSvg = 'user';
+
+                $labelLower = strtolower($field->label ?? '');
+                $keyLower   = strtolower($field->field_key ?? '');
+
+                $ph = $field->placeholder; // tetap pakai dari DB kalau sudah ada
+                if (empty($ph)) {
+                  if ($field->type === 'email' || str_contains($labelLower, 'email') || str_contains($keyLower, 'email')) {
+                    $ph = 'Masukkan email aktif';
+                  } elseif ($field->type === 'tel' || str_contains($labelLower, 'handphone') || str_contains($labelLower, 'hp') || str_contains($keyLower, 'phone') || str_contains($keyLower, 'hp')) {
+                    $ph = 'Contoh: 08xxxxxxxxxxx';
+                  } elseif (str_contains($labelLower, 'nama') || str_contains($keyLower, 'nama')) {
+                    $ph = 'Masukkan nama lengkap';
+                  } else {
+                    $ph = ''; // biarkan kosong kalau bukan field yang kamu minta
+                  }
+                }
               @endphp
 
               <div class="form-group">
@@ -536,7 +552,7 @@
                       id="f_{{ $field->field_key }}"
                       name="{{ $field->field_key }}"
                       class="inputx has-icon"
-                      placeholder="{{ $field->placeholder }}"
+                      placeholder="{{ $ph }}"
                       {{ $field->required ? 'required' : '' }}
                     >{{ old($field->field_key) }}</textarea>
                   @else
@@ -545,7 +561,7 @@
                       type="{{ $field->type }}"
                       name="{{ $field->field_key }}"
                       class="inputx has-icon"
-                      placeholder="{{ $field->placeholder }}"
+                      placeholder="{{ $ph }}"
                       value="{{ old($field->field_key) }}"
                       {{ $field->required ? 'required' : '' }}
                     >

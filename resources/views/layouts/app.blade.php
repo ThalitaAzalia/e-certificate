@@ -557,27 +557,27 @@
 .card .text-muted{
   color: var(--text-secondary) !important;
 }
-/* ANIMASI NGAMBANG UNTUK CARD */
-.card,
-.card-elegant,
-.admin-card{
+/* ✅ ANIMASI NGAMBANG KHUSUS LANDING PAGE SAJA */
+.landing-page .card,
+.landing-page .card-elegant{
   animation: floatCard 4s ease-in-out infinite;
   will-change: transform;
 }
 
-/* beda-beda timing biar nggak gerak bareng */
-.card:nth-child(2),
-.card-elegant:nth-child(2){
+/* beda-beda timing biar nggak bareng (khusus landing) */
+.landing-page .card:nth-child(2),
+.landing-page .card-elegant:nth-child(2){
   animation-duration: 4.6s;
 }
-.card:nth-child(3),
-.card-elegant:nth-child(3){
+.landing-page .card:nth-child(3),
+.landing-page .card-elegant:nth-child(3){
   animation-duration: 5.2s;
 }
-.card:nth-child(4),
-.card-elegant:nth-child(4){
+.landing-page .card:nth-child(4),
+.landing-page .card-elegant:nth-child(4){
   animation-duration: 5.8s;
 }
+
 
 /* hover lebih naik */
 .card:hover,

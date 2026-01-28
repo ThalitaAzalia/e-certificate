@@ -59,6 +59,22 @@ class PesertaController extends Controller
 
         $validated = $request->validate($rules);
 
+        $email     = $validated['email'];
+        $webinarId = $validated['webinar_id'];
+
+        // cek apakah EMAIL INI sudah pernah evaluasi di webinar ini
+        $sudahEvaluasi = \App\Models\EvaluasiAnswer::where('webinar_id', $webinarId)
+            ->whereHas('peserta', function ($q) use ($email) {
+                $q->where('email', $email);
+            })
+            ->exists();
+
+        if ($sudahEvaluasi) {
+            return back()->withErrors([
+                'email' => 'Email ini sudah pernah mengisi evaluasi untuk webinar ini.'
+            ]);
+        }
+
         // =========================
         // SIMPAN PESERTA (DENGAN webinar_id)
         // =========================

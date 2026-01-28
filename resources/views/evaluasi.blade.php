@@ -325,7 +325,7 @@ body::before{
         @csrf
 
         <input type="text" name="website" style="display:none">
-        
+
         @forelse($questions as $q)
           <div class="question-box mb-4">
             <label class="fw-bold mb-2 d-block" style="font-size:1.05rem;">
@@ -349,28 +349,31 @@ body::before{
 
             {{-- RATING --}}
             @elseif($q->type === 'rating')
+              @php
+                $min    = $q->rating_min ?? 1;
+                $max    = $q->rating_max ?? 5;
+                $labels = $q->rating_labels ?? [];
+              @endphp
+
               <div class="rating-group">
-                @for($i=1;$i<=5;$i++)
+                @for($i = $min; $i <= $max; $i++)
                   <label class="rating-pill">
                     <input type="radio"
-                           name="answers[{{ $q->id }}]"
-                           value="{{ $i }}"
-                           class="visually-hidden-input"
-                           @checked(old('answers.'.$q->id) == $i)>
+                          name="answers[{{ $q->id }}]"
+                          value="{{ $i }}"
+                          class="visually-hidden-input"
+                          @checked(old('answers.'.$q->id) == $i)>
 
                     <span class="rating-dot">{{ $i }}</span>
+
                     <span class="text-muted" style="font-size:.95rem;">
-                      @if($i==1) Sangat Tidak Puas
-                      @elseif($i==2) Tidak Puas
-                      @elseif($i==3) Cukup
-                      @elseif($i==4) Puas
-                      @else Sangat Puas
-                      @endif
+                      {{ $labels[$i] ?? '' }}
                     </span>
                   </label>
                 @endfor
               </div>
             @endif
+
 
             @error('answers.'.$q->id)
               <small class="text-danger d-block mt-2">{{ $message }}</small>

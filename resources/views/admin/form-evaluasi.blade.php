@@ -155,75 +155,8 @@
     </div>
   </div>
 
-  <div class="row g-4">
-    {{-- Left: Rating Settings + Info --}}
-    <div class="col-lg-4">
-      <div class="card card-soft rounded-16">
-        <div class="card-body">
-          <div class="fw-semibold mb-2">Pengaturan Skala Rating</div>
-          <div class="hint">Atur skala penilaian dan labelnya (UI saja).</div>
-
-          <div class="divider-soft my-3"></div>
-
-          <div class="mb-3">
-            <label class="form-label fw-semibold">Skala Rating (Custom)</label>
-            <div class="row g-2">
-              <div class="col-6">
-                <div class="small muted mb-1">Min</div>
-                <input id="scaleMin" type="number" class="form-control rounded-16" value="1" min="0">
-              </div>
-              <div class="col-6">
-                <div class="small muted mb-1">Max</div>
-                <input id="scaleMax" type="number" class="form-control rounded-16" value="5" min="1">
-              </div>
-            </div>
-            <div class="hint mt-1">Contoh umum: 1–5. Kamu bisa ubah jadi 1–7, 0–10, dll (UI saja).</div>
-          </div>
-
-          <div class="mb-3">
-            <label class="form-label fw-semibold">Label Rendah (angka kecil)</label>
-            <input type="text" class="form-control rounded-16" value="Sangat Tidak Puas">
-          </div>
-
-          <div class="mb-3">
-            <label class="form-label fw-semibold">Label Tinggi (angka besar)</label>
-            <input type="text" class="form-control rounded-16" value="Sangat Puas">
-          </div>
-
-          <div class="mb-3">
-            <label class="form-label fw-semibold">Tampilkan Label per Angka?</label>
-            <select class="form-select rounded-16">
-              <option selected>Tidak (cukup label rendah/tinggi)</option>
-              <option>Ya (label untuk tiap angka)</option>
-            </select>
-            <div class="hint mt-1">Jika "Ya", admin bisa isi label 1..5 (di modal bawah).</div>
-          </div>
-
-          <button type="button"
-                  class="btn btn-ghost rounded-16 w-100"
-                  data-bs-toggle="modal"
-                  data-bs-target="#modalLabelPerAngka">
-              Atur Label Per Angka
-          </button>
-
-          <div class="divider-soft my-3"></div>
-
-          <div class="fw-semibold mb-2">Alur Evaluasi</div>
-          <ol class="small mb-0">
-            <li class="mb-2"><b>Peserta isi Absensi</b> (data diri).</li>
-            <li class="mb-2"><b>Peserta isi Evaluasi</b> (rating + komentar).</li>
-            <li><b>Sertifikat diproses</b> dan bisa diunduh.</li>
-          </ol>
-
-          <div class="hint mt-3">
-            *Pengaturan ini hanya tampilan. Backend nanti menyimpan setting skala & label.
-          </div>
-        </div>
-      </div>
-    </div>
-
     {{-- Right: Question List --}}
-    <div class="col-lg-8">
+    <div class="col-lg-12">
       <div class="card card-soft rounded-16">
         <div class="card-body">
 
@@ -287,137 +220,66 @@
                 </tr>
               </thead>
               <tbody>
-                @forelse($questions as $q)
-                  <tr>
-                    <td class="fw-semibold">{{ $loop->iteration }}</td>
-                    <td>
-                      <p class="q-title">{{ $q->question }}</p>
-                    </td>
-                    <td class="td-center">
-                      @if($q->type === 'rating')
-                        <span class="badge badge-pill badge-rating">Rating</span>
-                      @else
-                        <span class="badge badge-pill badge-text">{{ ucfirst($q->type) }}</span>
-                      @endif
-                    </td>
-                    <td class="td-center">
-                   @if($q->type === 'rating')
+              @forelse($questions as $q)
+                <tr>
+                  <td class="fw-semibold">{{ $loop->iteration }}</td>
+
+                  <td>
+                    <p class="q-title">{{ $q->question }}</p>
+                  </td>
+
+                  <td class="td-center">
+                    @if($q->type === 'rating')
+                      <span class="badge badge-pill badge-rating">Rating</span>
+                    @else
+                      <span class="badge badge-pill badge-text">{{ ucfirst($q->type) }}</span>
+                    @endif
+                  </td>
+
+                  <td class="td-center">
+                    @if($q->type === 'rating')
                       <span class="scale-badge">
                         1–{{ $q->rating_max ?? 5 }}
                       </span>
+
+                      <button class="btn btn-outline-secondary btn-xs"
+                              data-bs-toggle="modal"
+                              data-bs-target="#modalScale{{ $q->id }}">
+                        Skala
+                      </button>
                     @else
                       <span class="scale-badge na">—</span>
                     @endif
+                  </td>
 
-                    @if($q->type === 'rating')
-                    <button class="btn btn-outline-secondary btn-xs"
-                            data-bs-toggle="modal"
-                            data-bs-target="#modalScale{{ $q->id }}">
-                      Skala
-                    </button>
-                    @endif
-
-                    </td>
-                    <td class="td-actions">
-                    {{-- EDIT --}}
+                  <td class="td-actions">
                     <button class="btn btn-ghost btn-xs"
                             data-bs-toggle="modal"
                             data-bs-target="#modalEditEval{{ $q->id }}">
-                        Edit
+                      Edit
                     </button>
 
-                    @foreach($questions as $q)
-                    @if($q->type === 'rating')
-                    <div class="modal fade" id="modalScale{{ $q->id }}" tabindex="-1">
-                      <div class="modal-dialog modal-lg modal-dialog-centered">
-                        <div class="modal-content rounded-16">
-
-                          <form method="POST"
-                                action="{{ route('admin.evaluasi.update', $q->id) }}">
-                            @csrf
-                            @method('PUT')
-
-                            <div class="modal-header">
-                              <h5 class="modal-title fw-bold">Atur Skala Rating</h5>
-                              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                            </div>
-
-                            <div class="modal-body">
-
-                              {{-- JUMLAH SKALA --}}
-                              <div class="mb-3">
-                                <label class="form-label fw-semibold">Jumlah Skala</label>
-                                <input type="number"
-                                      name="rating_max"
-                                      class="form-control rounded-16"
-                                      min="2" max="10"
-                                      value="{{ $q->rating_max ?? 5 }}">
-                              </div>
-
-                              {{-- LABEL PER ANGKA --}}
-                              <div class="mb-2 fw-semibold">Label per Angka</div>
-
-                              @php
-                                $labels = $q->rating_labels ?? [];
-                                $max = $q->rating_max ?? 5;
-                              @endphp
-
-                              @for($i = 1; $i <= $max; $i++)
-                                <div class="input-group mb-2">
-                                  <span class="input-group-text">{{ $i }}</span>
-                                  <input type="text"
-                                        name="rating_labels[{{ $i }}]"
-                                        class="form-control"
-                                        value="{{ $labels[$i] ?? '' }}"
-                                        placeholder="Label untuk {{ $i }}">
-                                </div>
-                              @endfor
-
-                            </div>
-
-                            <div class="modal-footer">
-                              <button type="button"
-                                      class="btn btn-ghost rounded-16"
-                                      data-bs-dismiss="modal">
-                                Batal
-                              </button>
-                              <button class="btn btn-brand rounded-16">
-                                Simpan Skala
-                              </button>
-                            </div>
-
-                          </form>
-
-                        </div>
-                      </div>
-                    </div>
-                    @endif
-                    @endforeach
-
-
-                    {{-- HAPUS --}}
                     <form method="POST"
-                            action="{{ route('admin.evaluasi.destroy', $q->id) }}"
-                            class="d-inline"
-                            onsubmit="return confirm('Yakin ingin menghapus pertanyaan ini?')">
-                        @csrf
-                        @method('DELETE')
-                        <button class="btn btn-outline-danger btn-xs">
+                          action="{{ route('admin.evaluasi.destroy', $q->id) }}"
+                          class="d-inline"
+                          onsubmit="return confirm('Yakin ingin menghapus pertanyaan ini?')">
+                      @csrf
+                      @method('DELETE')
+                      <button class="btn btn-outline-danger btn-xs">
                         Hapus
-                        </button>
+                      </button>
                     </form>
-
-                    </td>
-
-                  </tr>
-                @empty
-                  <tr>
-                    <td colspan="5" class="text-center text-muted">
-                      Belum ada pertanyaan evaluasi
-                    </td>
-                  </tr>
-                @endforelse
+                  </td>
+                </tr>
+              @empty
+                <tr>
+                  <td colspan="5" class="text-center text-muted">
+                    Belum ada pertanyaan evaluasi
+                  </td>
+                </tr>
+              @endforelse
               </tbody>
+
             </table>
           </div>
 
@@ -440,67 +302,6 @@
     </div>
   </div>
 </div>
-
-@push('scripts')
-<script>
-(function(){
-  const minEl = document.getElementById('scaleMin');
-  const maxEl = document.getElementById('scaleMax');
-  const labelWrap = document.getElementById('labelPerAngkaFields');
-
-  function clampScale(){
-    let min = parseInt(minEl?.value ?? 1, 10);
-    let max = parseInt(maxEl?.value ?? 5, 10);
-
-    if (isNaN(min)) min = 1;
-    if (isNaN(max)) max = 5;
-
-    if (max <= min) max = min + 1;
-
-    const HARD_LIMIT = 20;
-    if ((max - min + 1) > HARD_LIMIT) max = min + (HARD_LIMIT - 1);
-
-    if (minEl) minEl.value = min;
-    if (maxEl) maxEl.value = max;
-    return {min, max};
-  }
-
-  function buildLabelFields(){
-    if (!labelWrap) return;
-    const {min, max} = clampScale();
-
-    labelWrap.innerHTML = '';
-    for (let i=min; i<=max; i++){
-      const colClass = (i === max && ((max - min + 1) % 2 === 1)) ? 'col-md-12' : 'col-md-6';
-      const div = document.createElement('div');
-      div.className = colClass;
-      div.innerHTML = `
-        <label class="form-label fw-semibold">${i}</label>
-        <input class="form-control rounded-16" value="">
-      `;
-      labelWrap.appendChild(div);
-    }
-  }
-
-  function refreshAll(){
-    clampScale();
-    buildLabelFields();
-  }
-
-  if (minEl) minEl.addEventListener('input', refreshAll);
-  if (maxEl) maxEl.addEventListener('input', refreshAll);
-
-  const modalLabel = document.getElementById('modalLabelPerAngka');
-  if (modalLabel){
-    modalLabel.addEventListener('show.bs.modal', function(){
-      buildLabelFields();
-    });
-  }
-
-  refreshAll();
-})();
-</script>
-@endpush
 
 {{-- MODAL TAMBAH PERTANYAAN --}}
 <div class="modal fade" id="modalCreateEval" tabindex="-1">
@@ -560,70 +361,70 @@
 </div>
 
 @foreach($questions as $q)
-<div class="modal fade" id="modalEditEval{{ $q->id }}" tabindex="-1">
-  <div class="modal-dialog modal-lg modal-dialog-centered">
-    <div class="modal-content rounded-16">
+  @if($q->type === 'rating')
+    <div class="modal fade" id="modalScale{{ $q->id }}" tabindex="-1">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content rounded-16">
 
-      <form method="POST"
-            action="{{ route('admin.evaluasi.update', $q->id) }}">
-        @csrf
-        @method('PUT')
+          <form method="POST"
+                action="{{ route('admin.evaluasi.update-scale', $q->id) }}">
+            @csrf
+            @method('PUT')
 
-        <div class="modal-header">
-          <h5 class="modal-title fw-bold">Edit Pertanyaan Evaluasi</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-
-        <div class="modal-body">
-
-          <div class="mb-3">
-            <label class="form-label fw-semibold">Pertanyaan</label>
-            <input type="text"
-                   name="question"
-                   class="form-control rounded-16"
-                   value="{{ $q->question }}"
-                   required>
-          </div>
-
-          <div class="row g-3">
-            <div class="col-md-6">
-              <label class="form-label fw-semibold">Tipe Jawaban</label>
-              <select name="type" class="form-select rounded-16" required>
-                <option value="rating" {{ $q->type=='rating'?'selected':'' }}>Rating</option>
-                <option value="text" {{ $q->type=='text'?'selected':'' }}>Text</option>
-                <option value="textarea" {{ $q->type=='textarea'?'selected':'' }}>Textarea</option>
-              </select>
+            <div class="modal-header">
+              <h5 class="modal-title fw-bold">Atur Skala Rating</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
 
-            <div class="col-md-6">
-              <label class="form-label fw-semibold">Urutan</label>
-              <input type="number"
-                     name="urutan"
-                     class="form-control rounded-16"
-                     value="{{ $q->urutan }}"
-                     min="1"
-                     required>
+            <div class="modal-body">
+
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Jumlah Skala</label>
+                <input type="number"
+                       name="rating_max"
+                       class="form-control rounded-16"
+                       min="2" max="10"
+                       value="{{ $q->rating_max ?? 5 }}">
+              </div>
+
+              <div class="mb-2 fw-semibold">Label per Angka</div>
+
+              @php
+                $labels = $q->rating_labels ?? [];
+                $max = $q->rating_max ?? 5;
+              @endphp
+
+              @for($i = 1; $i <= $max; $i++)
+                <div class="input-group mb-2">
+                  <span class="input-group-text">{{ $i }}</span>
+                  <input type="text"
+                         name="rating_labels[{{ $i }}]"
+                         class="form-control"
+                         value="{{ $labels[$i] ?? '' }}"
+                         placeholder="Label untuk {{ $i }}">
+                </div>
+              @endfor
+
             </div>
-          </div>
+
+            <div class="modal-footer">
+              <button type="button"
+                      class="btn btn-ghost rounded-16"
+                      data-bs-dismiss="modal">
+                Batal
+              </button>
+              <button class="btn btn-brand rounded-16">
+                Simpan Skala
+              </button>
+            </div>
+
+          </form>
 
         </div>
-
-        <div class="modal-footer">
-          <button type="button"
-                  class="btn btn-ghost rounded-16"
-                  data-bs-dismiss="modal">
-            Batal
-          </button>
-          <button class="btn btn-brand rounded-16">
-            Simpan Perubahan
-          </button>
-        </div>
-
-      </form>
-
+      </div>
     </div>
-  </div>
-</div>
+  @endif
 @endforeach
+
 
 @endsection

@@ -144,6 +144,11 @@ Route::prefix('admin')
 
     Route::put('/evaluasi/{question}', [EvaluasiQuestionController::class, 'update'])
         ->name('evaluasi.update');
+    
+    Route::put(
+    '/evaluasi/{question}/scale',
+    [EvaluasiQuestionController::class, 'updateScale']
+    )->name('evaluasi.update-scale');
 
     Route::delete('/evaluasi/{question}', [EvaluasiQuestionController::class, 'destroy'])
         ->name('evaluasi.destroy');

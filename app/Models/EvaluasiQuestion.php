@@ -12,5 +12,12 @@ class EvaluasiQuestion extends Model
         'question',
         'type',
         'urutan',
+        'rating_min',
+        'rating_max',
+        'rating_labels',
+    ];
+
+    protected $casts = [
+        'rating_labels' => 'array',
     ];
 }

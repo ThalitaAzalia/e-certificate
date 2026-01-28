@@ -73,15 +73,20 @@ class EvaluasiQuestionController extends Controller
             'urutan'   => 'required|integer|min:1',
         ]);
 
-        $question->update([
-            'question' => $request->question,
-            'type'     => $request->type,
-            'urutan'   => $request->urutan,
-        ]);
+        $data = $request->only(['question', 'type', 'urutan']);
+
+        // KHUSUS RATING (AMAN)
+        if ($request->has('rating_max')) {
+            $data['rating_max'] = (int) $request->rating_max;
+            $data['rating_labels'] = $request->rating_labels ?? [];
+        }
+
+        $question->update($data);
 
         return redirect()->back()
             ->with('success', 'Pertanyaan evaluasi berhasil diperbarui');
     }
+
 
     /**
      * =========================================================

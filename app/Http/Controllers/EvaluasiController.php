@@ -13,7 +13,7 @@ class EvaluasiController extends Controller
      */
     public function index()
     {
-        $questions = EvaluasiQuestion::orderBy('urutan')->get();
+        $questions = EvaluasiQuestion::orderBy('urutan')->paginate(10);
 
         return view('evaluasi', compact('questions'));
     }
@@ -22,29 +22,40 @@ class EvaluasiController extends Controller
      * SIMPAN JAWABAN EVALUASI
      */
     public function store(Request $request)
-{
-    $pesertaId = session('peserta_id');
-    $webinarId = session('webinar_id'); // ⬅️ INI YANG KURANG
+    {
+    // ============================
+        // 1. VALIDASI SESSION ABSENSI
+        // ============================
+        $pesertaId = session('peserta_id');
+        $webinarId = session('webinar_id');
 
-    // pengaman (optional tapi sangat disarankan)
-    if (!$pesertaId || !$webinarId) {
-        return redirect('/absensi')
-            ->withErrors('Session habis. Silakan isi absensi ulang.');
+        if (!$pesertaId || !$webinarId) {
+            abort(403, 'Akses tidak valid. Silakan isi absensi terlebih dahulu.');
+        }
+
+        // ============================
+        // 2. CEGAH EVALUASI GANDA
+        // ============================
+        $sudahIsi = \App\Models\EvaluasiAnswer::where('peserta_id', $pesertaId)
+            ->where('webinar_id', $webinarId)
+            ->exists();
+
+        if ($sudahIsi) {
+            abort(403, 'Evaluasi sudah pernah diisi.');
+        }
+
+        // ============================
+        // 3. SIMPAN JAWABAN (ASLI)
+        // ============================
+        foreach ($request->answers as $questionId => $answer) {
+            \App\Models\EvaluasiAnswer::create([
+                'peserta_id' => $pesertaId,
+                'webinar_id' => $webinarId,
+                'evaluasi_question_id' => $questionId,
+                'answer' => $answer,
+            ]);
+        }
+
+        return redirect('/sertifikat');
     }
-
-    foreach ($request->answers as $questionId => $answer) {
-        $question = EvaluasiQuestion::find($questionId);
-        if (!$question) continue;
-
-        EvaluasiAnswer::create([
-            'peserta_id'            => $pesertaId,
-            'webinar_id'            => $webinarId, // ✅ SEKARANG ADA
-            'evaluasi_question_id'  => $question->id,
-            'answer'                => $answer,
-        ]);
-    }
-
-    return redirect('/sertifikat')
-        ->with('success', 'Evaluasi berhasil dikirim. Terima kasih 🙏');
-}
 }

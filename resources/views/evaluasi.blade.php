@@ -324,6 +324,8 @@ body::before{
       <form method="POST" action="{{ url('/evaluasi') }}" id="evaluationForm">
         @csrf
 
+        <input type="text" name="website" style="display:none">
+        
         @forelse($questions as $q)
           <div class="question-box mb-4">
             <label class="fw-bold mb-2 d-block" style="font-size:1.05rem;">

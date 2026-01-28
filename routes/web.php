@@ -41,11 +41,13 @@ Route::get('/', function () {
 
 // ABSENSI
 Route::get('/absensi', [PesertaController::class, 'create']);
-Route::post('/absensi', [PesertaController::class, 'store']);
+Route::post('/absensi', [PesertaController::class, 'store'])
+    ->middleware('throttle:10,1');
 
 // EVALUASI PESERTA
 Route::get('/evaluasi', [EvaluasiController::class, 'index']);
-Route::post('/evaluasi', [EvaluasiController::class, 'store']);
+Route::post('/evaluasi', [EvaluasiController::class, 'store'])
+    ->middleware('throttle:10,1');
 
 // SERTIFIKAT PESERTA
 Route::get('/sertifikat', [SertifikatController::class, 'index'])

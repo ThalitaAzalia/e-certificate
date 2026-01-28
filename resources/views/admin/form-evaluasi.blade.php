@@ -301,11 +301,22 @@
                       @endif
                     </td>
                     <td class="td-center">
-                      @if($q->type === 'rating')
-                        <span class="scale-badge">1–5</span>
-                      @else
-                        <span class="scale-badge na">—</span>
-                      @endif
+                   @if($q->type === 'rating')
+                      <span class="scale-badge">
+                        1–{{ $q->rating_max ?? 5 }}
+                      </span>
+                    @else
+                      <span class="scale-badge na">—</span>
+                    @endif
+
+                    @if($q->type === 'rating')
+                    <button class="btn btn-outline-secondary btn-xs"
+                            data-bs-toggle="modal"
+                            data-bs-target="#modalScale{{ $q->id }}">
+                      Skala
+                    </button>
+                    @endif
+
                     </td>
                     <td class="td-actions">
                     {{-- EDIT --}}
@@ -314,6 +325,75 @@
                             data-bs-target="#modalEditEval{{ $q->id }}">
                         Edit
                     </button>
+
+                    @foreach($questions as $q)
+                    @if($q->type === 'rating')
+                    <div class="modal fade" id="modalScale{{ $q->id }}" tabindex="-1">
+                      <div class="modal-dialog modal-lg modal-dialog-centered">
+                        <div class="modal-content rounded-16">
+
+                          <form method="POST"
+                                action="{{ route('admin.evaluasi.update', $q->id) }}">
+                            @csrf
+                            @method('PUT')
+
+                            <div class="modal-header">
+                              <h5 class="modal-title fw-bold">Atur Skala Rating</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+
+                            <div class="modal-body">
+
+                              {{-- JUMLAH SKALA --}}
+                              <div class="mb-3">
+                                <label class="form-label fw-semibold">Jumlah Skala</label>
+                                <input type="number"
+                                      name="rating_max"
+                                      class="form-control rounded-16"
+                                      min="2" max="10"
+                                      value="{{ $q->rating_max ?? 5 }}">
+                              </div>
+
+                              {{-- LABEL PER ANGKA --}}
+                              <div class="mb-2 fw-semibold">Label per Angka</div>
+
+                              @php
+                                $labels = $q->rating_labels ?? [];
+                                $max = $q->rating_max ?? 5;
+                              @endphp
+
+                              @for($i = 1; $i <= $max; $i++)
+                                <div class="input-group mb-2">
+                                  <span class="input-group-text">{{ $i }}</span>
+                                  <input type="text"
+                                        name="rating_labels[{{ $i }}]"
+                                        class="form-control"
+                                        value="{{ $labels[$i] ?? '' }}"
+                                        placeholder="Label untuk {{ $i }}">
+                                </div>
+                              @endfor
+
+                            </div>
+
+                            <div class="modal-footer">
+                              <button type="button"
+                                      class="btn btn-ghost rounded-16"
+                                      data-bs-dismiss="modal">
+                                Batal
+                              </button>
+                              <button class="btn btn-brand rounded-16">
+                                Simpan Skala
+                              </button>
+                            </div>
+
+                          </form>
+
+                        </div>
+                      </div>
+                    </div>
+                    @endif
+                    @endforeach
+
 
                     {{-- HAPUS --}}
                     <form method="POST"
@@ -359,7 +439,6 @@
       </div>
     </div>
   </div>
-
 </div>
 
 @push('scripts')

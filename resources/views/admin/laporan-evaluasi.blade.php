@@ -441,11 +441,46 @@
           Export akan mengikuti filter yang dipilih (webinar & rentang tanggal).
         </div>
 
-        <div class="mt-3 p-3 rounded-16" style="background: rgba(46,125,50,.06); border:1px solid rgba(46,125,50,.14);">
-          <div class="small muted">Filter saat ini</div>
-          <div class="fw-semibold">Semua Webinar</div>
-          <div class="small muted">01 Jan 2026 – 28 Feb 2026</div>
-        </div>
+       @php
+      // ambil webinar terpilih (kalau ada)
+      $selectedWebinar = null;
+      if ($webinarId) {
+        $selectedWebinar = $allWebinars->firstWhere('id', (int) $webinarId);
+      }
+
+      // format tanggal
+      $startLabel = $startDate
+          ? \Carbon\Carbon::parse($startDate)->format('d M Y')
+          : null;
+
+      $endLabel = $endDate
+          ? \Carbon\Carbon::parse($endDate)->format('d M Y')
+          : null;
+    @endphp
+
+    <div class="mt-3 p-3 rounded-16"
+        style="background: rgba(46,125,50,.06); border:1px solid rgba(46,125,50,.14);">
+
+      <div class="small muted">Filter saat ini</div>
+
+      <div class="fw-semibold">
+        {{ $selectedWebinar ? $selectedWebinar->judul : 'Semua Webinar' }}
+      </div>
+
+      <div class="small muted">
+        @if($startLabel && $endLabel)
+          {{ $startLabel }} – {{ $endLabel }}
+        @elseif($startLabel)
+          Mulai {{ $startLabel }}
+        @elseif($endLabel)
+          Sampai {{ $endLabel }}
+        @else
+          Semua tanggal
+        @endif
+      </div>
+
+    </div>
+
 
         <div class="hint mt-3">
           *Tombol export ini hanya tampilan. Nanti backend yang membuat file Excel.

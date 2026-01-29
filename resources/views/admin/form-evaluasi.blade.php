@@ -426,5 +426,77 @@
   @endif
 @endforeach
 
+@foreach($questions as $q)
+<div class="modal fade" id="modalEditEval{{ $q->id }}" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content rounded-16">
+
+      <form method="POST" action="{{ route('admin.evaluasi.update', $q->id) }}">
+        @csrf
+        @method('PUT')
+
+        <div class="modal-header">
+          <h5 class="modal-title fw-bold">Edit Pertanyaan</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+
+        <div class="modal-body">
+
+          {{-- PERTANYAAN --}}
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Pertanyaan</label>
+            <input type="text"
+                   name="question"
+                   class="form-control rounded-16"
+                   value="{{ $q->question }}"
+                   required>
+          </div>
+
+          {{-- TIPE JAWABAN --}}
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Tipe Jawaban</label>
+            <select name="type" class="form-select rounded-16" required>
+              <option value="rating" {{ $q->type === 'rating' ? 'selected' : '' }}>
+                Rating (1–5)
+              </option>
+              <option value="text" {{ $q->type === 'text' ? 'selected' : '' }}>
+                Text
+              </option>
+              <option value="textarea" {{ $q->type === 'textarea' ? 'selected' : '' }}>
+                Textarea
+              </option>
+            </select>
+          </div>
+
+          {{-- URUTAN --}}
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Urutan</label>
+            <input type="number"
+                   name="urutan"
+                   class="form-control rounded-16"
+                   value="{{ $q->urutan }}"
+                   required>
+          </div>
+
+        </div>
+
+        <div class="modal-footer">
+          <button type="button"
+                  class="btn btn-ghost rounded-16"
+                  data-bs-dismiss="modal">
+            Batal
+          </button>
+          <button type="submit" class="btn btn-brand rounded-16">
+            Simpan
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+</div>
+@endforeach
+
 
 @endsection

@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Landing | E-Sertifikat & Webinar')
+@section('title', 'Landing | Layanan E-Sertifikat Webinar')
 
 @push('styles')
 <style>
@@ -170,7 +170,7 @@
     margin-top: 6px;
   }
 
-  /* ===== FIX NAVBAR JADI KECIL (logo + tinggi) ===== */
+  /* ===== NAVBAR ===== */
   .navbar .container{
     padding-top: 6px !important;
     padding-bottom: 6px !important;
@@ -243,7 +243,7 @@
         <div class="card card-shadow rounded-16 overflow-hidden hero-card">
           <img src="{{ asset('images/hero.jpg') }}" class="hero-img" alt="Hero Badiklat">
           <div class="p-3 bg-white">
-            <div class="fw-semibold">Badiklat Hukum Jawa Tengah</div>
+            <div class="fw-semibold">Balai Pelatihan Hukum Semarang</div>
             <div class="small text-muted">Pusat pengembangan kompetensi & pelatihan hukum.</div>
           </div>
         </div>
@@ -357,20 +357,6 @@
                 class="btn btn-brand rounded-16">
                 Isi Absensi
               </a>
-
-              <button type="button"
-                      class="btn btn-outline-danger rounded-16"
-                      data-bs-toggle="modal"
-                      data-bs-target="#detailWebinarModal"
-                      data-judul="{{ $webinar->judul }}"
-                      data-deskripsi="{{ $webinar->deskripsi }}"
-                      data-tanggal="{{ \Carbon\Carbon::parse($webinar->tanggal)->translatedFormat('d F Y') }}"
-                      data-waktu="{{ $webinar->waktu ? \Carbon\Carbon::parse($webinar->waktu)->format('H:i').' WIB' : '-' }}"
-                      data-narasumber="{{ $webinar->narasumber ?? '-' }}"
-                      data-media="{{ $webinar->media ?? '-' }}"
-                      data-absensi-url="{{ url('/absensi?webinar_id='.$webinar->id) }}">
-                Lihat Detail
-              </button>
             </div>
 
 
@@ -392,7 +378,7 @@
 <section id="lokasi" class="py-5 bg-soft">
   <div class="container">
     <h2 class="section-title mb-2">Lokasi Kami</h2>
-    <p class="text-muted mb-4">Badiklat Hukum Jawa Tengah</p>
+    <p class="text-muted mb-4">Balai Pelatihan Hukum Semarang</p>
 
     <div class="row g-4">
       <div class="col-lg-7">
@@ -430,7 +416,7 @@
     <div class="d-flex align-items-end justify-content-between flex-wrap gap-2 mb-4">
       <div>
         <h2 class="section-title mb-1">Kontak</h2>
-        <div class="text-muted">Informasi kontak resmi Badiklat Hukum Jawa Tengah.</div>
+        <div class="text-muted">Informasi kontak resmi Balai Pelatihan Hukum Semarang.</div>
       </div>
     </div>
 
@@ -519,8 +505,8 @@
       <div class="col-md-6 d-flex align-items-center gap-2">
         <img src="{{ asset('images/logobadiklat.jpg') }}" class="brand-logo-sm" alt="Logo Badiklat">
         <div>
-          <div class="fw-semibold">© {{ date('Y') }} Badiklat Hukum Jawa Tengah</div>
-          <div class="small">E-Sertifikat & Webinar</div>
+          <div class="fw-semibold">© {{ date('Y') }} Balai Pelatihan Hukum Semarang</div>
+          <div class="small">Layanan E-Sertifikat Webinar</div>
         </div>
       </div>
 
@@ -533,55 +519,5 @@
     </div>
   </div>
 </footer>
-
-<!-- MODAL detail webinar -->
-<div class="modal fade" id="detailWebinarModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-lg modal-dialog-centered">
-    <div class="modal-content rounded-16">
-      <div class="modal-header">
-        <h5 class="modal-title fw-bold" id="modalWebinarTitle">Detail Webinar</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-
-      <div class="modal-body">
-        <p class="text-muted mb-3" id="modalWebinarDesc"></p>
-
-        <div class="row g-2 small text-muted">
-          <div class="col-md-6"><span class="fw-semibold">Tanggal:</span> <span id="modalTanggal"></span></div>
-          <div class="col-md-6"><span class="fw-semibold">Waktu:</span> <span id="modalWaktu"></span></div>
-          <div class="col-md-6"><span class="fw-semibold">Narasumber:</span> <span id="modalNarasumber"></span></div>
-          <div class="col-md-6"><span class="fw-semibold">Media:</span> <span id="modalMedia"></span></div>
-        </div>
-      </div>
-
-      <div class="modal-footer">
-        <a href="#" id="modalAbsensiBtn" class="btn btn-brand rounded-16">Isi Data Diri</a>
-        <button type="button" class="btn btn-outline-secondary rounded-16" data-bs-dismiss="modal">Tutup</button>
-      </div>
-    </div>
-  </div>
-</div>
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-  const modal = document.getElementById('detailWebinarModal');
-  if (!modal) return;
-
-  modal.addEventListener('show.bs.modal', function (event) {
-    const btn = event.relatedTarget;
-    if (!btn) return;
-
-    document.getElementById('modalWebinarTitle').textContent = btn.getAttribute('data-judul') || 'Detail Webinar';
-    document.getElementById('modalWebinarDesc').textContent  = btn.getAttribute('data-deskripsi') || '-';
-
-    document.getElementById('modalTanggal').textContent    = btn.getAttribute('data-tanggal') || '-';
-    document.getElementById('modalWaktu').textContent      = btn.getAttribute('data-waktu') || '-';
-    document.getElementById('modalNarasumber').textContent = btn.getAttribute('data-narasumber') || '-';
-    document.getElementById('modalMedia').textContent      = btn.getAttribute('data-media') || '-';
-
-    const absensiUrl = btn.getAttribute('data-absensi-url') || '#';
-    document.getElementById('modalAbsensiBtn').setAttribute('href', absensiUrl);
-  });
-});
-</script>
 
 @endsection

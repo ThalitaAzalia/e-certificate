@@ -4,187 +4,423 @@
 
 @push('head')
 <style>
-  :root{
-    --brand:#b91c1c;
-    --brand-2:#dc2626;
-    --brand-3:#991b1b;
-
-    --bg-page:#f7e8e8;
-    --bg-card:#fff5f5;
-    --border-soft: rgba(185,28,28,.18);
-    --ink:#111827;
-    --muted:#6b7280;
+  :root {
+    --brand: #b91c1c;
+    --brand-2: #dc2626;
+    --brand-3: #991b1b;
+    --bg-page: #fafafa;
+    --bg-card: #ffffff;
+    --border-soft: rgba(185, 28, 28, 0.12);
   }
 
-  body{ background: var(--bg-page); }
+  body { 
+    background: var(--bg-page); 
+    font-family: 'Inter', -apple-system, sans-serif;
+  }
 
-  .page-title{ font-weight:900; letter-spacing:-.2px; color:var(--brand-3); }
-  .muted{ color: var(--muted); }
-  .rounded-16{ border-radius:16px; }
+  .page-title {
+    font-weight: 900;
+    letter-spacing: -0.025em;
+    color: var(--brand-3);
+    font-size: 1.75rem;
+  }
 
-  .card-soft{
+  .card-soft {
     background: var(--bg-card) !important;
     border: 1px solid var(--border-soft);
-    box-shadow:
-      0 20px 45px rgba(185,28,28,.08),
-      0 6px 16px rgba(185,28,28,.06);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(185, 28, 28, 0.05);
   }
 
-  .btn-brand{
+  .btn-brand {
     background: var(--brand);
-    color:#fff;
-    border:none;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    padding: 0.5rem 1.25rem;
   }
-  .btn-brand:hover{ background: var(--brand-2); color:#fff; }
 
-  .btn-ghost{
-    border:1px solid rgba(185,28,28,.35);
-    background: rgba(255,255,255,.65);
+  .btn-brand:hover { background: var(--brand-2); }
+
+  .btn-ghost {
+    border: 1px solid rgba(185, 28, 28, 0.2);
+    background: white;
     color: var(--brand);
-  }
-  .btn-ghost:hover{ background: rgba(185,28,28,.08); color: var(--brand-3); }
-
-  .btn-excel{
-    border: 1px solid rgba(46,125,50,.28);
-    background: rgba(232,245,233,.85);
-    color:#2e7d32;
-    font-weight:900;
-  }
-  .btn-excel:hover{
-    background: rgba(232,245,233,1);
-    color:#1b5e20;
+    border-radius: 8px;
+    font-weight: 500;
+    padding: 0.5rem 1.25rem;
   }
 
-  .form-control:focus, .form-select:focus{
-    border-color: rgba(185,28,28,.55);
-    box-shadow: 0 0 0 .25rem rgba(185,28,28,.18);
+  .btn-ghost:hover { background: rgba(185, 28, 28, 0.05); }
+
+  .btn-excel {
+    background: #21a366;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    padding: 0.5rem 1.25rem;
   }
 
-  .hint{ font-size:.875rem; color: var(--muted); }
-  .divider-soft{ height:1px; background: rgba(185,28,28,.14); border-radius:999px; }
+  .btn-excel:hover { background: #185c37; color: white; }
 
-  thead tr{ background: rgba(185,28,28,.06); }
-  .table td, .table th{ vertical-align: middle; }
+  .badge-pill {
+    border-radius: 50px;
+    padding: 0.25rem 0.5rem;
+    font-weight: 600;
+    font-size: 0.75rem;
+  }
 
-  .chip{
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
-    padding:8px 10px;
-    border-radius:999px;
-    background: rgba(185,28,28,.08);
-    border: 1px solid rgba(185,28,28,.14);
+  /* FIX: class jangan pakai huruf kapital & tanda '-' yang aneh */
+  .badge-average {
+    background: rgba(46, 125, 50, 0.1);
+    color: #2e7d32;
+    border: 1px solid rgba(46, 125, 50, 0.2);
+  }
+
+  .badge-text {
+    background: rgba(156, 163, 175, 0.1);
+    color: #6b7280;
+    border: 1px solid rgba(156, 163, 175, 0.2);
+  }
+
+  .badge-excellent {
+    background: rgba(34, 197, 94, 0.1);
+    color: #16a34a;
+    border: 1px solid rgba(34, 197, 94, 0.2);
+  }
+
+  .badge-good {
+    background: rgba(251, 191, 36, 0.1);
+    color: #d97706;
+    border: 1px solid rgba(251, 191, 36, 0.2);
+  }
+
+  .badge-fair {
+    background: rgba(248, 113, 113, 0.1);
+    color: #dc2626;
+    border: 1px solid rgba(248, 113, 113, 0.2);
+  }
+
+  .form-control, .form-select {
+    border-radius: 6px;
+    border: 1px solid #e5e7eb;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+  }
+
+  .form-control:focus, .form-select:focus {
+    border-color: var(--brand);
+    box-shadow: 0 0 0 2px rgba(185, 28, 28, 0.1);
+  }
+
+  .table-header {
+    background: rgba(185, 28, 28, 0.05);
     color: var(--brand-3);
-    font-weight:900;
-    font-size:12px;
-    white-space:nowrap;
+    font-weight: 600;
+    font-size: 0.75rem;
   }
 
-  .score{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    min-width:46px;
-    padding:6px 10px;
-    border-radius:999px;
-    font-weight:1000;
-    background: rgba(185,28,28,.10);
-    border: 1px solid rgba(185,28,28,.20);
+  .modal-content {
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  }
+
+  .score {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 46px;
+    padding: 0.35rem 0.75rem;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.875rem;
+    border: 1px solid rgba(185, 28, 28, 0.2);
+    background: rgba(185, 28, 28, 0.06);
     color: var(--brand-3);
   }
 
-  .score.good{
-    background: rgba(46,125,50,.10);
-    border-color: rgba(46,125,50,.20);
-    color:#2e7d32;
+  .score.excellent {
+    background: rgba(34, 197, 94, 0.1);
+    border-color: rgba(34, 197, 94, 0.2);
+    color: #16a34a;
   }
 
-  .score.mid{
-    background: rgba(255,193,7,.15);
-    border-color: rgba(255,193,7,.25);
-    color:#8a6d00;
+  .score.good {
+    background: rgba(251, 191, 36, 0.1);
+    border-color: rgba(251, 191, 36, 0.2);
+    color: #d97706;
   }
 
-  /* ====== Clickable Webinar Chip ====== */
-  .webinar-link{
-    /* ✅ DIUBAH: jadi teks seperti kolom peserta (tanpa tampilan button/pill) */
-    display:block;
-    padding:0;
-    border:none;
+  .score.fair {
+    background: rgba(248, 113, 113, 0.1);
+    border-color: rgba(248, 113, 113, 0.2);
+    color: #dc2626;
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.75rem;
+    background: rgba(185, 28, 28, 0.08);
+    border: 1px solid rgba(185, 28, 28, 0.15);
+    color: var(--brand-3);
+  }
+
+  .chip.success {
+    background: rgba(34, 197, 94, 0.1);
+    border-color: rgba(34, 197, 94, 0.2);
+    color: #16a34a;
+  }
+
+  .chip.info {
+    background: rgba(59, 130, 246, 0.1);
+    border-color: rgba(59, 130, 246, 0.2);
+    color: #2563eb;
+  }
+
+  .wave-card {
+    background: white;
+    border: 1px solid var(--border-soft);
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+  }
+
+  .wave-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+
+  .wave-title {
+    font-weight: 600;
+    color: var(--brand-3);
+    font-size: 0.9375rem;
+    margin: 0;
+  }
+
+  .wave-sub {
+    color: #6b7280;
+    font-size: 0.8125rem;
+    margin: 0;
+  }
+
+  .wave-shell {
+    background: #f8fafc;
+    border-radius: 8px;
+    border: 1px solid rgba(185, 28, 28, 0.08);
+    padding: 1rem;
+  }
+
+  .wave-legend {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+    font-size: 0.75rem;
+    color: #6b7280;
+  }
+
+  .wave-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 0.375rem;
+  }
+
+  .wave-note {
+    margin-top: 1rem;
+    font-size: 0.75rem;
+    color: #6b7280;
+    padding: 0.75rem;
+    background: rgba(185, 28, 28, 0.03);
+    border-radius: 6px;
+    border-left: 3px solid var(--brand);
+  }
+
+  .webinar-link {
+    display: block;
+    padding: 0;
+    border: none;
     background: transparent;
-    border-radius:0;
-    color: var(--ink);
-    font-weight:900;
-    text-decoration:none;
-    transition:none;
+    border-radius: 0;
+    color: inherit;
+    font-weight: 600;
+    text-decoration: none;
+    transition: none;
   }
-  .webinar-link:hover{
-    /* ✅ DIUBAH: hilangkan efek hover button */
-    background: transparent;
-    color: var(--ink);
-    transform:none;
-  }
-  .webinar-link .dot{
-    /* ✅ DIUBAH: hilangkan dot */
-    display:none;
-  }
-  .subtxt{ font-size:12px; color: var(--muted); font-weight:800; margin-top:6px; }
 
-  /* ====== WAVE CHART ====== */
-  .wave-card{
-    background: rgba(255,255,255,.70);
-    border: 1px solid rgba(185,28,28,.18);
-    border-radius: 18px;
-    padding: 14px;
-    overflow:hidden;
+  .webinar-link:hover { background: transparent; color: inherit; transform: none; }
+
+  .subtxt {
+    font-size: 0.75rem;
+    color: #6b7280;
+    margin-top: 0.25rem;
   }
-  .wave-head{
+
+  .metric-card {
+    background: white;
+    border: 1px solid var(--border-soft);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .metric-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--brand-3);
+    line-height: 1.2;
+  }
+
+  .metric-label {
+    font-size: 0.8125rem;
+    color: #6b7280;
+    margin-bottom: 0.25rem;
+  }
+
+  .empty-state {
+    padding: 2rem 1rem;
+    text-align: center;
+    background: white;
+    border-radius: 12px;
+    border: 1px solid var(--border-soft);
+  }
+
+  .empty-state-icon {
+    font-size: 2rem;
+    color: #9ca3af;
+    margin-bottom: 0.75rem;
+    opacity: 0.5;
+  }
+
+  .empty-state-title {
+    font-weight: 600;
+    color: #6b7280;
+    margin-bottom: 0.5rem;
+  }
+
+  .empty-state-description {
+    color: #9ca3af;
+    font-size: 0.875rem;
+    max-width: 300px;
+    margin: 0 auto 1rem;
+  }
+
+  .progress-bar-custom {
+    height: 6px;
+    background: rgba(185, 28, 28, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+    margin: 0.5rem 0;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--brand);
+    border-radius: 3px;
+    transition: width 0.3s ease;
+  }
+
+  .table-analytics {
+    --bs-table-bg: transparent;
+    --bs-table-striped-bg: rgba(185, 28, 28, 0.02);
+    --bs-table-hover-bg: rgba(185, 28, 28, 0.04);
+  }
+
+  .table-analytics thead th {
+    background: rgba(185, 28, 28, 0.05);
+    color: var(--brand-3);
+    font-weight: 600;
+    font-size: 0.8125rem;
+    border-bottom: 2px solid rgba(185, 28, 28, 0.1);
+  }
+
+  .table-analytics tbody tr {
+    transition: background-color 0.2s ease;
+  }
+
+  .table-analytics tbody tr:hover {
+    background: rgba(185, 28, 28, 0.03);
+  }
+  /* ==== Compact card grafik (mirip screenshot) ==== */
+  .wave-card-compact{
+    padding: 14px 16px !important;
+  }
+
+  .wave-head-compact{
     display:flex;
-    align-items:center;
+    align-items:flex-start;
     justify-content:space-between;
-    gap: 10px;
-    margin-bottom: 10px;
+    gap:12px;
+    margin-bottom:10px;
   }
-  .wave-title{
-    margin:0;
-    font-weight:1000;
-    color: var(--ink);
-    font-size: 14px;
+
+  .wave-shell-compact{
+    background: #ffffff;
+    border: 1px solid rgba(185,28,28,.10);
+    border-radius: 10px;
+    padding: 10px 12px 6px;
   }
-  .wave-sub{
-    margin:0;
-    color: var(--muted);
-    font-weight: 800;
-    font-size: 12px;
+
+  .chart-wrap{
+    height: 120px;          /* ini yang bikin pendek kayak gambar */
+    position: relative;
   }
-  .wave-shell{
-    background:
-      radial-gradient(600px 240px at 80% -10%, rgba(185,28,28,.10), transparent 60%),
-      linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,.65));
-    border-radius: 16px;
-    border: 1px solid rgba(185,28,28,.12);
-    padding: 10px 10px 6px;
+
+  /* Biar label bawah chart gak “nabrak” */
+  #waveChart{
+    width: 100% !important;
+    height: 100% !important;
   }
-  .wave-legend{
-    display:flex;
-    gap: 10px;
-    flex-wrap:wrap;
-    margin-top: 10px;
-    color: var(--muted);
-    font-weight: 800;
-    font-size: 12px;
+  /* ===== SHINE EFFECT: Export Excel ===== */
+  .btn-excel {
+    position: relative;
+    overflow: hidden;
   }
-  .wave-dot{
-    width:10px;height:10px;border-radius:999px;
-    display:inline-block;
-    margin-right:6px;
+
+  /* layer kilap */
+  .btn-excel::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -120%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(
+      120deg,
+      transparent,
+      rgba(255, 255, 255, 0.45),
+      transparent
+    );
+    transition: all 0.6s ease;
   }
-  .wave-note{
-    margin-top: 10px;
-    font-size: 12px;
-    color: var(--muted);
-    font-weight: 800;
+
+  /* saat hover */
+  .btn-excel:hover::before {
+    left: 120%;
   }
+
+  /* feel klik */
+  .btn-excel:hover {
+    box-shadow: 0 10px 18px rgba(33, 163, 102, 0.30);
+    transform: translateY(-2px);
+  }
+
+  .btn-excel:active {
+    transform: translateY(0) scale(0.97);
+    box-shadow: 0 6px 12px rgba(33, 163, 102, 0.25);
+  }
+
 </style>
 @endpush
 
@@ -194,304 +430,280 @@
     use Illuminate\Support\Str;
 @endphp
 
-<div class="container py-3">
+<div class="container py-4">
 
-  {{-- Header --}}
-  <div class="d-flex flex-column flex-lg-row align-items-lg-center justify-content-between gap-3 mb-4">
+  {{-- HEADER --}}
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3 mb-4">
     <div>
-      <h1 class="page-title mb-1">Laporan Evaluasi</h1>
-      <div class="muted">
-        Mode <b>Semua webinar</b> menampilkan ringkasan per webinar. Klik judul webinar untuk melihat daftar peserta & detail evaluasi (UI saja).
-      </div>
+      <h1 class="page-title mb-2">Laporan Evaluasi</h1>
+      <p class="text-muted mb-0">
+        Analisis evaluasi peserta webinar. Klik judul webinar untuk melihat detail.
+      </p>
     </div>
-
-    <div class="d-flex gap-2 flex-wrap">
-      <button class="btn btn-excel rounded-16" data-bs-toggle="modal" data-bs-target="#modalExport">
-        Export Excel
+    
+    <div class="d-flex gap-2">
+      <button class="btn btn-excel d-flex align-items-center gap-1" 
+              data-bs-toggle="modal" 
+              data-bs-target="#modalExport">
+        <i class="fas fa-file-excel fa-sm"></i>
+        <span>Export Excel</span>
       </button>
-      <a href="{{ url('/admin/dashboard') }}" class="btn btn-ghost rounded-16">Kembali</a>
+      <a href="{{ url('/admin/dashboard') }}" 
+         class="btn btn-ghost d-flex align-items-center gap-1">
+        <i class="fas fa-arrow-left fa-sm"></i>
+        <span>Kembali</span>
+      </a>
     </div>
   </div>
 
-  {{-- Filter --}}
+  {{-- FILTER --}}
 <form method="GET" action="{{ route('admin.laporan.evaluasi') }}">
-  <div class="row g-2 align-items-end">
+  <div class="card card-soft mb-4">
+    <div class="card-body">
+      <div class="row g-3 align-items-end">
+        {{-- Pilih Webinar --}}
+        <div class="col-md-4">
+          <label class="form-label fw-semibold">Pilih Webinar</label>
+          <select name="webinar_id" class="form-select">
+            <option value="">Semua webinar</option>
+            @foreach($allWebinars as $w)
+              <option value="{{ $w->id }}"
+                {{ request('webinar_id') == $w->id ? 'selected' : '' }}>
+                {{ $w->judul }}
+              </option>
+            @endforeach
+          </select>
+        </div>
 
-    {{-- PILIH WEBINAR --}}
-    <div class="col-md-4">
-      <label class="form-label fw-semibold">Pilih Webinar</label>
-      <select name="webinar_id" class="form-select rounded-16">
-        <option value="">Semua webinar</option>
-        @foreach($allWebinars as $w)
-          <option value="{{ $w->id }}"
-            {{ request('webinar_id') == $w->id ? 'selected' : '' }}>
-            {{ $w->judul }}
-          </option>
-        @endforeach
-      </select>
+        {{-- Tanggal Mulai --}}
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">Tanggal Mulai</label>
+          <input type="date"
+                 name="start"
+                 class="form-control"
+                 value="{{ request('start') }}">
+        </div>
+
+        {{-- Tanggal Akhir --}}
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">Tanggal Akhir</label>
+          <input type="date"
+                 name="end"
+                 class="form-control"
+                 value="{{ request('end') }}">
+        </div>
+
+        {{-- Actions --}}
+        <div class="col-md-2 d-flex gap-2">
+          <button type="submit" class="btn btn-brand w-100">
+            Terapkan
+          </button>
+        </div>
+      </div>
     </div>
-
-    {{-- TANGGAL MULAI --}}
-    <div class="col-md-3">
-      <label class="form-label fw-semibold">Rentang Tanggal</label>
-      <input type="date"
-             name="start"
-             class="form-control rounded-16"
-             value="{{ request('start') }}">
-    </div>
-
-    {{-- TANGGAL AKHIR --}}
-    <div class="col-md-3">
-      <label class="form-label fw-semibold">&nbsp;</label>
-      <input type="date"
-             name="end"
-             class="form-control rounded-16"
-             value="{{ request('end') }}">
-    </div>
-
-    {{-- BUTTON --}}
-    <div class="col-md-2 d-grid">
-      <button class="btn btn-brand rounded-16" type="submit">
-        Terapkan
-      </button>
-    </div>
-
   </div>
 </form>
 
-
-        <div class="col-12">
-          <div class="hint mt-2">
-            *Ini tampilan UI saja. Pilihan "Semua webinar" di bawah ini adalah contoh tampilan ringkasan.
-          </div>
-        </div>
-      </div>
-
-      <div class="divider-soft my-3"></div>
-
-      {{-- Ringkasan --}}
-      <div class="d-flex flex-wrap gap-2">
-        <span class="chip">Total Respon: <b>128</b></span>
-        <span class="chip">Rata-rata Rating: <b>4.3</b> / 5</span>
-        <span class="chip">Mode: <b>Semua Webinar</b></span>
-      </div>
-    </div>
-  </div>
-
-  {{-- Grafik Gelombang --}}
-  <div class="card card-soft rounded-16 mb-4">
-    <div class="card-body">
-      <div class="wave-head">
+  {{-- Wave Chart --}}
+  <div class="card card-soft mb-4">
+    <div class="card-body wave-card-compact">
+      <div class="wave-head-compact">
         <div>
-          <p class="wave-title">Grafik Rating (Gelombang)</p>
-          <p class="wave-sub">Rata-rata rating per webinar (dummy)</p>
-        </div>
-        <div class="text-end">
-          <span class="chip">Skala: <b>0 – 5</b></span>
+          <h6 class="wave-title mb-1">Tren Rata-rata Evaluasi</h6>
+          <p class="wave-sub mb-0">Rata-rata per webinar</p>
         </div>
       </div>
 
-      <div class="wave-card">
-        <div class="wave-shell">
-          <canvas id="waveChart" height="120"></canvas>
-        </div>
-
-        <div class="wave-legend">
-          <span><span class="wave-dot" style="background: rgba(185,28,28,.85)"></span> Rata-rata rating</span>
-          <span><span class="wave-dot" style="background: rgba(185,28,28,.25)"></span> Garis tren (dummy)</span>
-        </div>
-
-        <div class="wave-note">
-          *Grafik ini hanya tampilan. Nanti backend menghitung nilai rating asli per webinar.
+      <div class="wave-shell-compact">
+        <div class="chart-wrap">
+          <canvas id="waveChart"></canvas>
         </div>
       </div>
     </div>
   </div>
 
-  {{-- TABLE: Ringkasan Semua Webinar (tanpa kolom peserta) --}}
-  <div class="card card-soft rounded-16">
-    <div class="card-body">
-      <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-2 mb-3">
-        <div class="fw-semibold">Ringkasan Evaluasi (Semua Webinar)</div>
 
-        <div class="d-flex gap-2 flex-wrap">
-          <input class="form-control rounded-16" style="max-width:260px;"
-                 placeholder="Cari judul webinar...">
-          <select class="form-select rounded-16" style="max-width:200px;">
+  {{-- TABLE: Ringkasan Evaluasi --}}
+  <div class="card card-soft">
+    <div class="card-body">
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3 mb-4">
+        <div>
+          <h5 class="fw-semibold mb-1">Ringkasan Evaluasi</h5>
+          <p class="text-muted small">Detail respons evaluasi untuk setiap webinar</p>
+        </div>
+
+        <div class="d-flex gap-2">
+          <select class="form-select" style="min-width: 160px;">
             <option value="">Urutkan</option>
-            <option>Rating tertinggi</option>
-            <option>Rating terendah</option>
-            <option>Total respon terbanyak</option>
-            <option>Total respon tersedikit</option>
+            <option>Rata-rata tertinggi</option>
+            <option>Rata-rata terendah</option>
+            <option>Respon terbanyak</option>
           </select>
-          <button class="btn btn-ghost rounded-16" type="button">Reset</button>
         </div>
       </div>
 
-      <div class="table-responsive">
-        <table class="table table-hover align-middle">
-          <thead>
-            <tr class="muted">
-              <th style="width:56px;">No</th>
-              <th>Webinar</th>
-              <th style="width:160px;">Periode</th>
-              <th style="width:140px;">Total Respon</th>
-              <th style="width:140px;">Rata-rata</th>
-              <th style="width:140px;" class="text-end">Detail</th>
-            </tr>
-          </thead>
-          <tbody>
-          @forelse($webinars as $index => $webinar)
-          <tr>
-              {{-- NO --}}
-              <td class="fw-semibold">{{ $index + 1 }}</td>
+      @if($webinars->isEmpty())
+        <div class="empty-state">
+          <div class="empty-state-icon">
+            <i class="fas fa-chart-bar"></i>
+          </div>
+          <h4 class="empty-state-title">Belum Ada Data Evaluasi</h4>
+          <p class="empty-state-description">
+            Tidak ada data evaluasi yang tersedia untuk filter yang dipilih.
+          </p>
+          <button class="btn btn-brand btn-sm" onclick="window.location.href='{{ route('admin.laporan.evaluasi') }}'">
+            Reset Filter
+          </button>
+        </div>
+      @else
+        <div class="table-responsive">
+          <table class="table table-analytics table-hover align-middle">
+            <thead class="table-header">
+              <tr>
+                <th style="width: 50px;">No</th>
+                <th>Webinar</th>
+                <th style="width: 120px;">Periode</th>
+                <th style="width: 120px;">Total Respon</th>
+                <th style="width: 140px;">Rata-rata</th>
+                <th style="width: 120px;" class="text-center">Detail</th>
+              </tr>
+            </thead>
+            <tbody>
+              @forelse($webinars as $index => $webinar)
+              <tr>
+                <td class="fw-semibold">{{ $index + 1 }}</td>
 
-              {{-- WEBINAR --}}
-              <td>
+                <td>
                   <div class="fw-semibold">{{ $webinar->judul }}</div>
-                  <div class="small muted">
-                      Ringkasan: {{ Str::limit($webinar->deskripsi, 80) }}
+                  <div class="subtxt">
+                    {{ Str::limit($webinar->deskripsi, 80) }}
                   </div>
-              </td>
+                </td>
 
-              {{-- PERIODE --}}
-              <td>
-                  <div class="fw-semibold">
-                      {{ \Carbon\Carbon::parse($webinar->tanggal)->format('M Y') }}
-                  </div>
-                  <div class="small muted">
-                      {{ \Carbon\Carbon::parse($webinar->tanggal)->format('d M Y') }}
-                  </div>
-              </td>
+                <td>
+                  <div class="fw-semibold">{{ \Carbon\Carbon::parse($webinar->tanggal)->format('M Y') }}</div>
+                  <div class="subtxt">{{ \Carbon\Carbon::parse($webinar->tanggal)->format('d M Y') }}</div>
+                </td>
 
-              {{-- TOTAL RESPON --}}
-              <td>
+                <td>
                   <span class="chip">
-                      <b>{{ $webinar->total_respon ?? 0 }}</b> respon
+                    <b>{{ $webinar->total_respon ?? 0 }}</b> respon
                   </span>
-              </td>
+                </td>
 
-              {{-- RATA-RATA --}}
-              <td>
-                  @php
-                      $avg = round($webinar->rata_rating ?? 0, 1);
-                  @endphp
+                <td>
+                  @php $avg = round($webinar->rata_rating ?? 0, 1); @endphp
 
-                  @if($avg >= 4)
-                      <span class="score good">{{ $avg }}</span>
+                  @if($avg >= 4.5)
+                    <span class="score excellent">{{ $avg }}</span>
+                  @elseif($avg >= 4)
+                    <span class="score good">{{ $avg }}</span>
                   @elseif($avg >= 3)
-                      <span class="score mid">{{ $avg }}</span>
+                    <span class="score">{{ $avg }}</span>
                   @else
-                      <span class="score">{{ $avg }}</span>
+                    <span class="score fair">{{ $avg }}</span>
                   @endif
-              </td>
+                </td>
 
-              {{-- DETAIL --}}
-              <td class="text-end">
-                  <a href="{{ route('admin.laporan.evaluasi.peserta', $webinar->id) }}"
-                    class="btn btn-ghost rounded-16 btn-sm px-3">
-                      Lihat Peserta
+                <td class="text-center">
+                  <a href="{{ route('admin.laporan.evaluasi.peserta', $webinar->id) }}" class="btn btn-ghost btn-sm">
+                    <i class="fas fa-users fa-sm"></i> Peserta
                   </a>
-              </td>
-          </tr>
-          @empty
-          <tr>
-              <td colspan="6" class="text-center muted">
-                  Belum ada data evaluasi
-              </td>
-          </tr>
-          @endforelse
-          </tbody>
-        </table>
-      </div>
+                </td>
+              </tr>
+              @empty
+              <tr>
+                <td colspan="6" class="text-center text-muted py-4">
+                  <i class="fas fa-inbox fa-lg mb-2"></i>
+                  <div>Tidak ada data evaluasi</div>
+                </td>
+              </tr>
+              @endforelse
+            </tbody>
+          </table>
+        </div>
 
-      {{-- Pagination dummy --}}
-      <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-2 mt-3">
-        <div class="muted small">Menampilkan 1–3 dari 3 webinar</div>
-        <nav aria-label="pagination">
-          <ul class="pagination mb-0">
-            <li class="page-item disabled"><a class="page-link" href="#">Prev</a></li>
-            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-            <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
-          </ul>
-        </nav>
-      </div>
-
-      <div class="hint mt-2">
-        *Klik judul webinar untuk melihat tabel evaluasi berisi peserta (di modal).
-      </div>
+        {{-- Pagination --}}
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-2 mt-4 pt-3 border-top">
+          <div class="text-muted small">
+            Menampilkan {{ $webinars->count() }} dari {{ $allWebinars->count() }} webinar
+          </div>
+          <nav aria-label="pagination">
+            <ul class="pagination mb-0">
+              <li class="page-item disabled">
+                <a class="page-link" href="#"><i class="fas fa-chevron-left fa-sm"></i></a>
+              </li>
+              <li class="page-item active"><a class="page-link" href="#">1</a></li>
+              <li class="page-item"><a class="page-link" href="#">2</a></li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item">
+                <a class="page-link" href="#"><i class="fas fa-chevron-right fa-sm"></i></a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      @endif
     </div>
   </div>
 
 </div>
 
-{{-- ==========================================================
-  MODAL: EXPORT EXCEL (dummy) (tetap punyamu)
-========================================================== --}}
+{{-- Modal: Export Excel --}}
 <div class="modal fade" id="modalExport" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content rounded-16">
+    <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title fw-bold">Export ke Excel</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
 
       <div class="modal-body">
-        <div class="muted">
+        <div class="text-muted mb-3">
           Export akan mengikuti filter yang dipilih (webinar & rentang tanggal).
         </div>
 
-       @php
-      // ambil webinar terpilih (kalau ada)
-      $selectedWebinar = null;
-      if ($webinarId) {
-        $selectedWebinar = $allWebinars->firstWhere('id', (int) $webinarId);
-      }
+        @php
+          $selectedWebinar = null;
+          if (request('webinar_id')) {
+            $selectedWebinar = $allWebinars->firstWhere('id', (int) request('webinar_id'));
+          }
 
-      // format tanggal
-      $startLabel = $startDate
-          ? \Carbon\Carbon::parse($startDate)->format('d M Y')
-          : null;
+          $startLabel = request('start') ? \Carbon\Carbon::parse(request('start'))->format('d M Y') : null;
+          $endLabel = request('end') ? \Carbon\Carbon::parse(request('end'))->format('d M Y') : null;
+        @endphp
 
-      $endLabel = $endDate
-          ? \Carbon\Carbon::parse($endDate)->format('d M Y')
-          : null;
-    @endphp
+        <div class="card-soft p-3 mb-3">
+          <div class="small text-muted">Filter saat ini</div>
+          <div class="fw-semibold">
+            {{ $selectedWebinar ? $selectedWebinar->judul : 'Semua Webinar' }}
+          </div>
+          <div class="small text-muted">
+            @if($startLabel && $endLabel)
+              {{ $startLabel }} – {{ $endLabel }}
+            @elseif($startLabel)
+              Mulai {{ $startLabel }}
+            @elseif($endLabel)
+              Sampai {{ $endLabel }}
+            @else
+              Semua tanggal
+            @endif
+          </div>
+        </div>
 
-    <div class="mt-3 p-3 rounded-16"
-        style="background: rgba(46,125,50,.06); border:1px solid rgba(46,125,50,.14);">
-
-      <div class="small muted">Filter saat ini</div>
-
-      <div class="fw-semibold">
-        {{ $selectedWebinar ? $selectedWebinar->judul : 'Semua Webinar' }}
-      </div>
-
-      <div class="small muted">
-        @if($startLabel && $endLabel)
-          {{ $startLabel }} – {{ $endLabel }}
-        @elseif($startLabel)
-          Mulai {{ $startLabel }}
-        @elseif($endLabel)
-          Sampai {{ $endLabel }}
-        @else
-          Semua tanggal
-        @endif
-      </div>
-
-    </div>
-
-
-        <div class="hint mt-3">
-          *Tombol export ini hanya tampilan. Nanti backend yang membuat file Excel.
+        <div class="alert alert-light border">
+          <div class="d-flex align-items-start">
+            <i class="fas fa-info-circle text-primary mt-1 me-2"></i>
+            <div class="small">
+              File Excel akan mencakup semua data evaluasi, termasuk rating detail dan komentar peserta.
+            </div>
+          </div>
         </div>
       </div>
 
       <div class="modal-footer">
-        <button class="btn btn-ghost rounded-16" data-bs-dismiss="modal">Batal</button>
-        <a href="{{ route('admin.laporan.evaluasi.export', request()->query()) }}"
-        class="btn btn-excel rounded-16">
-        Mulai Export
+        <button class="btn btn-ghost" data-bs-dismiss="modal">Batal</button>
+        <a href="{{ route('admin.laporan.evaluasi.export', request()->query()) }}" class="btn btn-excel">
+          Mulai Export
         </a>
       </div>
     </div>
@@ -506,11 +718,9 @@
     const el = document.getElementById('waveChart');
     if (!el) return;
 
-    // ================= REAL DATA FROM BACKEND =================
     const labels = @json($chartLabels);
     const dataMain = @json($chartRatings);
 
-    // OPTIONAL: garis tren sederhana (moving average)
     const dataTrend = dataMain.map((v, i, arr) => {
       if (i === 0) return v;
       return ((arr[i - 1] + v) / 2).toFixed(2);
@@ -524,24 +734,27 @@
         labels,
         datasets: [
           {
-            label: 'Rata-rata rating',
+            label: 'Rata-rata',
             data: dataMain,
-            borderWidth: 3,
-            tension: 0.45,
+            borderWidth: 2,
+            tension: 0.4,
             pointRadius: 4,
+            pointBackgroundColor: 'rgba(185, 28, 28, 1)',
+            pointBorderColor: 'white',
+            pointBorderWidth: 1,
             fill: true,
-            borderColor: 'rgba(185,28,28,.85)',
-            backgroundColor: 'rgba(185,28,28,.10)'
+            backgroundColor: 'rgba(185, 28, 28, 0.1)',
+            borderColor: 'rgba(185, 28, 28, 0.85)'
           },
           {
             label: 'Tren',
             data: dataTrend,
-            borderWidth: 2,
-            tension: 0.45,
+            borderWidth: 1,
+            tension: 0.4,
             pointRadius: 0,
-            borderDash: [6, 6],
+            borderDash: [5, 5],
             fill: false,
-            borderColor: 'rgba(185,28,28,.35)'
+            borderColor: 'rgba(185, 28, 28, 0.35)'
           }
         ]
       },
@@ -552,8 +765,15 @@
         plugins: {
           legend: { display: false },
           tooltip: {
+            backgroundColor: 'rgba(30, 41, 59, 0.9)',
+            titleColor: 'white',
+            bodyColor: 'white',
+            borderColor: 'rgba(185, 28, 28, 0.5)',
+            borderWidth: 1,
+            padding: 8,
+            cornerRadius: 6,
             callbacks: {
-              label: ctx => `Rating: ${ctx.parsed.y} / 5`
+              label: ctx => `Rata-rata: ${ctx.parsed.y.toFixed(2)} / 5`
             }
           }
         },
@@ -561,14 +781,42 @@
           y: {
             min: 0,
             max: 5,
-            ticks: { stepSize: 1 }
+            ticks: {
+              stepSize: 2,
+              color: '#6b7280',
+              font: { size: 10 }
+            },
+            grid: { color: 'rgba(0, 0, 0, 0.06)' }
+          },
+          x: {
+            grid: { display: false },
+            ticks: {
+              color: '#6b7280',
+              font: { size: 10 },
+              maxRotation: 0,
+              minRotation: 0,
+              autoSkip: true,
+              maxTicksLimit: 5,
+              padding: 6,
+              callback: function(value) {
+                const label = this.getLabelForValue(value);
+                return label.length > 32 ? label.slice(0, 32) + '…' : label;
+              }
+            }
           }
         }
+
       }
     });
+
+    document.querySelectorAll('.progress-fill').forEach(bar => {
+      const width = bar.style.width;
+      bar.style.width = '0';
+      setTimeout(() => { bar.style.width = width; }, 300);
+    });
+
   })();
 </script>
-
 @endpush
 
 @endsection

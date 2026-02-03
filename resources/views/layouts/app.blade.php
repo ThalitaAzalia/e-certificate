@@ -607,8 +607,8 @@
       <a class="navbar-brand d-flex align-items-center gap-2" href="{{ url('/') }}">
         <img src="{{ asset('images/logobadiklat.jpg') }}" class="brand-logo" alt="Logo">
         <div class="lh-sm">
-          <div class="fw-bold text-dark">Badiklat Hukum Jateng</div>
-          <div class="small text-dark">E-Sertifikat & Webinar</div>
+          <div class="fw-bold text-dark">Balai Pelatihan Hukum Semarang</div>
+          <div class="small text-dark">Layanan E-Sertifikat Webinar</div>
         </div>
       </a>
 
@@ -643,8 +643,9 @@
       <div class="d-flex align-items-center gap-3">
         <img src="{{ asset('images/logobadiklat.jpg') }}" style="width:40px;height:40px;" alt="Logo">
         <div>
-          <h5 class="offcanvas-title fw-bold mb-0" style="color: var(--brand-primary);">Admin Panel</h5>
-          <small class="text-muted">Secure Access Portal</small>
+          <h5 class="offcanvas-title fw-bold mb-0" style="color: var(--brand-primary);">Akses Administrasi
+          </h5>
+          <small class="text-muted">Area untuk petugas yang berwenang</small>
         </div>
       </div>
       <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
@@ -654,28 +655,28 @@
       <div class="admin-card p-4 mb-4">
         <div class="text-center mb-3">
           <i class="fas fa-shield-alt fa-3x mb-3" style="color: var(--brand-primary);"></i>
-          <h6 class="fw-bold">Secure Admin Access</h6>
-          <p class="small text-muted mb-3">Restricted area for authorized personnel only</p>
+          <h6 class="fw-bold">Akses Administrasi Sistem</h6>
+          <p class="small text-muted mb-3">Area terbatas untuk petugas berwenang</p>
         </div>
         <a href="/admin/login" class="btn btn-brand w-100">
-          <i class="fas fa-sign-in-alt me-2"></i>Login to Dashboard
+          <i class="fas fa-sign-in-alt me-2"></i>Masuk
         </a>
       </div>
       
       <div class="card border-0 bg-light p-3">
-        <h6 class="fw-bold mb-3">Quick Links</h6>
+        <h6 class="fw-bold mb-3">Portal Administrasi</h6>
         <div class="d-flex flex-column gap-2">
           <a href="#" class="text-decoration-none d-flex align-items-center gap-2 text-dark">
             <i class="fas fa-users" style="color: var(--brand-primary);"></i>
-            <span>Participant Management</span>
+            <span>Manajemen Peserta</span>
           </a>
           <a href="#" class="text-decoration-none d-flex align-items-center gap-2 text-dark">
             <i class="fas fa-certificate" style="color: var(--brand-primary);"></i>
-            <span>Certificate Generator</span>
+            <span>Pembuatan Sertifikat</span>
           </a>
           <a href="#" class="text-decoration-none d-flex align-items-center gap-2 text-dark">
             <i class="fas fa-chart-bar" style="color: var(--brand-primary);"></i>
-            <span>Analytics Dashboard</span>
+            <span>Dasbor Analisis</span>
           </a>
         </div>
       </div>

@@ -4,331 +4,357 @@
 
 @push('head')
 <style>
-  :root{
-    --brand:#b91c1c;
-    --brand-2:#dc2626;
-    --brand-3:#991b1b;
-
-    --bg-page:#f7e8e8;
-    --bg-card:#fff5f5;
-    --border-soft: rgba(185,28,28,.18);
-    --ink:#111827;
-    --muted:#6b7280;
+  :root {
+    --brand: #b91c1c;
+    --brand-2: #dc2626;
+    --brand-3: #991b1b;
+    --bg-page: #fafafa;
+    --bg-card: #ffffff;
+    --border-soft: rgba(185, 28, 28, 0.12);
   }
 
-  body{ background: var(--bg-page); }
+  body { 
+    background: var(--bg-page); 
+    font-family: 'Inter', -apple-system, sans-serif;
+  }
 
-  .page-title{ font-weight:900; letter-spacing:-.2px; color:var(--brand-3); }
-  .muted{ color:var(--muted); }
-  .rounded-16{ border-radius:16px; }
+  .page-title {
+    font-weight: 900;
+    letter-spacing: -0.025em;
+    color: var(--brand-3);
+    font-size: 1.75rem;
+  }
 
-  .card-soft{
+  .card-soft {
     background: var(--bg-card) !important;
     border: 1px solid var(--border-soft);
-    box-shadow:
-      0 20px 45px rgba(185,28,28,.08),
-      0 6px 16px rgba(185,28,28,.06);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(185, 28, 28, 0.05);
   }
 
-  .btn-brand{
+  .btn-brand {
     background: var(--brand);
-    color:#fff;
-    border:none;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    padding: 0.5rem 1.25rem;
   }
-  .btn-brand:hover{ background: var(--brand-2); color:#fff; }
 
-  .btn-ghost{
-    border:1px solid rgba(185,28,28,.35);
-    background: rgba(255,255,255,.65);
+  .btn-brand:hover {
+    background: var(--brand-2);
+  }
+
+  .btn-ghost {
+    border: 1px solid rgba(185, 28, 28, 0.2);
+    background: white;
     color: var(--brand);
-  }
-  .btn-ghost:hover{ background: rgba(185,28,28,.08); color: var(--brand-3); }
-
-  thead tr{ background: rgba(185,28,28,.06); }
-
-  .badge-pill{ border-radius:999px; padding:.25rem .55rem; font-weight:800; font-size:12px; }
-  .badge-rating{
-    background:#e8f5e9;
-    color:#2e7d32;
-    border:1px solid #a5d6a7;
-  }
-  .badge-text{
-    background:#f3f4f6;
-    color:#374151;
-    border:1px solid #e5e7eb;
+    border-radius: 8px;
+    font-weight: 500;
+    padding: 0.5rem 1.25rem;
   }
 
-  .form-control:focus, .form-select:focus{
-    border-color: rgba(185,28,28,.55);
-    box-shadow: 0 0 0 .25rem rgba(185,28,28,.18);
+  .btn-ghost:hover {
+    background: rgba(185, 28, 28, 0.05);
   }
 
-  .hint{ font-size:.875rem; color: var(--muted); }
-  .row-actions .btn{ white-space:nowrap; }
+  .badge-pill {
+    border-radius: 50px;
+    padding: 0.25rem 0.5rem;
+    font-weight: 600;
+    font-size: 0.75rem;
+  }
 
-  .divider-soft{ height:1px; background: rgba(185,28,28,.14); border-radius:999px; }
+  .badge-rating {
+    background: rgba(46, 125, 50, 0.1);
+    color: #2e7d32;
+    border: 1px solid rgba(46, 125, 50, 0.2);
+  }
 
-  .scale-badge{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    min-width:52px;
-    padding:.25rem .55rem;
-    border-radius:999px;
-    font-weight:900;
-    font-size:12px;
-    border:1px solid rgba(185,28,28,.18);
-    background: rgba(185,28,28,.06);
+  .badge-text {
+    background: rgba(156, 163, 175, 0.1);
+    color: #6b7280;
+    border: 1px solid rgba(156, 163, 175, 0.2);
+  }
+
+  .form-control, .form-select {
+    border-radius: 6px;
+    border: 1px solid #e5e7eb;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+  }
+
+  .form-control:focus, .form-select:focus {
+    border-color: var(--brand);
+    box-shadow: 0 0 0 2px rgba(185, 28, 28, 0.1);
+  }
+
+  .table-header {
+    background: rgba(185, 28, 28, 0.05);
     color: var(--brand-3);
-    white-space:nowrap;
-  }
-  .scale-badge.na{
-    background:#f3f4f6;
-    border-color:#e5e7eb;
-    color:#9ca3af;
+    font-weight: 600;
+    font-size: 0.75rem;
   }
 
-  .table{ margin-bottom:0; }
-  .table td, .table th{
-    vertical-align: middle;
-    padding: .65rem .75rem;
+  .modal-content {
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
   }
 
-  .q-title{
-    font-weight:900;
-    color: var(--ink);
-    margin:0;
-    line-height:1.2;
-  }
-  .q-sub{
-    margin:.2rem 0 0;
-    font-size:12.5px;
-    color: var(--muted);
-    line-height:1.25;
-  }
-
-  .btn-xs{
-    padding:.32rem .6rem;
-    font-size:.825rem;
-    border-radius:999px;
+  .scale-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 70px;
+    padding: 0.35rem 0.75rem;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.75rem;
+    border: 1px solid rgba(185, 28, 28, 0.2);
+    background: rgba(185, 28, 28, 0.06);
+    color: var(--brand-3);
   }
 
-  .col-no{ width:56px; }
-  .col-type{ width:120px; }
-  .col-scale{ width:96px; }
-  .col-actions{ width:190px; }
+  .scale-badge.na {
+    background: #f3f4f6;
+    border-color: #e5e7eb;
+    color: #9ca3af;
+  }
 
-  .table-layout-fixed{ table-layout: fixed; }
-  .td-actions{ text-align:right; }
-  .td-center{ text-align:center; }
+  .question-text {
+    font-weight: 600;
+    color: #111827;
+    margin: 0;
+    line-height: 1.4;
+  }
 
-  .toolbar-row .form-label{ margin-bottom:.35rem; }
+  .question-meta {
+    font-size: 0.75rem;
+    color: #6b7280;
+    margin-top: 0.25rem;
+  }
+
+  .card-soft .card-body { padding: 1.25rem; }
+
+  .form-label { margin-bottom: .35rem; }
+  .btn-filter {
+    padding: 0.45rem 1.75rem; /* bikin panjang & ramping */
+    min-width: 130px;
+    font-size: 0.875rem;
+  }
+
 </style>
 @endpush
 
 @section('content')
-@if(session('success'))
-  <div class="alert alert-success rounded-16 mb-3">
-    {{ session('success') }}
+<div class="container py-4">
+
+{{-- HEADER --}}
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3 mb-4">
+  <div>
+    <h1 class="page-title mb-2">Form Evaluasi</h1>
+    <p class="text-muted mb-0">
+      Kelola pertanyaan evaluasi untuk peserta setelah absensi.
+    </p>
   </div>
-@endif
-
-<div class="container py-3">
-
-  {{-- Header --}}
-  <div class="d-flex flex-column flex-lg-row align-items-lg-center justify-content-between gap-3 mb-4">
-    <div>
-      <h1 class="page-title mb-1">Form Evaluasi</h1>
-      <div class="muted">
-        Kelola pertanyaan evaluasi (CRUD) dan atur alur skala rating yang akan diisi peserta setelah absensi.
-      </div>
-    </div>
-
-    <div class="d-flex gap-2 flex-wrap">
-      <button class="btn btn-brand rounded-16" data-bs-toggle="modal" data-bs-target="#modalCreateEval">
-        + Tambah Pertanyaan
-      </button>
-      <button class="btn btn-ghost rounded-16" data-bs-toggle="modal" data-bs-target="#modalPreviewEval">
-        Preview Form
-      </button>
-      <a href="{{ url('/admin/dashboard') }}" class="btn btn-ghost rounded-16">Kembali</a>
-    </div>
+  
+  <div class="d-flex gap-2">
+    <button class="btn btn-brand d-flex align-items-center gap-1" 
+            data-bs-toggle="modal" 
+            data-bs-target="#modalCreateEval">
+      <i class="fas fa-plus fa-sm"></i>
+      <span>Tambah</span>
+    </button>
+    <button class="btn btn-ghost d-flex align-items-center gap-1"
+            data-bs-toggle="modal"
+            data-bs-target="#modalPreviewEval">
+      <i class="fas fa-eye fa-sm"></i>
+      <span>Preview</span>
+    </button>
+    <a href="{{ url('/admin/dashboard') }}" 
+       class="btn btn-ghost d-flex align-items-center gap-1">
+      <i class="fas fa-arrow-left fa-sm"></i>
+      <span>Kembali</span>
+    </a>
   </div>
+</div>
 
-    {{-- Right: Question List --}}
-    <div class="col-lg-12">
-      <div class="card card-soft rounded-16">
-        <div class="card-body">
+{{-- FILTER --}}
+<form method="GET" action="{{ route('admin.evaluasi.index') }}">
+  <div class="card card-soft mb-4">
+    <div class="card-body">
 
-          <div class="d-flex align-items-center justify-content-between mb-3">
-            <div class="fw-semibold">Daftar Pertanyaan Evaluasi</div>
-            <div class="muted small">Menampilkan 1–5 dari 11 pertanyaan</div>
+      @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show mb-3" role="alert">
+          <div class="d-flex align-items-center gap-2">
+            <i class="fas fa-check-circle"></i>
+            <span>{{ session('success') }}</span>
           </div>
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+      @endif
 
-          {{-- Toolbar Filter (yang aktif) --}}
-          <form method="GET" action="{{ route('admin.evaluasi.index') }}">
-            <div class="row g-2 align-items-end mb-3 toolbar-row">
+      <div class="row g-3 align-items-end">
+        {{-- Search --}}
+        <div class="col-md-4">
+          <label class="form-label fw-semibold">Cari pertanyaan</label>
+          <input
+            type="text"
+            name="search"
+            value="{{ request('search') }}"
+            class="form-control"
+            placeholder="Cari pertanyaan..."
+          >
+        </div>
 
-              <div class="col-md-6">
-                <label class="form-label fw-semibold">Cari pertanyaan</label>
-                <input
-                  type="text"
-                  name="search"
-                  class="form-control rounded-16"
-                  placeholder="Cari pertanyaan..."
-                  value="{{ request('search') }}">
-              </div>
+        {{-- Type --}}
+        <div class="col-md-4">
+          <label class="form-label fw-semibold">Tipe</label>
+          <select name="type" class="form-select">
+            <option value="">Semua</option>
+            <option value="rating" {{ request('type')=='rating' ? 'selected' : '' }}>Rating</option>
+            <option value="text" {{ request('type')=='text' ? 'selected' : '' }}>Text</option>
+            <option value="textarea" {{ request('type')=='textarea' ? 'selected' : '' }}>Textarea</option>
+          </select>
+        </div>
 
-              <div class="col-md-3">
-                <label class="form-label fw-semibold">Tipe</label>
-                <select name="type" class="form-select rounded-16">
-                  <option value="">Semua</option>
-                  <option value="rating" {{ request('type')=='rating' ? 'selected' : '' }}>Rating</option>
-                  <option value="text" {{ request('type')=='text' ? 'selected' : '' }}>Text</option>
-                  <option value="textarea" {{ request('type')=='textarea' ? 'selected' : '' }}>Textarea</option>
-                </select>
-              </div>
+        {{-- Actions --}}
+        <div class="col-md-4 d-flex gap-2 justify-content-end">
+          <button type="submit" class="btn btn-brand btn-filter">
+            Filter
+          </button>
+          <a href="{{ route('admin.evaluasi.index') }}" class="btn btn-ghost btn-filter">
+            Reset
+          </a>
+        </div>
 
-              <div class="col-md-3 d-grid">
-                <button class="btn btn-brand rounded-16">
-                  Terapkan
-                </button>
-              </div>
+      </div>
 
-            </div>
 
-            <div class="row g-2">
-              <div class="col-md-3 d-grid">
-                <a href="{{ route('admin.evaluasi.index') }}"
-                   class="btn btn-ghost rounded-16">
-                  Reset
-                </a>
-              </div>
-            </div>
-          </form>
+    </div>
+  </div>
+</form>
 
-          {{-- Table --}}
-          <div class="table-responsive mt-3">
-            <table class="table table-hover align-middle table-layout-fixed">
-              <thead>
-                <tr class="muted">
-                  <th class="col-no">No</th>
-                  <th>Pertanyaan</th>
-                  <th class="col-type">Tipe</th>
-                  <th class="col-scale">Skala</th>
-                  <th class="col-actions text-end">Aksi</th>
-                </tr>
-              </thead>
-              <tbody>
-              @forelse($questions as $q)
-                <tr>
-                  <td class="fw-semibold">{{ $loop->iteration }}</td>
+{{-- MAIN CONTENT --}}
+<div class="row">
+  {{-- TABLE --}}
+  <div class="col-lg-12">
+    <div class="card card-soft">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h5 class="fw-semibold mb-0">Daftar Pertanyaan Evaluasi</h5>
+          <span class="text-muted small">{{ $questions->count() }} pertanyaan</span>
+        </div>
 
-                  <td>
-                    <p class="q-title">{{ $q->question }}</p>
-                  </td>
-
-                  <td class="td-center">
-                    @if($q->type === 'rating')
-                      <span class="badge badge-pill badge-rating">Rating</span>
-                    @else
-                      <span class="badge badge-pill badge-text">{{ ucfirst($q->type) }}</span>
-                    @endif
-                  </td>
-
-                  <td class="td-center">
-                    @if($q->type === 'rating')
-                      <span class="scale-badge">
-                        1–{{ $q->rating_max ?? 5 }}
-                      </span>
-
-                      <button class="btn btn-outline-secondary btn-xs"
-                              data-bs-toggle="modal"
-                              data-bs-target="#modalScale{{ $q->id }}">
-                        Skala
-                      </button>
-                    @else
-                      <span class="scale-badge na">—</span>
-                    @endif
-                  </td>
-
-                  <td class="td-actions">
-                    <button class="btn btn-ghost btn-xs"
+        @if($questions->isEmpty())
+        <div class="text-center py-5">
+          <i class="fas fa-file-question fa-2x text-muted mb-3"></i>
+          <p class="text-muted">Belum ada pertanyaan evaluasi</p>
+          <button class="btn btn-brand btn-sm" data-bs-toggle="modal" data-bs-target="#modalCreateEval">
+            Tambah Pertanyaan Pertama
+          </button>
+        </div>
+        @else
+        <div class="table-responsive">
+          <table class="table table-hover align-middle">
+            <thead class="table-header">
+              <tr>
+                <th style="width: 50px;">No</th>
+                <th>Pertanyaan</th>
+                <th style="width: 100px;">Tipe</th>
+                <th style="width: 100px;">Skala</th>
+                <th style="width: 150px;" class="text-end">Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              @foreach ($questions as $q)
+              <tr>
+                <td class="fw-semibold">{{ $loop->iteration }}</td>
+                
+                <td>
+                  <div class="question-text">{{ $q->question }}</div>
+                  <div class="question-meta">Urutan: {{ $q->urutan }}</div>
+                </td>
+                
+                <td>
+                  @if($q->type === 'rating')
+                  <span class="badge badge-pill badge-rating">Rating</span>
+                  @else
+                  <span class="badge badge-pill badge-text">{{ ucfirst($q->type) }}</span>
+                  @endif
+                </td>
+                
+                <td>
+                  @if($q->type === 'rating')
+                  <div class="d-flex align-items-center gap-2">
+                    <span class="scale-badge">
+                      1–{{ $q->rating_max ?? 5 }}
+                    </span>
+                    <button class="btn btn-sm btn-ghost"
+                            data-bs-toggle="modal"
+                            data-bs-target="#modalScale{{ $q->id }}">
+                      <i class="fas fa-sliders-h fa-sm"></i>
+                    </button>
+                  </div>
+                  @else
+                  <span class="scale-badge na">—</span>
+                  @endif
+                </td>
+                
+                <td class="text-end">
+                  <div class="d-flex gap-2 justify-content-end">
+                    <button class="btn btn-sm btn-ghost"
                             data-bs-toggle="modal"
                             data-bs-target="#modalEditEval{{ $q->id }}">
-                      Edit
+                      <i class="fas fa-edit fa-sm"></i>
                     </button>
-
                     <form method="POST"
                           action="{{ route('admin.evaluasi.destroy', $q->id) }}"
                           class="d-inline"
                           onsubmit="return confirm('Yakin ingin menghapus pertanyaan ini?')">
                       @csrf
                       @method('DELETE')
-                      <button class="btn btn-outline-danger btn-xs">
-                        Hapus
+                      <button class="btn btn-sm btn-outline-danger">
+                        <i class="fas fa-trash fa-sm"></i>
                       </button>
                     </form>
-                  </td>
-                </tr>
-              @empty
-                <tr>
-                  <td colspan="5" class="text-center text-muted">
-                    Belum ada pertanyaan evaluasi
-                  </td>
-                </tr>
-              @endforelse
-              </tbody>
-
-            </table>
-          </div>
-
-          {{-- Pagination --}}
-          <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-2 mt-3">
-            <div class="muted small">Halaman 1 dari 3</div>
-            <nav aria-label="pagination">
-              <ul class="pagination mb-0">
-                <li class="page-item disabled"><a class="page-link" href="#">Prev</a></li>
-                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">Next</a></li>
-              </ul>
-            </nav>
-          </div>
-
+                  </div>
+                </td>
+              </tr>
+              @endforeach
+            </tbody>
+          </table>
         </div>
+        @endif
       </div>
     </div>
   </div>
-</div>
 
-{{-- MODAL TAMBAH PERTANYAAN --}}
+{{-- MODAL CREATE --}}
 <div class="modal fade" id="modalCreateEval" tabindex="-1">
   <div class="modal-dialog modal-lg modal-dialog-centered">
-    <div class="modal-content rounded-16">
+    <div class="modal-content">
       <form method="POST" action="{{ route('admin.evaluasi.store') }}">
         @csrf
-
         <div class="modal-header">
           <h5 class="modal-title fw-bold">Tambah Pertanyaan Evaluasi</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
-
         <div class="modal-body">
-          <div class="mb-3">
-            <label class="form-label fw-semibold">Pertanyaan</label>
-            <input type="text"
-                   name="question"
-                   class="form-control rounded-16"
-                   placeholder="Contoh: Seberapa puas Anda dengan materi webinar?"
-                   required>
-          </div>
-
           <div class="row g-3">
+            <div class="col-12">
+              <label class="form-label fw-semibold">Pertanyaan</label>
+              <input type="text"
+                     name="question"
+                     class="form-control"
+                     placeholder="Contoh: Seberapa puas Anda dengan materi webinar?"
+                     required>
+            </div>
+
             <div class="col-md-6">
               <label class="form-label fw-semibold">Tipe Jawaban</label>
-              <select name="type" class="form-select rounded-16" required>
+              <select name="type" class="form-select" required>
                 <option value="rating">Rating (1–5)</option>
                 <option value="text">Text</option>
                 <option value="textarea">Textarea</option>
@@ -339,164 +365,184 @@
               <label class="form-label fw-semibold">Urutan</label>
               <input type="number"
                      name="urutan"
-                     class="form-control rounded-16"
-                     value="1"
+                     class="form-control"
+                     value="{{ $questions->isNotEmpty() ? ($questions->max('urutan') + 1) : 1 }}"
                      min="1"
                      required>
             </div>
           </div>
         </div>
-
         <div class="modal-footer">
-          <button type="button" class="btn btn-ghost rounded-16" data-bs-dismiss="modal">
-            Batal
-          </button>
-          <button type="submit" class="btn btn-brand rounded-16">
-            Simpan
-          </button>
+          <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">Batal</button>
+          <button class="btn btn-brand">Simpan</button>
         </div>
       </form>
     </div>
   </div>
 </div>
 
+{{-- MODAL EDIT SCALE --}}
 @foreach($questions as $q)
   @if($q->type === 'rating')
-    <div class="modal fade" id="modalScale{{ $q->id }}" tabindex="-1">
-      <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content rounded-16">
-
-          <form method="POST"
-                action="{{ route('admin.evaluasi.update-scale', $q->id) }}">
-            @csrf
-            @method('PUT')
-
-            <div class="modal-header">
-              <h5 class="modal-title fw-bold">Atur Skala Rating</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+  <div class="modal fade" id="modalScale{{ $q->id }}" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <form method="POST" action="{{ route('admin.evaluasi.update-scale', $q->id) }}">
+          @csrf
+          @method('PUT')
+          <div class="modal-header">
+            <h5 class="modal-title fw-bold">Atur Skala Rating</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Jumlah Skala</label>
+              <input type="number"
+                     name="rating_max"
+                     class="form-control"
+                     min="2" max="10"
+                     value="{{ $q->rating_max ?? 5 }}">
             </div>
 
-            <div class="modal-body">
+            <div class="mb-2 fw-semibold">Label per Angka</div>
 
-              <div class="mb-3">
-                <label class="form-label fw-semibold">Jumlah Skala</label>
-                <input type="number"
-                       name="rating_max"
-                       class="form-control rounded-16"
-                       min="2" max="10"
-                       value="{{ $q->rating_max ?? 5 }}">
+            @php
+              $labels = $q->rating_labels ?? [];
+              $max = $q->rating_max ?? 5;
+            @endphp
+
+            @for($i = 1; $i <= $max; $i++)
+              <div class="input-group mb-2">
+                <span class="input-group-text">{{ $i }}</span>
+                <input type="text"
+                       name="rating_labels[{{ $i }}]"
+                       class="form-control"
+                       value="{{ $labels[$i] ?? '' }}"
+                       placeholder="Label untuk {{ $i }}">
               </div>
-
-              <div class="mb-2 fw-semibold">Label per Angka</div>
-
-              @php
-                $labels = $q->rating_labels ?? [];
-                $max = $q->rating_max ?? 5;
-              @endphp
-
-              @for($i = 1; $i <= $max; $i++)
-                <div class="input-group mb-2">
-                  <span class="input-group-text">{{ $i }}</span>
-                  <input type="text"
-                         name="rating_labels[{{ $i }}]"
-                         class="form-control"
-                         value="{{ $labels[$i] ?? '' }}"
-                         placeholder="Label untuk {{ $i }}">
-                </div>
-              @endfor
-
-            </div>
-
-            <div class="modal-footer">
-              <button type="button"
-                      class="btn btn-ghost rounded-16"
-                      data-bs-dismiss="modal">
-                Batal
-              </button>
-              <button class="btn btn-brand rounded-16">
-                Simpan Skala
-              </button>
-            </div>
-
-          </form>
-
-        </div>
+            @endfor
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">Batal</button>
+            <button class="btn btn-brand">Simpan Skala</button>
+          </div>
+        </form>
       </div>
     </div>
+  </div>
   @endif
 @endforeach
 
+{{-- MODAL EDIT QUESTION --}}
 @foreach($questions as $q)
 <div class="modal fade" id="modalEditEval{{ $q->id }}" tabindex="-1">
   <div class="modal-dialog modal-lg modal-dialog-centered">
-    <div class="modal-content rounded-16">
-
+    <div class="modal-content">
       <form method="POST" action="{{ route('admin.evaluasi.update', $q->id) }}">
         @csrf
         @method('PUT')
-
         <div class="modal-header">
           <h5 class="modal-title fw-bold">Edit Pertanyaan</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
-
         <div class="modal-body">
+          <div class="row g-3">
+            <div class="col-12">
+              <label class="form-label fw-semibold">Pertanyaan</label>
+              <input type="text"
+                     name="question"
+                     class="form-control"
+                     value="{{ $q->question }}"
+                     required>
+            </div>
 
-          {{-- PERTANYAAN --}}
-          <div class="mb-3">
-            <label class="form-label fw-semibold">Pertanyaan</label>
-            <input type="text"
-                   name="question"
-                   class="form-control rounded-16"
-                   value="{{ $q->question }}"
-                   required>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Tipe Jawaban</label>
+              <select name="type" class="form-select" required>
+                <option value="rating" {{ $q->type === 'rating' ? 'selected' : '' }}>Rating (1–5)</option>
+                <option value="text" {{ $q->type === 'text' ? 'selected' : '' }}>Text</option>
+                <option value="textarea" {{ $q->type === 'textarea' ? 'selected' : '' }}>Textarea</option>
+              </select>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Urutan</label>
+              <input type="number"
+                     name="urutan"
+                     class="form-control"
+                     value="{{ $q->urutan }}"
+                     min="1"
+                     required>
+            </div>
           </div>
-
-          {{-- TIPE JAWABAN --}}
-          <div class="mb-3">
-            <label class="form-label fw-semibold">Tipe Jawaban</label>
-            <select name="type" class="form-select rounded-16" required>
-              <option value="rating" {{ $q->type === 'rating' ? 'selected' : '' }}>
-                Rating (1–5)
-              </option>
-              <option value="text" {{ $q->type === 'text' ? 'selected' : '' }}>
-                Text
-              </option>
-              <option value="textarea" {{ $q->type === 'textarea' ? 'selected' : '' }}>
-                Textarea
-              </option>
-            </select>
-          </div>
-
-          {{-- URUTAN --}}
-          <div class="mb-3">
-            <label class="form-label fw-semibold">Urutan</label>
-            <input type="number"
-                   name="urutan"
-                   class="form-control rounded-16"
-                   value="{{ $q->urutan }}"
-                   required>
-          </div>
-
         </div>
-
         <div class="modal-footer">
-          <button type="button"
-                  class="btn btn-ghost rounded-16"
-                  data-bs-dismiss="modal">
-            Batal
-          </button>
-          <button type="submit" class="btn btn-brand rounded-16">
-            Simpan
-          </button>
+          <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">Batal</button>
+          <button class="btn btn-brand">Simpan</button>
         </div>
-
       </form>
-
     </div>
   </div>
 </div>
 @endforeach
 
+{{-- MODAL PREVIEW --}}
+<div class="modal fade" id="modalPreviewEval" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold">Preview Form Evaluasi</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <p class="text-muted mb-4">Contoh tampilan form yang akan dilihat peserta:</p>
+        
+        <form>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">
+              1. Seberapa puas Anda dengan materi webinar? <span class="text-danger">*</span>
+            </label>
+            <div class="d-flex gap-2 mb-2">
+              @for($i = 1; $i <= 5; $i++)
+                <div class="flex-1 text-center">
+                  <input type="radio" name="rating_1" id="rating_1_{{ $i }}" class="d-none">
+                  <label for="rating_1_{{ $i }}" 
+                         class="d-block py-2 px-3 border rounded hover:border-brand hover:bg-red-50 cursor-pointer">
+                    <span class="fw-medium">{{ $i }}</span>
+                  </label>
+                </div>
+              @endfor
+            </div>
+            <div class="d-flex justify-content-between text-xs text-muted">
+              <span>Sangat Tidak Puas</span>
+              <span>Sangat Puas</span>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-semibold">
+              2. Apa hal paling berharga yang Anda dapatkan? <span class="text-danger">*</span>
+            </label>
+            <input type="text" class="form-control" placeholder="Tulis jawaban Anda...">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-semibold">
+              3. Saran untuk perbaikan <span class="text-danger">*</span>
+            </label>
+            <textarea class="form-control" rows="3" placeholder="Berikan saran..."></textarea>
+          </div>
+
+          <button type="button" class="btn btn-brand w-100">
+            Kirim Evaluasi
+          </button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" data-bs-dismiss="modal">Tutup</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 @endsection

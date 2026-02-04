@@ -39,18 +39,14 @@ class EvaluasiExport implements FromCollection, WithHeadings
 
         return $query->get()->map(function ($p) {
 
-            $ratings = $p->evaluasiAnswers
-                ->whereNotNull('rating')
-                ->pluck('rating');
+            $rating = $p->rataRating();
 
             return [
                 'Nama Peserta' => $p->nama_peserta,
                 'Email'        => $p->email,
                 'Webinar'      => $p->webinar->judul ?? '-',
                 'Tanggal Isi'  => optional($p->created_at)->format('d-m-Y H:i'),
-                'Rata-rata Rating' => $ratings->count()
-                    ? round($ratings->avg(), 1)
-                    : '-',
+                'Rata-rata Rating' => $rating !== null ? round($rating, 2) : '-',
                 'Komentar' => $p->evaluasiAnswers
                     ->whereNotNull('answer')
                     ->pluck('answer')

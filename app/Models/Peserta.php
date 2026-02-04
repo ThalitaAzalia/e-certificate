@@ -36,4 +36,30 @@ class Peserta extends Model
     {
         return $this->hasMany(EvaluasiAnswer::class);
     }
+
+    /**
+     * HITUNG RATA-RATA RATING PESERTA (BISA DIPANGGIL DARI MANA SAJA)
+     * Mengembalikan float (2 desimal) atau null jika tidak ada rating valid.
+     */
+    public function rataRating()
+    {
+        // Ambil ID pertanyaan bertipe rating (cache statis per request)
+        static $ratingQuestionIds = null;
+
+        if ($ratingQuestionIds === null) {
+            $ratingQuestionIds = \App\Models\EvaluasiQuestion::where('type', 'rating')
+                ->pluck('id')
+                ->toArray();
+        }
+
+        $answers = $this->evaluasiAnswers()->whereIn('evaluasi_question_id', $ratingQuestionIds)->get();
+
+        $ratings = $answers->pluck('answer')
+            ->map(fn ($v) => (int) $v)
+            ->filter(fn ($v) => $v >= 1 && $v <= 5);
+
+        return $ratings->count()
+            ? round($ratings->avg(), 2)
+            : null;
+    }
 }

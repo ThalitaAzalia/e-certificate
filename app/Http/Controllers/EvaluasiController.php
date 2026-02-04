@@ -71,12 +71,21 @@ class EvaluasiController extends Controller
         }
 
         // 3. simpan jawaban
+        // prefetch questions to avoid N+1 queries
+        $questionIds = array_keys((array) $request->answers);
+        $questions = EvaluasiQuestion::whereIn('id', $questionIds)
+            ->get()
+            ->keyBy('id');
+
         foreach ($request->answers as $questionId => $answer) {
+            $q = $questions[$questionId] ?? null;
+
             EvaluasiAnswer::create([
                 'peserta_id'            => $pesertaId,
                 'webinar_id'            => $webinarId,
                 'evaluasi_question_id'  => $questionId,
                 'answer'                => $answer,
+                'question_text'         => $q?->question,
             ]);
         }
 

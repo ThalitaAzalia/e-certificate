@@ -17,6 +17,12 @@ class EvaluasiReportController extends Controller
      */
     public function index(Request $request)
     {
+        $validated = $request->validate([
+            'webinar_id' => 'nullable|integer|exists:webinars,id',
+            'start'      => 'nullable|date',
+            'end'        => 'nullable|date|after_or_equal:start',
+        ]);
+
         $webinarId = $request->query('webinar_id');
         $startDate = $request->query('start');
         $endDate   = $request->query('end');
@@ -43,7 +49,7 @@ class EvaluasiReportController extends Controller
                 ->get();
 
             $ratingsPeserta = $pesertas
-                ->map(fn ($p) => $this->hitungRatingPeserta($p))
+                ->map(fn ($p) => $p->rataRating())
                 ->filter();
 
 
@@ -113,13 +119,21 @@ class EvaluasiReportController extends Controller
      * DETAIL EVALUASI SATU PESERTA
      * =========================================================
      */
-    public function detail(Peserta $peserta)
+    public function detail(Request $request, Peserta $peserta)
     {
+        // load answers, their question relation (if present), and webinar; fetch all questions ordered by urutan
         $peserta->load(['webinar', 'evaluasiAnswers.question']);
+
+        $questions = \App\Models\EvaluasiQuestion::orderBy('urutan')->get();
+
+        // count orphan answers (answers whose question relation is null)
+        $orphanCount = $peserta->evaluasiAnswers->filter(fn($a) => $a->question === null)->count();
+
+        $showOrphan = (bool) $request->query('show_orphan');
 
         return view(
             'admin.laporan-evaluasi-detail',
-            compact('peserta')
+            compact('peserta', 'questions', 'orphanCount', 'showOrphan')
         );
     }
 
@@ -130,6 +144,12 @@ class EvaluasiReportController extends Controller
      */
     public function export(Request $request)
     {
+        $validated = $request->validate([
+            'webinar_id' => 'nullable|integer|exists:webinars,id',
+            'start'      => 'nullable|date',
+            'end'        => 'nullable|date|after_or_equal:start',
+        ]);
+
         $webinarId = $request->query('webinar_id');
         $startDate = $request->query('start');
         $endDate   = $request->query('end');
@@ -159,7 +179,7 @@ class EvaluasiReportController extends Controller
             $ratingsPeserta = Peserta::where('webinar_id', $w->id)
                 ->with(['evaluasiAnswers.question'])
                 ->get()
-                ->map(fn ($p) => $this->hitungRatingPeserta($p))
+                ->map(fn ($p) => $p->rataRating())
                 ->filter();
 
             return (object) [
@@ -279,7 +299,7 @@ class EvaluasiReportController extends Controller
 
 
                 // rating peserta (SATU SUMBER)
-                $ratingPeserta = $this->hitungRatingPeserta($p);
+                $ratingPeserta = $p->rataRating();
                 if ($ratingPeserta !== null) $summaryRatings[] = $ratingPeserta;
                 $row[] = $ratingPeserta ?? '-';
 
@@ -309,27 +329,7 @@ class EvaluasiReportController extends Controller
  * HELPER: HITUNG RATING PESERTA (FINAL & AMAN)
  * =========================================================
  */
-    private function hitungRatingPeserta(\App\Models\Peserta $peserta)
-    {
-        // Ambil ID pertanyaan rating (1x, cache per request)
-        static $ratingQuestionIds = null;
 
-        if ($ratingQuestionIds === null) {
-            $ratingQuestionIds = \App\Models\EvaluasiQuestion::where('type', 'rating')
-                ->pluck('id')
-                ->toArray();
-        }
-
-        $ratings = $peserta->evaluasiAnswers
-            ->whereIn('evaluasi_question_id', $ratingQuestionIds)
-            ->pluck('answer')
-            ->map(fn ($v) => (int) $v)
-            ->filter(fn ($v) => $v >= 1 && $v <= 5);
-
-        return $ratings->count()
-            ? round($ratings->avg(), 2)
-            : null;
-    }
 
 
     /**

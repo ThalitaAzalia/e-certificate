@@ -17,9 +17,10 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
+        // Use env overrides for seeder defaults to avoid hard-coded test data
         User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'name' => env('SEEDER_USER_NAME', 'Admin'),
+            'email' => env('SEEDER_USER_EMAIL', 'admin@example.com'),
         ]);
     }
 }

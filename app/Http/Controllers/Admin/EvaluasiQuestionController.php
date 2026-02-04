@@ -16,6 +16,11 @@ class EvaluasiQuestionController extends Controller
      */
     public function index(Request $request)
     {
+        $validated = $request->validate([
+            'search' => 'nullable|string|max:255',
+            'type'   => 'nullable|in:rating,text,textarea',
+        ]);
+
         $query = EvaluasiQuestion::query();
 
         // 🔍 Filter: Cari pertanyaan

@@ -592,7 +592,7 @@
                 </td>
 
                 <td>
-                  @php $avg = round($webinar->rata_rating ?? 0, 1); @endphp
+                  @php $avg = round($webinar->rata_rating ?? 0, 2); @endphp
 
                   @if($avg >= 4.5)
                     <span class="score excellent">{{ $avg }}</span>

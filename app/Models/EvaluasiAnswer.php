@@ -13,10 +13,11 @@ class EvaluasiAnswer extends Model
     protected $table = 'evaluasi_answers';
 
     protected $fillable = [
-    'peserta_id',
-    'webinar_id',
-    'evaluasi_question_id',
-    'answer',
+        'peserta_id',
+        'webinar_id',
+        'evaluasi_question_id',
+        'answer',
+        'question_text',
     ];
 
     public function question()

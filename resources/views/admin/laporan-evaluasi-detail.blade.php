@@ -97,39 +97,55 @@
                 Jawaban Evaluasi
               </h3>
 
-              <span class="badge badge-soft">
-                {{ $peserta->evaluasiAnswers->count() }} Pertanyaan
-              </span>
+              <div class="d-flex align-items-center gap-3">
+                <span class="badge badge-soft">
+                  {{ $questions->count() }} Pertanyaan
+                </span>
+
+                @if(!empty($orphanCount) && $orphanCount > 0)
+                  @if(!empty($showOrphan))
+                    <a href="{{ request()->fullUrlWithQuery(['show_orphan' => 0]) }}" class="small link-muted">
+                      Sembunyikan jawaban terhapus ({{ $orphanCount }})
+                    </a>
+                  @else
+                    <a href="{{ request()->fullUrlWithQuery(['show_orphan' => 1]) }}" class="small link-muted">
+                      Tampilkan jawaban terhapus ({{ $orphanCount }})
+                    </a>
+                  @endif
+                @endif
+
+              </div>
             </div>
 
-            @forelse($peserta->evaluasiAnswers as $index => $ans)
+            @forelse($questions as $index => $q)
+              @php $ans = $peserta->evaluasiAnswers->where('evaluasi_question_id', $q->id)->first(); @endphp
               <div class="mb-4 pb-3 {{ !$loop->last ? 'border-bottom border-soft' : '' }}">
                 <div class="d-flex align-items-start mb-2">
                   <span class="badge badge-soft rounded-pill me-2 badge-number-item">
                     {{ $loop->iteration }}
                   </span>
                   <div>
-                    <h6 class="fw-semibold mb-1">{{ $ans->question->question ?? 'Pertanyaan tidak tersedia' }}</h6>
+                    <h6 class="fw-semibold mb-1">{{ $q->question }}</h6>
                   </div>
                 </div>
 
                 <div class="ms-4 ps-3">
                   <div class="answer-box">
-                    @if($ans->answer)
-                      <p class="mb-0">{{ $ans->answer }}</p>
-                    @elseif($ans->rating)
+                    @if($ans && is_numeric($ans->answer) && $q->type === 'rating')
                       <div class="d-flex align-items-center flex-wrap">
                         <div class="rating-display">
-                          @for($i = 1; $i <= 5; $i++)
-                            @if($i <= $ans->rating)
+                          @for($i = 1; $i <= ($q->rating_max ?? 5); $i++)
+                            @if($i <= (int) $ans->answer)
                               <i class="fas fa-star text-warning me-1"></i>
                             @else
                               <i class="far fa-star text-secondary me-1"></i>
                             @endif
                           @endfor
                         </div>
-                        <span class="ms-2 fw-semibold">({{ $ans->rating }}/5)</span>
+                        <span class="ms-2 fw-semibold">({{ $ans->answer }}/{{ $q->rating_max ?? 5 }})</span>
                       </div>
+                    @elseif($ans && $ans->answer)
+                      <p class="mb-0">{{ $ans->answer }}</p>
                     @else
                       <span class="muted">Tidak ada jawaban</span>
                     @endif
@@ -141,10 +157,61 @@
                 <div class="mb-3">
                   <i class="fas fa-clipboard-list fa-3x text-muted opacity-50"></i>
                 </div>
-                <h5 class="muted mb-2">Belum Ada Evaluasi</h5>
-                <p class="muted">Peserta belum mengisi evaluasi webinar ini.</p>
+                <h5 class="muted mb-2">Belum Ada Pertanyaan</h5>
+                <p class="muted">Belum ada pertanyaan evaluasi yang terdaftar.</p>
               </div>
             @endforelse
+
+            @if(!empty($showOrphan) && $showOrphan)
+
+              @php
+                $orphan = $peserta->evaluasiAnswers->filter(fn($a) => $a->question === null);
+              @endphp
+
+              <hr>
+              <h6 class="mt-3 mb-2">Jawaban untuk pertanyaan yang sudah dihapus</h6>
+
+              @foreach($orphan as $o)
+                <div class="mb-3">
+                  <div class="d-flex align-items-start">
+                    <div class="me-3">
+                      <span class="badge badge-soft rounded-pill">-</span>
+                    </div>
+                    <div>
+                      <div class="text-warning small mb-1">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        Pertanyaan telah dihapus (ID: {{ $o->evaluasi_question_id }})
+                        @if($o->question_text)
+                          — <strong>{{ $o->question_text }}</strong>
+                        @endif
+                      </div>
+
+                      <div class="answer-box">
+                        @if($o->answer && is_numeric($o->answer))
+                          <div class="d-flex align-items-center flex-wrap">
+                            <div class="rating-display">
+                              @for($i = 1; $i <= 5; $i++)
+                                @if($i <= (int) $o->answer)
+                                  <i class="fas fa-star text-warning me-1"></i>
+                                @else
+                                  <i class="far fa-star text-secondary me-1"></i>
+                                @endif
+                              @endfor
+                            </div>
+                            <span class="ms-2 fw-semibold">({{ $o->answer }}/5)</span>
+                          </div>
+                        @elseif($o->answer)
+                          <p class="mb-0">{{ $o->answer }}</p>
+                        @else
+                          <span class="muted">Tidak ada jawaban</span>
+                        @endif
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              @endforeach
+
+            @endif
 
           </div>
         </div>

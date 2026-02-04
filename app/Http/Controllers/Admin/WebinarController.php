@@ -14,6 +14,12 @@ class WebinarController extends Controller
      */
     public function index(Request $request)
     {
+        $validated = $request->validate([
+            'search' => 'nullable|string|max:255',
+            'status' => 'nullable|in:draft,published',
+            'sort'   => 'nullable|string|in:tanggal_terjauh,terbaru,terlama',
+        ]);
+
         $query = Webinar::query();
 
         // =====================

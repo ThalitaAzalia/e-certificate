@@ -286,13 +286,12 @@
   </div>
 </section>
 
-<!-- WEBINAR TERBARU (✅ tetap pakai DATABASE) -->
+<!-- WEBINAR TERBARU -->
 <section id="webinar" class="py-5 bg-soft">
   <div class="container">
     <div class="d-flex align-items-end justify-content-between flex-wrap gap-2 mb-3">
       <div>
         <h2 class="section-title mb-1">Webinar Terbaru</h2>
-        <div class="text-muted">Informasi webinar aktif/terbaru akan tampil di sini.</div>
       </div>
     </div>
 

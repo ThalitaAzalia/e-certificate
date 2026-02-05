@@ -450,30 +450,6 @@
 
             <button type="submit" class="btn-red">Login</button>
           </form>
-
-          <div class="divider">atau login dengan</div>
-
-          <div class="social">
-            <button type="button" aria-label="Login Facebook">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                <path d="M14 9h3V6h-3c-2.2 0-4 1.8-4 4v3H7v3h3v6h3v-6h3l1-3h-4v-3c0-.6.4-1 1-1z" fill="rgba(155,0,0,.85)"/>
-              </svg>
-            </button>
-            <button type="button" aria-label="Login Google">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                <path d="M21 12.2c0-.6-.1-1.1-.2-1.6H12v3.1h5c-.2 1-.9 1.9-1.8 2.5v2h3.1c1.8-1.7 2.7-4.2 2.7-7z" fill="rgba(155,0,0,.85)"/>
-                <path d="M12 22c2.4 0 4.4-.8 5.9-2.2l-3.1-2c-.9.6-2 .9-2.8.9-2.2 0-4-1.5-4.7-3.5H4.1v2.1C5.6 20.1 8.6 22 12 22z" fill="rgba(155,0,0,.55)"/>
-                <path d="M7.3 13.2c-.2-.6-.3-1.2-.3-1.8s.1-1.2.3-1.8V7.5H4.1C3.4 8.9 3 10.4 3 11.4s.4 2.6 1.1 3.9l3.2-2.1z" fill="rgba(155,0,0,.35)"/>
-                <path d="M12 5.6c1.3 0 2.4.4 3.3 1.3l2.5-2.5C16.4 2.9 14.4 2 12 2 8.6 2 5.6 3.9 4.1 6.5l3.2 2.1c.7-2 2.5-3 4.7-3z" fill="rgba(155,0,0,.75)"/>
-              </svg>
-            </button>
-            <button type="button" aria-label="Login Apple">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                <path d="M16.2 13.2c0 2.3 2 3.1 2 3.1s-1.5 4.3-3.6 4.3c-1 0-1.8-.6-2.9-.6s-2 .6-3 .6c-1.9 0-3.4-4-3.4-7.2 0-3 1.9-4.6 3.8-4.6 1 0 2 .7 2.7.7.7 0 1.8-.8 3.1-.8.5 0 2.2.1 3.3 1.6-.1.1-2 .9-2 2.9z" fill="rgba(155,0,0,.85)"/>
-                <path d="M14.6 3.5c.6-.7 1-1.7.9-2.7-1 .1-2 .6-2.6 1.3-.6.6-1.1 1.6-1 2.6 1.1.1 2-.5 2.7-1.2z" fill="rgba(155,0,0,.55)"/>
-              </svg>
-            </button>
-          </div>
         </div>
       </div>
     </div>

@@ -456,9 +456,6 @@
             Simpan Setting
           </button>
         </div>
-        <div class="helper-text mt-2">
-          Klik "Simpan Setting" untuk menyimpan konfigurasi ke database.
-        </div>
       </div>
     </div>
   </div>

@@ -126,14 +126,16 @@
     font-weight: 600;
     color: #111827;
     margin: 0;
-    line-height: 1.4;
+    line-height: 1.35;
+    font-size: 0.90rem;
   }
-
   .question-meta {
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     color: #6b7280;
     margin-top: 0.25rem;
   }
+
+
 
   .card-soft .card-body { padding: 1.25rem; }
 
@@ -142,6 +144,52 @@
     padding: 0.45rem 1.75rem; /* bikin panjang & ramping */
     min-width: 130px;
     font-size: 0.875rem;
+  }
+  /* === Samain feel tabel kayak halaman Laporan Evaluasi (foto 1) === */
+  .table-analytics {
+    --bs-table-bg: transparent;
+    --bs-table-striped-bg: rgba(185, 28, 28, 0.02);
+    --bs-table-hover-bg: rgba(185, 28, 28, 0.04);
+  }
+
+  .table-analytics thead th {
+    background: rgba(185, 28, 28, 0.05);
+    color: var(--brand-3);
+    font-weight: 600;
+    font-size: 0.8125rem;
+    border-bottom: 2px solid rgba(185, 28, 28, 0.1);
+  }
+
+  /* Hover halus */
+  .table-analytics tbody tr {
+    transition: background-color 0.2s ease;
+  }
+  .table-analytics tbody tr:hover {
+    background: rgba(185, 28, 28, 0.03);
+  }
+
+  /* Kolom No biar gak “ngebold” dan gak besar */
+  .td-no {
+    width: 50px;
+    font-weight: 500;
+    font-size: 0.875rem;
+    color: #111827;
+  }
+
+  /* Judul item di kolom kedua (mirip judul webinar) */
+  .row-title {
+    font-weight: 600;
+    color: #111827;
+    font-size: 1rem;
+    margin: 0;
+    line-height: 1.35;
+  }
+
+  /* Subtext di bawah judul */
+  .row-sub {
+    font-size: 0.8125rem;
+    color: #6b7280;
+    margin-top: 0.25rem;
   }
 
 </style>
@@ -257,7 +305,7 @@
         </div>
         @else
         <div class="table-responsive">
-          <table class="table table-hover align-middle">
+          <table class="table table-analytics table-hover align-middle">
             <thead class="table-header">
               <tr>
                 <th style="width: 50px;">No</th>
@@ -270,7 +318,7 @@
             <tbody>
               @foreach ($questions as $q)
               <tr>
-                <td class="fw-semibold">{{ $loop->iteration }}</td>
+                <td class="td-no">{{ $loop->iteration }}</td>
                 
                 <td>
                   <div class="question-text">{{ $q->question }}</div>

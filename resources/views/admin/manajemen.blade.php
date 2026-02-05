@@ -432,40 +432,42 @@
     bottom: 0;
     z-index: 3;
   }
-
-
   /* =========================
-     PAGINATION
+    PAGINATION (FIX: Laravel links)
   ========================= */
-  .pagination {
-    display: flex;
-    align-items: center;
-    gap: 0.375rem;
+  .pagination-wrap nav {
+    margin: 0;
   }
 
-  .page-item .page-link {
-    min-width: 2rem;
-    height: 2rem;
+  .pagination-wrap .pagination {
+    margin: 0;
     display: flex;
     align-items: center;
-    justify-content: center;
-    border: 1px solid var(--border-soft);
-    border-radius: 6px;
-    font-size: 0.875rem;
-    color: var(--brand);
-    background: white;
-    transition: all 0.2s ease;
+    gap: 6px;
   }
 
-  .page-item.active .page-link {
+    .pagination-wrap .page-link{
+    padding: .35rem .6rem !important;
+    width: auto !important;
+    height: auto !important;
+    font-size: .85rem;
+  }
+
+  .pagination-wrap .page-item.active .page-link {
     background: var(--brand);
-    color: white;
+    color: #fff;
     border-color: var(--brand);
   }
 
-  .page-item .page-link:hover {
+  .pagination-wrap .page-link:hover {
     background: rgba(185, 28, 28, 0.05);
   }
+
+  /* biar disabled ga “gede” */
+  .pagination-wrap .page-item.disabled .page-link {
+    opacity: .5;
+  }
+
 
   /* =========================
      RESPONSIVE
@@ -507,6 +509,105 @@
       gap: 0.25rem;
     }
   }
+  /* ===== MODAL STYLE KODE B (SCOPED) ===== */
+  .modal-b .modal-content{
+    background: var(--bg-card);
+    border: 1px solid rgba(185,28,28,.25);
+    border-radius: 16px;
+    box-shadow:
+      0 20px 45px rgba(185,28,28,.08),
+      0 6px 16px rgba(185,28,28,.06);
+  }
+
+  .modal-b .modal-header{
+    border-bottom: 1px solid rgba(185,28,28,.2);
+  }
+
+  .modal-b .modal-title{
+    color: var(--brand-3);
+  }
+
+  .modal-b .modal-body{
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+  }
+
+  .modal-b .modal-footer{
+    border-top: 1px solid rgba(185,28,28,.2);
+    background: #fff;
+  }
+
+  .rounded-16{
+    border-radius:16px !important;
+  }
+  /* ==== KECILIN CARD DI DALAM MODAL-B ==== */
+  .modal-b .modal-dialog{
+    --bs-modal-padding: 0.75rem;      /* padding default bootstrap modal */
+  }
+
+  .modal-b .modal-header{
+    padding: .9rem 1.25rem;
+  }
+
+  .modal-b .modal-body{
+    padding: 1rem 1.25rem;
+  }
+
+  /* bikin card di modal lebih tipis */
+  .modal-b .card.card-soft{
+    border-radius: 12px !important;
+    box-shadow: 0 10px 25px rgba(185,28,28,.06), 0 4px 12px rgba(185,28,28,.05);
+  }
+
+  .modal-b .card.card-soft .card-body{
+    padding: 1rem !important;   /* sebelumnya besar */
+  }
+
+  /* input biar lebih compact */
+  .modal-b .form-control,
+  .modal-b .form-select{
+    padding: .45rem .75rem;
+    border-radius: 12px; /* lebih kecil dari 16 */
+  }
+
+  .modal-b textarea.form-control{
+    min-height: 110px;  /* biar ga tinggi banget */
+  }
+
+  /* kalau masih ada element icon yg kebaca sebagai span, amanin juga */
+  .pagination-wrap .page-link span[aria-hidden="true"] {
+    display: none;
+  }
+
+  .pagination-wrap .pagination .page-link{
+    padding: 0.35rem 0.5rem;
+    font-size: 0.75rem !;
+    line-height: 1.2;
+  }
+  /* =========================
+    PAGINATION (BLUE STYLE like Laporan Evaluasi)
+  ========================= */
+  .pagination-wrap .page-link {
+    color: #0d6efd !important;            /* biru bootstrap */
+    border-color: #dee2e6 !important;
+  }
+
+  .pagination-wrap .page-link:hover {
+    background-color: #e7f1ff !important;
+    color: #0a58ca !important;
+  }
+
+  .pagination-wrap .page-item.active .page-link {
+    background-color: #0d6efd !important; /* biru */
+    border-color: #0d6efd !important;
+    color: #fff !important;
+  }
+
+  .pagination-wrap .page-item.disabled .page-link {
+    color: #adb5bd !important;
+    background-color: transparent !important;
+  }
+
 </style>
 @endpush
 
@@ -739,9 +840,78 @@
             <div class="text-muted small">
               Menampilkan {{ $webinars->firstItem() }}–{{ $webinars->lastItem() }} dari {{ $webinars->total() }} webinar
             </div>
-            <div class="pagination">
-              {{ $webinars->links() }}
+            <div class="pagination-wrap">
+              @if ($webinars->hasPages())
+                <nav aria-label="pagination">
+                  <ul class="pagination mb-0">
+
+                    {{-- Prev --}}
+                    <li class="page-item {{ $webinars->onFirstPage() ? 'disabled' : '' }}">
+                      @if ($webinars->onFirstPage())
+                        <span class="page-link" aria-hidden="true">&lsaquo;</span>
+                      @else
+                        <a class="page-link" href="{{ $webinars->previousPageUrl() }}" rel="prev">&lsaquo;</a>
+                      @endif
+                    </li>
+
+                    {{-- Angka halaman (dibatasi biar rapih: current-1, current, current+1) --}}
+                    @php
+                      $current = $webinars->currentPage();
+                      $last = $webinars->lastPage();
+
+                      $start = max(1, $current - 1);
+                      $end = min($last, $current + 1);
+
+                      // kalau di awal/akhir, tetep usahain tampil 3 angka kalau bisa
+                      if ($current <= 2) { $end = min($last, 3); }
+                      if ($current >= $last - 1) { $start = max(1, $last - 2); }
+                    @endphp
+
+                    {{-- kalau start > 1 tampil halaman 1 --}}
+                    @if ($start > 1)
+                      <li class="page-item">
+                        <a class="page-link" href="{{ $webinars->url(1) }}">1</a>
+                      </li>
+                      @if ($start > 2)
+                        <li class="page-item disabled"><span class="page-link">…</span></li>
+                      @endif
+                    @endif
+
+                    {{-- range utama --}}
+                    @for ($page = $start; $page <= $end; $page++)
+                      <li class="page-item {{ $page == $current ? 'active' : '' }}">
+                        @if ($page == $current)
+                          <span class="page-link">{{ $page }}</span>
+                        @else
+                          <a class="page-link" href="{{ $webinars->url($page) }}">{{ $page }}</a>
+                        @endif
+                      </li>
+                    @endfor
+
+                    {{-- kalau end < last tampil halaman terakhir --}}
+                    @if ($end < $last)
+                      @if ($end < $last - 1)
+                        <li class="page-item disabled"><span class="page-link">…</span></li>
+                      @endif
+                      <li class="page-item">
+                        <a class="page-link" href="{{ $webinars->url($last) }}">{{ $last }}</a>
+                      </li>
+                    @endif
+
+                    {{-- Next --}}
+                    <li class="page-item {{ $webinars->hasMorePages() ? '' : 'disabled' }}">
+                      @if ($webinars->hasMorePages())
+                        <a class="page-link" href="{{ $webinars->nextPageUrl() }}" rel="next">&rsaquo;</a>
+                      @else
+                        <span class="page-link" aria-hidden="true">&rsaquo;</span>
+                      @endif
+                    </li>
+
+                  </ul>
+                </nav>
+              @endif
             </div>
+
           </div>
         @endif
       @else
@@ -766,240 +936,543 @@
 </div>
 
 {{-- =========================
-    MODAL: CREATE WEBINAR
+    MODAL: CREATE WEBINAR (A + B) + old()
 ========================= --}}
-<div class="modal fade" id="modalCreate" tabindex="-1" aria-hidden="true">
+<div class="modal fade modal-b" id="modalCreate" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-    <div class="modal-content">
+    <div class="modal-content rounded-16">
+
+      {{-- HEADER --}}
       <div class="modal-header">
-        <h5 class="modal-title">Tambah Webinar Baru</h5>
+        <h5 class="modal-title fw-bold">Tambah Webinar Baru</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
+
       <form method="POST" action="{{ route('admin.webinars.store') }}" enctype="multipart/form-data">
         @csrf
+
+        {{-- BODY --}}
         <div class="modal-body">
-          <div class="row g-3">
+          <div class="row g-4">
             <div class="col-12">
-              <label class="form-label fw-semibold">Judul Webinar <span class="text-danger">*</span></label>
-              <input type="text" name="judul" class="form-control" placeholder="Contoh: Webinar Digital Marketing 2024" required>
-            </div>
+              <div class="card card-soft rounded-16">
+                <div class="card-body">
 
-            <div class="col-12">
-              <label class="form-label fw-semibold">Deskripsi <span class="text-danger">*</span></label>
-              <textarea name="deskripsi" class="form-control" rows="3" placeholder="Deskripsi lengkap tentang webinar ini..." required></textarea>
-            </div>
+                  {{-- BONUS: tampilkan error general (opsional) --}}
+                  @if ($errors->any())
+                    <div class="alert alert-danger mb-3">
+                      <div class="fw-semibold mb-1">Gagal menyimpan.</div>
+                      <ul class="mb-0 ps-3">
+                        @foreach ($errors->all() as $error)
+                          <li>{{ $error }}</li>
+                        @endforeach
+                      </ul>
+                    </div>
+                  @endif
 
-            <div class="col-md-6">
-              <label class="form-label fw-semibold">Tanggal <span class="text-danger">*</span></label>
-              <input type="date" name="tanggal" class="form-control" required>
-            </div>
+                  <div class="mb-3">
+                    <label class="form-label fw-semibold">
+                      Judul Webinar <span class="text-danger">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="judul"
+                      class="form-control rounded-16 @error('judul') is-invalid @enderror"
+                      placeholder="Contoh: Webinar Digital Marketing 2024"
+                      value="{{ old('judul') }}"
+                      required
+                    >
+                    @error('judul')
+                      <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                  </div>
 
-            <div class="col-md-6">
-              <label class="form-label fw-semibold">Waktu</label>
-              <input type="time" name="waktu" class="form-control">
-            </div>
+                  <div class="mb-3">
+                    <label class="form-label fw-semibold">
+                      Deskripsi <span class="text-danger">*</span>
+                    </label>
+                    <textarea
+                      name="deskripsi"
+                      class="form-control rounded-16 @error('deskripsi') is-invalid @enderror"
+                      rows="4"
+                      placeholder="Deskripsi lengkap tentang webinar ini..."
+                      required
+                    >{{ old('deskripsi') }}</textarea>
+                    @error('deskripsi')
+                      <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                  </div>
 
-            <div class="col-md-6">
-              <label class="form-label fw-semibold">Narasumber</label>
-              <input type="text" name="narasumber" class="form-control" placeholder="Nama narasumber">
-            </div>
+                  <div class="row g-3">
+                    <div class="col-md-6">
+                      <label class="form-label fw-semibold">
+                        Tanggal <span class="text-danger">*</span>
+                      </label>
+                      <input
+                        type="date"
+                        name="tanggal"
+                        class="form-control rounded-16 @error('tanggal') is-invalid @enderror"
+                        value="{{ old('tanggal') }}"
+                        required
+                      >
+                      @error('tanggal')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                      @enderror
+                    </div>
 
-            <div class="col-md-6">
-              <label class="form-label fw-semibold">Media</label>
-              <input type="text" name="media" class="form-control" placeholder="Contoh: Zoom, YouTube Live, dll.">
-            </div>
+                    <div class="col-md-6">
+                      <label class="form-label fw-semibold">Waktu</label>
+                      <input
+                        type="time"
+                        name="waktu"
+                        class="form-control rounded-16 @error('waktu') is-invalid @enderror"
+                        value="{{ old('waktu') }}"
+                      >
+                      @error('waktu')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                      @enderror
+                    </div>
+                  </div>
 
-            <div class="col-12">
-              <label class="form-label fw-semibold">Poster</label>
-              <input type="file" name="poster" class="form-control" accept="image/*">
-              <div class="small text-muted mt-1">Format: JPG, PNG. Maksimal: 2MB</div>
-            </div>
+                  <div class="row g-3 mt-3">
+                    <div class="col-md-6">
+                      <label class="form-label fw-semibold">Narasumber</label>
+                      <input
+                        type="text"
+                        name="narasumber"
+                        class="form-control rounded-16 @error('narasumber') is-invalid @enderror"
+                        placeholder="Nama narasumber"
+                        value="{{ old('narasumber') }}"
+                      >
+                      @error('narasumber')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                      @enderror
+                    </div>
 
-            <div class="col-md-6">
-              <label class="form-label fw-semibold">Link Absensi</label>
-              <input type="url" name="link_absensi" class="form-control" placeholder="https://...">
-            </div>
+                    <div class="col-md-6">
+                      <label class="form-label fw-semibold">Media</label>
+                      <input
+                        type="text"
+                        name="media"
+                        class="form-control rounded-16 @error('media') is-invalid @enderror"
+                        placeholder="Zoom, Google Meet, dll"
+                        value="{{ old('media') }}"
+                      >
+                      @error('media')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                      @enderror
+                    </div>
+                  </div>
 
-            <div class="col-md-6">
-              <label class="form-label fw-semibold">Link Detail</label>
-              <input type="url" name="link_detail" class="form-control" placeholder="https://...">
-            </div>
+                  <hr class="my-4">
 
-            <div class="col-12">
-              <label class="form-label fw-semibold">Status</label>
-              <select name="status" class="form-select">
-                <option value="draft">Draft (tidak ditampilkan)</option>
-                <option value="published">Published (tampil di halaman utama)</option>
-              </select>
+                  <div class="mb-3">
+                    <label class="form-label fw-semibold">Poster</label>
+                    <input
+                      type="file"
+                      name="poster"
+                      class="form-control rounded-16 @error('poster') is-invalid @enderror"
+                      accept="image/*"
+                    >
+                    <div class="small text-muted mt-1">
+                      Format JPG/PNG, maksimal 2MB
+                    </div>
+                    @error('poster')
+                      <div class="invalid-feedback d-block">{{ $message }}</div>
+                    @enderror
+                  </div>
+
+                  <div class="mt-3">
+                    <label class="form-label fw-semibold">Status</label>
+                    <select name="status" class="form-select rounded-16 @error('status') is-invalid @enderror">
+                      <option value="draft" {{ old('status','draft') == 'draft' ? 'selected' : '' }}>
+                        Draft (tidak ditampilkan)
+                      </option>
+                      <option value="published" {{ old('status') == 'published' ? 'selected' : '' }}>
+                        Published (tampil di landing)
+                      </option>
+                    </select>
+                    @error('status')
+                      <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                  </div>
+
+                </div>
+              </div>
             </div>
           </div>
         </div>
+
+        {{-- FOOTER --}}
         <div class="modal-footer">
-          <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">Batal</button>
-          <button type="submit" class="btn btn-brand">Simpan Webinar</button>
+          <button type="button" class="btn btn-ghost rounded-16" data-bs-dismiss="modal">
+            Batal
+          </button>
+          <button type="submit" class="btn btn-brand rounded-16">
+            Simpan Webinar
+          </button>
         </div>
+
       </form>
     </div>
   </div>
 </div>
 
+{{-- BONUS UX: kalau validasi gagal, modalCreate otomatis kebuka lagi --}}
+@if ($errors->any())
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var el = document.getElementById('modalCreate');
+      if (el) new bootstrap.Modal(el).show();
+    });
+  </script>
+@endif
+
 {{-- =========================
-    MODAL: DETAIL WEBINAR
+    MODAL: DETAIL (A + B)
 ========================= --}}
 @foreach($webinars as $webinar)
-<div class="modal fade" id="modalDetail{{ $webinar->id }}" tabindex="-1">
-  <div class="modal-dialog modal-lg modal-dialog-centered">
-    <div class="modal-content">
+<div class="modal fade" id="modalDetail{{ $webinar->id }}" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content rounded-16">
+
       <div class="modal-header">
-        <h5 class="modal-title">Detail Webinar</h5>
+        <h5 class="modal-title fw-bold">Detail Webinar</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
+
       <div class="modal-body">
         <div class="row g-4">
-          <div class="col-12">
-            <div class="mb-3">
-              <div class="text-sm text-muted mb-1">Judul</div>
-              <div class="fw-semibold">{{ $webinar->judul }}</div>
-            </div>
-          </div>
 
-          <div class="col-12">
-            <div class="mb-3">
-              <div class="text-sm text-muted mb-1">Deskripsi</div>
-              <div class="text-gray-700">{{ $webinar->deskripsi }}</div>
-            </div>
-          </div>
+          {{-- =========================
+              KIRI: CARD DETAIL INFO
+          ========================= --}}
+          <div class="col-lg-7">
+            <div class="card card-soft">
+              <div class="card-body">
 
-          <div class="col-md-6">
-            <div class="mb-3">
-              <div class="text-sm text-muted mb-1">Tanggal</div>
-              <div class="fw-semibold">{{ \Carbon\Carbon::parse($webinar->tanggal)->translatedFormat('d F Y') }}</div>
-            </div>
-          </div>
+                <div class="mb-3">
+                  <div class="small text-muted mb-1">Judul</div>
+                  <div class="fw-semibold fs-5">{{ $webinar->judul }}</div>
+                </div>
 
-          <div class="col-md-6">
-            <div class="mb-3">
-              <div class="text-sm text-muted mb-1">Waktu</div>
-              <div class="fw-semibold">{{ $webinar->waktu ? $webinar->waktu . ' WIB' : '-' }}</div>
-            </div>
-          </div>
+                <div class="mb-3">
+                  <div class="small text-muted mb-1">Deskripsi</div>
+                  <div style="white-space: pre-line;">{{ $webinar->deskripsi }}</div>
+                </div>
 
-          <div class="col-md-6">
-            <div class="mb-3">
-              <div class="text-sm text-muted mb-1">Narasumber</div>
-              <div class="fw-semibold">{{ $webinar->narasumber ?? '-' }}</div>
-            </div>
-          </div>
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <div class="small text-muted mb-1">Tanggal</div>
+                    <div class="fw-semibold">
+                      {{ \Carbon\Carbon::parse($webinar->tanggal)->translatedFormat('d F Y') }}
+                    </div>
+                  </div>
 
-          <div class="col-md-6">
-            <div class="mb-3">
-              <div class="text-sm text-muted mb-1">Media</div>
-              <div class="fw-semibold">{{ $webinar->media ?? '-' }}</div>
-            </div>
-          </div>
+                  <div class="col-md-6">
+                    <div class="small text-muted mb-1">Waktu</div>
+                    <div class="fw-semibold">
+                      {{ $webinar->waktu ? $webinar->waktu . ' WIB' : '-' }}
+                    </div>
+                  </div>
 
-          <div class="col-12">
-            <div class="mb-3">
-              <div class="text-sm text-muted mb-1">Status</div>
-              <div>
-                @if($webinar->status === 'published')
-                  <span class="badge-pill badge-published">Published</span>
-                @else
-                  <span class="badge-pill badge-draft">Draft</span>
-                @endif
+                  <div class="col-md-6">
+                    <div class="small text-muted mb-1">Narasumber</div>
+                    <div class="fw-semibold">{{ $webinar->narasumber ?? '-' }}</div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="small text-muted mb-1">Media</div>
+                    <div class="fw-semibold">{{ $webinar->media ?? '-' }}</div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="small text-muted mb-1">Status</div>
+                    @if($webinar->status === 'published')
+                      <span class="badge badge-pill badge-published">Published</span>
+                    @else
+                      <span class="badge badge-pill badge-draft">Draft</span>
+                    @endif
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="small text-muted mb-1">Poster</div>
+                    <div class="fw-semibold">
+                      {{ $webinar->poster ? basename($webinar->poster) : '-' }}
+                    </div>
+                  </div>
+
+                  <div class="col-12">
+                    <hr class="my-3">
+                  </div>
+                </div>
+
               </div>
             </div>
           </div>
+
+          {{-- =========================
+              KANAN: CARD PREVIEW (STYLE B)
+          ========================= --}}
+          <div class="col-lg-5">
+            <div class="card card-soft">
+              <div class="card-body">
+
+                <div class="fw-bold mb-2">Preview (Landing)</div>
+
+                <div class="rounded-16 overflow-hidden border mb-3" style="background:#fff;">
+                  <img
+                    src="{{ $webinar->poster ? asset('storage/'.$webinar->poster) : 'https://via.placeholder.com/600x750/FFE2E2/991B1B?text=Poster' }}"
+                    class="w-100"
+                    style="aspect-ratio:4/5; object-fit:cover;"
+                    alt="Poster {{ $webinar->judul }}"
+                    onerror="this.src='https://via.placeholder.com/600x750/FFE2E2/991B1B?text=Poster'"
+                  >
+                </div>
+
+                <div class="fw-bold fs-5">
+                  {{ $webinar->judul }}
+                </div>
+
+                <div class="text-muted mt-2">
+                  {{ Str::limit($webinar->deskripsi, 160) }}
+                </div>
+
+                <div class="row g-2 mt-3">
+                  <div class="col-6">
+                    <div class="small text-muted">Tanggal</div>
+                    <div class="fw-semibold">
+                      {{ \Carbon\Carbon::parse($webinar->tanggal)->translatedFormat('d F Y') }}
+                    </div>
+                  </div>
+
+                  <div class="col-6">
+                    <div class="small text-muted">Waktu</div>
+                    <div class="fw-semibold">
+                      {{ $webinar->waktu ? $webinar->waktu . ' WIB' : '-' }}
+                    </div>
+                  </div>
+
+                  <div class="col-6">
+                    <div class="small text-muted">Narasumber</div>
+                    <div class="fw-semibold">{{ $webinar->narasumber ?? '-' }}</div>
+                  </div>
+
+                  <div class="col-6">
+                    <div class="small text-muted">Media</div>
+                    <div class="fw-semibold">{{ $webinar->media ?? '-' }}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
+
       <div class="modal-footer">
-        <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">Tutup</button>
-        <button type="button" class="btn btn-brand" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#modalEdit{{ $webinar->id }}">
-          Edit Webinar
+        <button type="button" class="btn btn-ghost rounded-16" data-bs-dismiss="modal">Tutup</button>
+
+        <button type="button"
+          class="btn btn-brand rounded-16"
+          data-bs-dismiss="modal"
+          data-bs-toggle="modal"
+          data-bs-target="#modalEdit{{ $webinar->id }}">
+          Edit
         </button>
       </div>
+
     </div>
   </div>
 </div>
 @endforeach
 
 {{-- =========================
-    MODAL: EDIT WEBINAR
+    MODAL: EDIT WEBINAR (A + B)
 ========================= --}}
 @foreach($webinars as $webinar)
-<div class="modal fade" id="modalEdit{{ $webinar->id }}" tabindex="-1">
-  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-    <div class="modal-content">
+<div class="modal fade modal-b" id="modalEdit{{ $webinar->id }}" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content rounded-16">
+
+      {{-- HEADER --}}
       <div class="modal-header">
-        <h5 class="modal-title">Edit Webinar</h5>
+        <h5 class="modal-title fw-bold">Edit Webinar</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
+
       <form method="POST" action="{{ route('admin.webinars.update', $webinar) }}" enctype="multipart/form-data">
         @csrf
         @method('PUT')
+
+        {{-- BODY --}}
         <div class="modal-body">
-          <div class="row g-3">
-            <div class="col-12">
-              <label class="form-label fw-semibold">Judul Webinar</label>
-              <input type="text" name="judul" class="form-control" value="{{ $webinar->judul }}" required>
+          <div class="row g-4">
+
+            {{-- FORM (KIRI) --}}
+            <div class="col-lg-7">
+              <div class="card card-soft rounded-16">
+                <div class="card-body">
+
+                  <div class="mb-3">
+                    <label class="form-label fw-semibold">Judul Webinar <span class="text-danger">*</span></label>
+                    <input
+                      type="text"
+                      name="judul"
+                      class="form-control rounded-16"
+                      value="{{ $webinar->judul }}"
+                      required
+                    >
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label fw-semibold">Deskripsi <span class="text-danger">*</span></label>
+                    <textarea
+                      name="deskripsi"
+                      class="form-control rounded-16"
+                      rows="4"
+                      required
+                    >{{ $webinar->deskripsi }}</textarea>
+                  </div>
+
+                  <div class="row g-3">
+                    <div class="col-md-6">
+                      <label class="form-label fw-semibold">Tanggal <span class="text-danger">*</span></label>
+                      <input
+                        type="date"
+                        name="tanggal"
+                        class="form-control rounded-16"
+                        value="{{ $webinar->tanggal }}"
+                        required
+                      >
+                    </div>
+
+                    <div class="col-md-6">
+                      <label class="form-label fw-semibold">Waktu</label>
+                      <input
+                        type="time"
+                        name="waktu"
+                        class="form-control rounded-16"
+                        value="{{ $webinar->waktu }}"
+                      >
+                    </div>
+                  </div>
+
+                  <div class="row g-3 mt-3">
+                    <div class="col-md-6">
+                      <label class="form-label fw-semibold">Narasumber</label>
+                      <input
+                        type="text"
+                        name="narasumber"
+                        class="form-control rounded-16"
+                        value="{{ $webinar->narasumber }}"
+                      >
+                    </div>
+
+                    <div class="col-md-6">
+                      <label class="form-label fw-semibold">Media</label>
+                      <input
+                        type="text"
+                        name="media"
+                        class="form-control rounded-16"
+                        value="{{ $webinar->media }}"
+                      >
+                    </div>
+                  </div>
+
+                  <hr class="my-4">
+
+                  <div class="mb-3">
+                    <label class="form-label fw-semibold">Poster</label>
+                    <input
+                      type="file"
+                      name="poster"
+                      class="form-control rounded-16"
+                      accept="image/*"
+                    >
+                    @if($webinar->poster)
+                      <div class="small text-muted mt-1">
+                        File saat ini: {{ basename($webinar->poster) }}
+                      </div>
+                    @endif
+                  </div>
+
+                  <div class="mt-3">
+                    <label class="form-label fw-semibold">Status</label>
+                    <select name="status" class="form-select rounded-16">
+                      <option value="draft" {{ $webinar->status == 'draft' ? 'selected' : '' }}>Draft</option>
+                      <option value="published" {{ $webinar->status == 'published' ? 'selected' : '' }}>Published</option>
+                    </select>
+                  </div>
+
+                </div>
+              </div>
             </div>
 
-            <div class="col-12">
-              <label class="form-label fw-semibold">Deskripsi</label>
-              <textarea name="deskripsi" class="form-control" rows="3" required>{{ $webinar->deskripsi }}</textarea>
+            {{-- PREVIEW (KANAN) --}}
+            <div class="col-lg-5">
+              <div class="card card-soft rounded-16 h-100">
+                <div class="card-body">
+
+                  <div class="fw-bold mb-2">Preview (Statis)</div>
+
+                  <div class="rounded-16 overflow-hidden border mb-3" style="background:#fff;">
+                    @if($webinar->poster)
+                      <img
+                        src="{{ asset('storage/' . $webinar->poster) }}"
+                        class="w-100"
+                        style="aspect-ratio:4/5; object-fit:cover;"
+                        alt="Poster {{ $webinar->judul }}"
+                        onerror="this.src='https://via.placeholder.com/600x750/FFE2E2/991B1B?text=Poster';"
+                      >
+                    @else
+                      <div class="w-100 d-flex align-items-center justify-content-center text-muted"
+                           style="aspect-ratio:4/5; background: rgba(185,28,28,.06);">
+                        Belum ada poster
+                      </div>
+                    @endif
+                  </div>
+
+                  <div class="fw-bold fs-5">{{ $webinar->judul }}</div>
+                  <div class="text-muted mt-2">
+                    {{ Str::limit($webinar->deskripsi, 160) }}
+                  </div>
+
+                  <div class="row g-2 mt-3">
+                    <div class="col-6">
+                      <div class="small text-muted">Tanggal</div>
+                      <div class="fw-semibold">{{ \Carbon\Carbon::parse($webinar->tanggal)->translatedFormat('d F Y') }}</div>
+                    </div>
+                    <div class="col-6">
+                      <div class="small text-muted">Waktu</div>
+                      <div class="fw-semibold">{{ $webinar->waktu ? $webinar->waktu . ' WIB' : '-' }}</div>
+                    </div>
+                    <div class="col-6">
+                      <div class="small text-muted">Narasumber</div>
+                      <div class="fw-semibold">{{ $webinar->narasumber ?? '-' }}</div>
+                    </div>
+                    <div class="col-6">
+                      <div class="small text-muted">Media</div>
+                      <div class="fw-semibold">{{ $webinar->media ?? '-' }}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <div class="col-md-6">
-              <label class="form-label fw-semibold">Tanggal</label>
-              <input type="date" name="tanggal" class="form-control" value="{{ $webinar->tanggal }}" required>
-            </div>
-
-            <div class="col-md-6">
-              <label class="form-label fw-semibold">Waktu</label>
-              <input type="time" name="waktu" class="form-control" value="{{ $webinar->waktu }}">
-            </div>
-
-            <div class="col-md-6">
-              <label class="form-label fw-semibold">Narasumber</label>
-              <input type="text" name="narasumber" class="form-control" value="{{ $webinar->narasumber }}">
-            </div>
-
-            <div class="col-md-6">
-              <label class="form-label fw-semibold">Media</label>
-              <input type="text" name="media" class="form-control" value="{{ $webinar->media }}">
-            </div>
-
-            <div class="col-12">
-              <label class="form-label fw-semibold">Poster</label>
-              <input type="file" name="poster" class="form-control" accept="image/*">
-              @if($webinar->poster)
-                <div class="small text-muted mt-1">File saat ini: {{ basename($webinar->poster) }}</div>
-              @endif
-            </div>
-
-            <div class="col-md-6">
-              <label class="form-label fw-semibold">Link Absensi</label>
-              <input type="url" name="link_absensi" class="form-control" value="{{ $webinar->link_absensi }}">
-            </div>
-
-            <div class="col-md-6">
-              <label class="form-label fw-semibold">Link Detail</label>
-              <input type="url" name="link_detail" class="form-control" value="{{ $webinar->link_detail }}">
-            </div>
-
-            <div class="col-12">
-              <label class="form-label fw-semibold">Status</label>
-              <select name="status" class="form-select">
-                <option value="draft" {{ $webinar->status == 'draft' ? 'selected' : '' }}>Draft</option>
-                <option value="published" {{ $webinar->status == 'published' ? 'selected' : '' }}>Published</option>
-              </select>
-            </div>
           </div>
         </div>
+
+        {{-- FOOTER --}}
         <div class="modal-footer">
-          <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">Batal</button>
-          <button type="submit" class="btn btn-brand">Simpan Perubahan</button>
+          <button type="button" class="btn btn-ghost rounded-16" data-bs-dismiss="modal">
+            Batal
+          </button>
+          <button type="submit" class="btn btn-brand rounded-16">
+            Simpan Perubahan
+          </button>
         </div>
+
       </form>
     </div>
   </div>

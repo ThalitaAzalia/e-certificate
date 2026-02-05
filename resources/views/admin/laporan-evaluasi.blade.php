@@ -421,6 +421,19 @@
     box-shadow: 0 6px 12px rgba(33, 163, 102, 0.25);
   }
 
+  /* Pagination arrow styling */
+  .pagination .page-link i {
+    font-size: 0.5rem !important;
+    width: 0.5rem !important;
+    height: 0.5rem !important;
+    transform: scale(0.6);
+  }
+
+  .pagination .page-link {
+    padding: 0.35rem 0.5rem !important;
+    font-size: 0.75rem !important;
+  }
+
 </style>
 @endpush
 
@@ -631,13 +644,13 @@
           <nav aria-label="pagination">
             <ul class="pagination mb-0">
               <li class="page-item disabled">
-                <a class="page-link" href="#"><i class="fas fa-chevron-left fa-sm"></i></a>
+                <a class="page-link" href="#"><i class="fas fa-chevron-left fa-xs"></i></a>
               </li>
               <li class="page-item active"><a class="page-link" href="#">1</a></li>
               <li class="page-item"><a class="page-link" href="#">2</a></li>
               <li class="page-item"><a class="page-link" href="#">3</a></li>
               <li class="page-item">
-                <a class="page-link" href="#"><i class="fas fa-chevron-right fa-sm"></i></a>
+                <a class="page-link" href="#"><i class="fas fa-chevron-right fa-xs"></i></a>
               </li>
             </ul>
           </nav>
@@ -658,9 +671,7 @@
       </div>
 
       <div class="modal-body">
-        <div class="text-muted mb-3">
-          Export akan mengikuti filter yang dipilih (webinar & rentang tanggal).
-        </div>
+        
 
         @php
           $selectedWebinar = null;

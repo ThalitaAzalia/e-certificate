@@ -116,6 +116,50 @@
     font-size: 0.75rem;
     color: #6b7280;
   }
+  /* === Samain feel tabel kayak halaman Laporan Evaluasi (foto 1) === */
+  .table-analytics {
+    --bs-table-bg: transparent;
+    --bs-table-striped-bg: rgba(185, 28, 28, 0.02);
+    --bs-table-hover-bg: rgba(185, 28, 28, 0.04);
+  }
+
+  .table-analytics thead th {
+    background: rgba(185, 28, 28, 0.05);
+    color: var(--brand-3);
+    font-weight: 600;
+    font-size: 0.8125rem;
+    border-bottom: 2px solid rgba(185, 28, 28, 0.1);
+  }
+
+  .table-analytics tbody tr {
+    transition: background-color 0.2s ease;
+  }
+  .table-analytics tbody tr:hover {
+    background: rgba(185, 28, 28, 0.03);
+  }
+
+  .td-no {
+    width: 50px;
+    font-weight: 500;
+    font-size: 0.875rem;
+    color: #111827;
+  }
+
+  .row-title {
+    font-weight: 600;
+    color: #111827;
+    font-size: 0.90rem;
+    margin: 0;
+    line-height: 1.35;
+  }
+
+  /* Subtext di bawah judul */
+  .row-sub {
+    font-size: 0.8125rem;
+    color: #6b7280;
+    margin-top: 0.25rem;
+  }
+
 </style>
 @endpush
 
@@ -226,13 +270,13 @@
         </div>
         @else
         <div class="table-responsive">
-          <table class="table table-hover align-middle">
+          <table class="table table-analytics table-hover align-middle">
             <thead class="table-header">
               <tr>
                 <th style="width: 50px;">No</th>
                 <th>Pertanyaan</th>
                 <th style="width: 100px;">Tipe</th>
-                <th style="width: 100px;">Wajib</th>
+                <th style="width: 100px;">Field</th>
                 <th style="width: 80px;">Urutan</th>
                 <th style="width: 150px;" class="text-end">Aksi</th>
               </tr>
@@ -240,14 +284,15 @@
             <tbody>
               @foreach ($fields as $field)
               <tr>
-                <td class="fw-semibold">{{ $loop->iteration }}</td>
+                <td class="td-no">{{ $loop->iteration }}</td>
                 
                 <td>
-                  <div class="fw-semibold">{{ $field->label }}</div>
-                  <div class="small text-muted">
+                  <div class="row-title">{{ $field->label }}</div>
+                  <div class="row-sub">
                     <span class="key-display">{{ $field->field_key }}</span>
                   </div>
                 </td>
+
                 
                 <td>
                   <span class="badge badge-pill badge-type">{{ ucfirst($field->type) }}</span>

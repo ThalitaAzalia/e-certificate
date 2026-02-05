@@ -467,8 +467,8 @@
     backdrop-filter: blur(10px);
     animation: fadeInUp 0.6s ease-out 0.1s both;
   }
-  .hello .t{ margin:0; font-weight: 1000; color: var(--ink); font-size: 18px; }
-  .hello .s{ margin:2px 0 0; color: var(--muted); font-weight: 800; font-size: 12px; }
+  .hello .t{ margin:0; font-weight: 800; color: var(--ink); font-size: 18px; letter-spacing: -0.02em;}
+  .hello .s{ margin:2px 0 0; color: var(--muted); font-weight: 500; font-size: 12px; letter-spacing: -0.01em;}
 
   .chip{
     display:inline-flex;
@@ -570,68 +570,217 @@
     box-shadow: 0 22px 55px rgba(20,24,31,.12);
   }
 
-  /* ACTIVITY LIST */
-  .activity-list{
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 16px;
-  }
-
-  .activity-item{
+  /* ACTIVITY PANEL - PROFESSIONAL VERSION */
+  .panel-header {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 13px 14px;
-    border-radius: 14px;
-    background: rgba(255,255,255,.75);
-    border: 1px solid rgba(155,0,0,.08);
+    justify-content: space-between;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .panel-title {
+    margin: 0 0 6px;
+    font-weight: 1000;
+    color: var(--ink);
+    font-size: 18px;
+    letter-spacing: -0.01em;
+  }
+
+  .panel-subtitle {
+    color: var(--muted);
+    font-size: 13px;
+    margin: 0;
+    line-height: 1.4;
+    font-weight: 600;
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1.5px solid rgba(155, 0, 0, 0.15);
+    color: var(--red-700);
+    font-weight: 900;
+    font-size: 13px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 16px rgba(155, 0, 0, 0.08);
+  }
+
+  .btn-secondary:hover {
+    background: rgba(255, 255, 255, 1);
+    border-color: var(--red-700);
+    color: var(--red-800);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(155, 0, 0, 0.12);
+  }
+
+  /* ACTIVITY CONTAINER */
+  .activity-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    background: rgba(155, 0, 0, 0.04);
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(155, 0, 0, 0.08);
+  }
+
+  .activity-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px 24px;
+    background: white;
     transition: all 0.25s ease;
+    position: relative;
   }
 
-  .activity-item:hover{
-    background: rgba(255,255,255,1);
-    border-color: rgba(155,0,0,.16);
-    transform: translateX(4px);
+  .activity-item:hover {
+    background: rgba(255, 233, 234, 0.15);
+    transform: translateX(2px);
   }
 
-  .activity-dot{
-    width: 10px;
-    height: 10px;
-    border-radius: 999px;
-    background: var(--red-700);
+  .activity-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 72px;
+    right: 24px;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(155, 0, 0, 0.08), transparent);
+  }
+
+  .activity-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(155, 0, 0, 0.08), rgba(155, 0, 0, 0.03));
+    border: 1px solid rgba(155, 0, 0, 0.1);
+    color: var(--red-700);
     flex-shrink: 0;
-    box-shadow: 0 0 0 3px rgba(155,0,0,.15);
   }
 
-  .activity-content{
+  .activity-content {
     flex: 1;
     min-width: 0;
   }
 
-  .activity-content .title{
+  .activity-title {
+    margin: 0 0 6px;
     font-weight: 900;
-    font-size: 12px;
+    font-size: 14px;
     color: var(--ink);
-    margin-bottom: 3px;
-    line-height: 1.4;
+    letter-spacing: -0.01em;
   }
 
-  .activity-content .time{
-    font-size: 11px;
+  .activity-desc {
+    margin: 0 0 4px;
+    font-weight: 600;
+    font-size: 13.5px;
+    color: var(--ink);
+    line-height: 1.5;
+  }
+
+  .activity-desc strong {
+    font-weight: 1000;
+    color: var(--red-800);
+  }
+
+  .activity-meta {
+    display: inline-block;
+    font-size: 12px;
     color: var(--muted);
     font-weight: 600;
-    line-height: 1.3;
+    background: rgba(155, 0, 0, 0.04);
+    padding: 4px 10px;
+    border-radius: 6px;
+    border: 1px solid rgba(155, 0, 0, 0.08);
   }
 
-  @media (max-width: 1140px){
-    .dash-shell{ grid-template-columns: 270px 1fr; }
+  .activity-status {
+    flex-shrink: 0;
   }
-  
-  @media (max-width: 860px){
-    .dash-shell{ grid-template-columns: 1fr; }
-    .side{ position:relative; height:auto; }
-    .grid-3{ grid-template-columns: 1fr; }
+
+  .status-badge {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-weight: 900;
+    font-size: 11px;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    border: 1px solid;
+  }
+
+  .status-complete {
+    background: rgba(155, 0, 0, 0.08);
+    color: var(--red-800);
+    border-color: rgba(155, 0, 0, 0.15);
+  }
+
+  .status-success {
+    background: rgba(5, 150, 105, 0.08);
+    color: #059669;
+    border-color: rgba(5, 150, 105, 0.15);
+  }
+
+  .status-ready {
+    background: rgba(124, 58, 237, 0.08);
+    color: #7c3aed;
+    border-color: rgba(124, 58, 237, 0.15);
+  }
+
+  .status-active {
+    background: rgba(8, 145, 178, 0.08);
+    color: #0891b2;
+    border-color: rgba(8, 145, 178, 0.15);
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .panel-header {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    
+    .btn-secondary {
+      align-self: flex-start;
+    }
+    
+    .activity-item {
+      flex-wrap: wrap;
+      padding: 16px;
+      gap: 12px;
+    }
+    
+    .activity-item:not(:last-child)::after {
+      left: 16px;
+      right: 16px;
+    }
+    
+    .activity-status {
+      margin-left: auto;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .activity-item {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .activity-status {
+      align-self: flex-end;
+    }
   }
 </style>
 
@@ -651,40 +800,51 @@
       </div>
 
       <div class="navx">
-        <a class="active" href="{{ route('admin.dashboard') }}">
-          <div class="nav-ico"><span class="ico ico-home"></span></div>
-          Overview
-        </a>
-        <a href="{{ route('admin.webinars.index') }}">
-          <div class="nav-ico"><span class="ico ico-cal"></span></div>
-          Manajemen Webinar
-        </a>
-        <a href="{{ route('admin.form-datadiri') }}">
-          <div class="nav-ico"><span class="ico ico-file"></span></div>
-          Form Data Diri
-        </a>
-        <a href="{{ route('admin.evaluasi.index') }}">
-          <div class="nav-ico"><span class="ico ico-file"></span></div>
-          Form Evaluasi
-        </a>
-        <a href="{{ route('admin.template-sertifikat.index') }}">
-         <div class="nav-ico"><span class="ico ico-badge"></span></div>
-          Template Sertifikat
-        </a>
-        <a href="{{ route('admin.laporan.evaluasi') }}">
-          <div class="nav-ico">
-            <span class="ico ico-chart"></span>
-          </div>
-          Laporan Evaluasi
-        </a>
-        <div class="nav-divider"></div>
-        <a href="{{ route('admin.profil') }}">
-        <div class="nav-ico">
-          <span class="ico ico-user"></span>
-        </div>
-          Profil Admin
-        </a>
-      </div>
+      <a href="{{ route('admin.dashboard') }}"
+        class="{{ request()->is('admin/dashboard') ? 'active' : '' }}">
+        <div class="nav-ico"><span class="ico ico-home"></span></div>
+        Dashboard
+      </a>
+
+      <a href="{{ route('admin.webinars.index') }}"
+        class="{{ request()->is('admin/webinars*') ? 'active' : '' }}">
+        <div class="nav-ico"><span class="ico ico-cal"></span></div>
+        Manajemen Webinar
+      </a>
+
+      <a href="{{ route('admin.form-datadiri') }}"
+        class="{{ request()->is('admin/form-datadiri*') ? 'active' : '' }}">
+        <div class="nav-ico"><span class="ico ico-file"></span></div>
+        Form Data Diri
+      </a>
+
+      <a href="{{ route('admin.evaluasi.index') }}"
+        class="{{ request()->is('admin/evaluasi*') ? 'active' : '' }}">
+        <div class="nav-ico"><span class="ico ico-file"></span></div>
+        Form Evaluasi
+      </a>
+
+      <a href="{{ route('admin.template-sertifikat.index') }}"
+        class="{{ request()->is('admin/template-sertifikat*') ? 'active' : '' }}">
+        <div class="nav-ico"><span class="ico ico-badge"></span></div>
+        Template Sertifikat
+      </a>
+
+      <a href="{{ route('admin.laporan.evaluasi') }}"
+        class="{{ request()->is('admin/laporan/evaluasi*') ? 'active' : '' }}">
+        <div class="nav-ico"><span class="ico ico-chart"></span></div>
+        Laporan Evaluasi
+      </a>
+
+      <div class="nav-divider"></div>
+
+      <a href="{{ route('admin.profil') }}"
+        class="{{ request()->is('admin/profil*') ? 'active' : '' }}">
+        <div class="nav-ico"><span class="ico ico-user"></span></div>
+        Profil Admin
+      </a>
+    </div>
+
 
       <div class="side-foot">
         <div class="upgrade">
@@ -710,11 +870,7 @@
       <div class="topbar">
         <div class="hello">
           <p class="t">Dashboard</p>
-          <p class="s">Ringkasan sistem webinar, evaluasi, dan e-sertifikat</p>
-        </div>
-
-        <div class="chip">
-          <span class="dot"></span> Status: Live Database
+          <p class="s">Ringkasan pengelolaan webinar, evaluasi, dan sertifikat digital</p>
         </div>
       </div>
 
@@ -741,53 +897,91 @@
 
       {{-- AKTIVITAS TERBARU --}}
       <section class="panel">
-        <div style="display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap; margin-bottom: 4px;">
+        <div class="panel-header">
           <div>
-            <h3 style="margin:0 0 5px; font-weight:1000; color:var(--ink); font-size:15px;">
-              Aktivitas Terbaru
-            </h3>
-            <p style="color:#6b7280; font-size:12px; margin:0; line-height:1.4; font-weight:600;">
-              Log aktivitas sistem 7 hari terakhir
-            </p>
+            <h3 class="panel-title">Aktivitas Terbaru</h3>
+            <p class="panel-subtitle">Log aktivitas sistem 7 hari terakhir</p>
           </div>
-
-          <a href="{{ route('admin.webinars.index') }}"
-            class="btn-red"
-            style="width:auto; padding:10px 16px; white-space:nowrap; font-size:12px;">
-            Kelola Webinar
-          </a>
+          <div class="panel-actions">
+            <a href="{{ route('admin.webinars.index') }}" class="btn-secondary">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+              </svg>
+              Kelola Webinar
+            </a>
+          </div>
         </div>
 
-        <div class="activity-list">
+        <div class="activity-container">
           <div class="activity-item">
-            <div class="activity-dot"></div>
+            <div class="activity-icon">
+              <!-- Users (professional) -->
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+              </svg>
+            </div>
             <div class="activity-content">
-              <div class="title">{{ $totalPeserta }} peserta terdaftar di sistem</div>
-              <div class="time">Total keseluruhan data</div>
+              <h4 class="activity-title">Pendaftaran Peserta</h4>
+              <p class="activity-desc"><strong>{{ $totalPeserta }} peserta</strong> terdaftar di sistem</p>
+              <span class="activity-meta">Total keseluruhan data</span>
             </div>
           </div>
 
           <div class="activity-item">
-            <div class="activity-dot" style="background:#059669; box-shadow: 0 0 0 3px rgba(5,150,105,.15);"></div>
+            <div class="activity-icon">
+              <!-- Clipboard Check (professional) -->
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+                <path d="M9 4h6a2 2 0 0 0-6 0z" />
+                <path d="M9 14l2 2 4-4" />
+              </svg>
+            </div>
             <div class="activity-content">
-              <div class="title">{{ $totalEvaluasi }} evaluasi berhasil dikumpulkan</div>
-              <div class="time">Dari seluruh webinar yang telah dilaksanakan</div>
+              <h4 class="activity-title">Pengumpulan Evaluasi</h4>
+              <p class="activity-desc"><strong>{{ $totalEvaluasi }} evaluasi</strong> berhasil dikumpulkan</p>
+              <span class="activity-meta">Dari seluruh webinar yang telah dilaksanakan</span>
             </div>
           </div>
 
           <div class="activity-item">
-            <div class="activity-dot" style="background:#7c3aed; box-shadow: 0 0 0 3px rgba(124,58,237,.15);"></div>
+            <div class="activity-icon">
+              <!-- Award/Badge (professional) -->
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="8" r="6" />
+                <path d="M15.5 13.5 18 22l-6-3-6 3 2.5-8.5" />
+              </svg>
+            </div>
             <div class="activity-content">
-              <div class="title">{{ $totalSertifikat }} sertifikat siap diunduh peserta</div>
-              <div class="time">Berdasarkan asumsi 1 peserta = 1 sertifikat</div>
+              <h4 class="activity-title">Penerbitan Sertifikat</h4>
+              <p class="activity-desc"><strong>{{ $totalSertifikat }} sertifikat</strong> siap diunduh peserta</p>
+              <span class="activity-meta">Berdasarkan asumsi 1 peserta = 1 sertifikat</span>
             </div>
           </div>
 
           <div class="activity-item">
-            <div class="activity-dot" style="background:#0891b2; box-shadow: 0 0 0 3px rgba(8,145,178,.15);"></div>
+            <div class="activity-icon">
+              <!-- Settings (professional) -->
+              <svg width="18" height="18" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round"
+                aria-hidden="true">
+                <path d="M12 1.75 13.4 4.2 16.1 4.9 17.6 2.9 20.1 5.4 18.1 7.1 18.7 9.8 21.25 10.9 21.25 13.1 18.7 14.2 18.1 16.9 
+                20.1 18.6 17.6 21.1 16.1 19.1 13.4 19.8 12 22.25 10.6 19.8 7.9 19.1 6.4 21.1 3.9 18.6 5.9 16.9 5.3 14.2 2.75 13.1 
+                2.75 10.9 5.3 9.8 5.9 7.1 3.9 5.4 6.4 2.9 7.9 4.9 10.6 4.2Z"/>
+                <circle cx="12" cy="12" r="3.5"/>
+              </svg>
+
+            </div>
             <div class="activity-content">
-              <div class="title">Sistem evaluasi dan template sertifikat aktif</div>
-              <div class="time">Siap digunakan untuk webinar mendatang</div>
+              <h4 class="activity-title">Status Sistem</h4>
+              <p class="activity-desc">Sistem evaluasi dan template sertifikat aktif</p>
+              <span class="activity-meta">Siap digunakan untuk webinar mendatang</span>
             </div>
           </div>
         </div>
@@ -796,5 +990,32 @@
     </main>
   </div>
 </div>
+
+<script>
+(function() {
+  const navLinks = document.querySelectorAll('.navx a');
+  const currentPath = window.location.pathname;
+  
+  navLinks.forEach(link => {
+    const href = link.getAttribute('href');
+    
+    // Hapus active class dari semua
+    link.classList.remove('active');
+    
+    // Tambahkan active class berdasarkan URL
+    if (
+      (href === '/admin/dashboard' && currentPath === '/admin/dashboard') ||
+      (href.includes('/admin/webinars') && currentPath.includes('/admin/webinars')) ||
+      (href.includes('/admin/form-datadiri') && currentPath.includes('/admin/form-datadiri')) ||
+      (href.includes('/admin/evaluasi') && currentPath.includes('/admin/evaluasi')) ||
+      (href.includes('/admin/template-sertifikat') && currentPath.includes('/admin/template-sertifikat')) ||
+      (href.includes('/admin/laporan/evaluasi') && currentPath.includes('/admin/laporan/evaluasi')) ||
+      (href.includes('/admin/profil') && currentPath.includes('/admin/profil'))
+    ) {
+      link.classList.add('active');
+    }
+  });
+})();
+</script>
 
 @endsection

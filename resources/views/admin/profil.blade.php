@@ -297,7 +297,7 @@
         <div class="card-body p-4">
           <h5 class="fw-semibold mb-1">Kelola Foto Profil</h5>
           <p class="text-muted small mb-3">
-            Unggah foto profil baru. Format: JPG/PNG (maks. 2MB).
+            Unggah foto profil baru. Format: JPG/PNG.
           </p>
 
           <form method="POST" action="{{ route('admin.profil.photo') }}" enctype="multipart/form-data" class="mb-3">

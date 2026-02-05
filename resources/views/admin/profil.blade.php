@@ -315,7 +315,6 @@
                 <div class="subtxt">atau drag & drop file di sini</div>
               </label>
             </div>
-            <div class="subtxt mb-3">Ukuran disarankan: 400×400</div>
 
             <button type="submit" class="btn btn-brand w-100 d-inline-flex justify-content-center gap-2">
               <i class="fas fa-upload"></i>

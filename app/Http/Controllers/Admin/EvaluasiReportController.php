@@ -27,7 +27,7 @@ class EvaluasiReportController extends Controller
         $startDate = $request->query('start');
         $endDate   = $request->query('end');
 
-        $query = Webinar::query();
+        $query = Webinar::orderBy('tanggal', 'desc');
 
         // FILTER TANGGAL
         if ($startDate && $endDate) {
@@ -38,6 +38,7 @@ class EvaluasiReportController extends Controller
         if ($webinarId) {
             $query->where('id', $webinarId);
         }
+
 
         // ========================
         // HITUNG RATING (KONSISTEN)
@@ -66,10 +67,34 @@ class EvaluasiReportController extends Controller
         });
 
         // ========================
+        // SORTING UNTUK TABEL SAJA
+        // ========================
+        if ($request->sort === 'avg_desc') {
+            $webinars = $webinars->sortByDesc('rata_rating')->values();
+        } elseif ($request->sort === 'avg_asc') {
+            $webinars = $webinars->sortBy('rata_rating')->values();
+        } elseif ($request->sort === 'respon_desc') {
+            $webinars = $webinars->sortByDesc('total_respon')->values();
+        }
+
+        // ========================
         // DATA GRAFIK (REAL)
         // ========================
-        $chartLabels = $webinars->pluck('judul')->values();
-        $chartRatings = $webinars->pluck('rata_rating')->values();
+
+
+        // ========================
+        // URUTAN KHUSUS UNTUK GRAFIK (BERDASARKAN TANGGAL)
+        // ========================
+        $webinarsSorted = $webinars
+            ->sortBy('tanggal') // atau sortByDesc kalau mau terbaru di kanan
+            ->values();
+
+        // ========================
+        // DATA GRAFIK (IKUT URUTAN TANGGAL)
+        // ========================
+        $chartLabels  = $webinarsSorted->pluck('judul')->values();
+        $chartRatings = $webinarsSorted->pluck('rata_rating')->values();
+
 
         $allWebinars = Webinar::orderBy('judul')->get();
 
@@ -92,8 +117,8 @@ class EvaluasiReportController extends Controller
             'chartRatings'
         )
     );
-
     }
+
 
     /**
      * =========================================================

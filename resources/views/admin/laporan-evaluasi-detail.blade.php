@@ -102,18 +102,6 @@
                   {{ $questions->count() }} Pertanyaan
                 </span>
 
-                @if(!empty($orphanCount) && $orphanCount > 0)
-                  @if(!empty($showOrphan))
-                    <a href="{{ request()->fullUrlWithQuery(['show_orphan' => 0]) }}" class="small link-muted">
-                      Sembunyikan jawaban terhapus ({{ $orphanCount }})
-                    </a>
-                  @else
-                    <a href="{{ request()->fullUrlWithQuery(['show_orphan' => 1]) }}" class="small link-muted">
-                      Tampilkan jawaban terhapus ({{ $orphanCount }})
-                    </a>
-                  @endif
-                @endif
-
               </div>
             </div>
 
@@ -167,50 +155,6 @@
               @php
                 $orphan = $peserta->evaluasiAnswers->filter(fn($a) => $a->question === null);
               @endphp
-
-              <hr>
-              <h6 class="mt-3 mb-2">Jawaban untuk pertanyaan yang sudah dihapus</h6>
-
-              @foreach($orphan as $o)
-                <div class="mb-3">
-                  <div class="d-flex align-items-start">
-                    <div class="me-3">
-                      <span class="badge badge-soft rounded-pill">-</span>
-                    </div>
-                    <div>
-                      <div class="text-warning small mb-1">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        Pertanyaan telah dihapus (ID: {{ $o->evaluasi_question_id }})
-                        @if($o->question_text)
-                          — <strong>{{ $o->question_text }}</strong>
-                        @endif
-                      </div>
-
-                      <div class="answer-box">
-                        @if($o->answer && is_numeric($o->answer))
-                          <div class="d-flex align-items-center flex-wrap">
-                            <div class="rating-display">
-                              @for($i = 1; $i <= 5; $i++)
-                                @if($i <= (int) $o->answer)
-                                  <i class="fas fa-star text-warning me-1"></i>
-                                @else
-                                  <i class="far fa-star text-secondary me-1"></i>
-                                @endif
-                              @endfor
-                            </div>
-                            <span class="ms-2 fw-semibold">({{ $o->answer }}/5)</span>
-                          </div>
-                        @elseif($o->answer)
-                          <p class="mb-0">{{ $o->answer }}</p>
-                        @else
-                          <span class="muted">Tidak ada jawaban</span>
-                        @endif
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              @endforeach
-
             @endif
 
           </div>

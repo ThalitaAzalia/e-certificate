@@ -263,7 +263,6 @@
             <option value="">Semua</option>
             <option value="rating" {{ request('type')=='rating' ? 'selected' : '' }}>Rating</option>
             <option value="text" {{ request('type')=='text' ? 'selected' : '' }}>Text</option>
-            <option value="textarea" {{ request('type')=='textarea' ? 'selected' : '' }}>Textarea</option>
           </select>
         </div>
 
@@ -542,50 +541,43 @@
         <h5 class="modal-title fw-bold">Preview Form Evaluasi</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
+
       <div class="modal-body">
-        <p class="text-muted mb-4">Contoh tampilan form yang akan dilihat peserta:</p>
-        
+        <p class="text-muted mb-4">
+          Contoh tampilan form yang akan dilihat peserta:
+        </p>
+
         <form>
-          <div class="mb-3">
-            <label class="form-label fw-semibold">
-              1. Seberapa puas Anda dengan materi webinar? <span class="text-danger">*</span>
-            </label>
-            <div class="d-flex gap-2 mb-2">
-              @for($i = 1; $i <= 5; $i++)
-                <div class="flex-1 text-center">
-                  <input type="radio" name="rating_1" id="rating_1_{{ $i }}" class="d-none">
-                  <label for="rating_1_{{ $i }}" 
-                         class="d-block py-2 px-3 border rounded hover:border-brand hover:bg-red-50 cursor-pointer">
-                    <span class="fw-medium">{{ $i }}</span>
-                  </label>
+          @foreach($questions->sortBy('urutan') as $q)
+            <div class="mb-4">
+              <label class="form-label fw-semibold">
+                {{ $loop->iteration }}. {{ $q->question }}
+              </label>
+
+              @if($q->type === 'rating')
+                <div class="d-flex gap-2">
+                  @for($i = 1; $i <= ($q->rating_max ?? 5); $i++)
+                    <div class="border rounded px-3 py-2 text-muted">
+                      {{ $i }}
+                    </div>
+                  @endfor
                 </div>
-              @endfor
-            </div>
-            <div class="d-flex justify-content-between text-xs text-muted">
-              <span>Sangat Tidak Puas</span>
-              <span>Sangat Puas</span>
-            </div>
-          </div>
 
-          <div class="mb-3">
-            <label class="form-label fw-semibold">
-              2. Apa hal paling berharga yang Anda dapatkan? <span class="text-danger">*</span>
-            </label>
-            <input type="text" class="form-control" placeholder="Tulis jawaban Anda...">
-          </div>
+              @elseif($q->type === 'text')
+                <input class="form-control" disabled>
 
-          <div class="mb-3">
-            <label class="form-label fw-semibold">
-              3. Saran untuk perbaikan <span class="text-danger">*</span>
-            </label>
-            <textarea class="form-control" rows="3" placeholder="Berikan saran..."></textarea>
-          </div>
+              @elseif($q->type === 'textarea')
+                <textarea class="form-control" rows="3" disabled></textarea>
+              @endif
+            </div>
+          @endforeach
 
           <button type="button" class="btn btn-brand w-100">
             Kirim Evaluasi
           </button>
         </form>
       </div>
+
       <div class="modal-footer">
         <button class="btn btn-ghost" data-bs-dismiss="modal">Tutup</button>
       </div>

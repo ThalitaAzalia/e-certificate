@@ -607,6 +607,14 @@
     color: #adb5bd !important;
     background-color: transparent !important;
   }
+  
+  .btn-brand {
+    border-radius: 10px;
+  }
+
+  .btn-ghost {
+    border-radius: 10px;
+  }
 
 </style>
 @endpush
@@ -657,7 +665,7 @@
 
       <form method="GET" action="{{ route('admin.webinars.index') }}">
         <div class="row g-2 align-items-end">
-          <div class="col-md-5">
+          <div class="col-md-3">
             <label class="form-label fw-semibold">Cari webinar</label>
             <input type="text"
                    name="search"
@@ -682,14 +690,19 @@
               <option value="tanggal_terjauh" {{ request('sort') == 'tanggal_terjauh' ? 'selected' : '' }}>Tanggal Terjauh</option>
               <option value="terbaru" {{ request('sort') == 'terbaru' ? 'selected' : '' }}>Terbaru Dibuat</option>
               <option value="terlama" {{ request('sort') == 'terlama' ? 'selected' : '' }}>Terlama Dibuat</option>
-            </select>
+           </select>
           </div>
 
-          <div class="col-md-1 d-grid">
-            <a href="{{ route('admin.webinars.index') }}" class="btn btn-ghost">
+          <div class="col-md-3 d-flex gap-2">
+            <button type="submit" class="btn btn-brand flex-fill">
+              Filter
+            </button>
+
+            <a href="{{ route('admin.webinars.index') }}" class="btn btn-ghost flex-fill">
               Reset
             </a>
           </div>
+
         </div>
       </form>
     </div>
@@ -959,7 +972,7 @@
                 <div class="card-body">
 
                   {{-- BONUS: tampilkan error general (opsional) --}}
-                  @if ($errors->any())
+                  @if ($errors->any() && request()->isMethod('post'))
                     <div class="alert alert-danger mb-3">
                       <div class="fw-semibold mb-1">Gagal menyimpan.</div>
                       <ul class="mb-0 ps-3">
@@ -1119,7 +1132,7 @@
 </div>
 
 {{-- BONUS UX: kalau validasi gagal, modalCreate otomatis kebuka lagi --}}
-@if ($errors->any())
+@if ($errors->any() && request()->isMethod('post'))
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       var el = document.getElementById('modalCreate');

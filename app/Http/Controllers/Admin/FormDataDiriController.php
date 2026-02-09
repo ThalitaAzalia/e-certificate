@@ -10,9 +10,33 @@ class FormDataDiriController extends Controller
 {
     public function index(Request $request)
     {
-        $fields = FormField::orderBy('sort_order')->get();
+        $query = FormField::query();
+
+        // 🔍 Filter pencarian (label & key)
+        if ($request->filled('q')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('label', 'like', '%' . $request->q . '%')
+                ->orWhere('field_key', 'like', '%' . $request->q . '%');
+            });
+        }
+
+        // ✅ Filter wajib / tidak wajib
+        if ($request->filled('required')) {
+            $query->where('required', $request->required);
+        }
+
+        // 🧩 Filter tipe input
+        if ($request->filled('type')) {
+            $query->where('type', $request->type);
+        }
+
+        $fields = $query
+            ->orderBy('sort_order')
+            ->get();
+
         return view('admin.form-datadiri', compact('fields'));
     }
+
 
     // ======================
     // CREATE

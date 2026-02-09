@@ -14,35 +14,29 @@ class WebinarController extends Controller
      */
     public function index(Request $request)
     {
-        $validated = $request->validate([
-            'search' => 'nullable|string|max:255',
-            'status' => 'nullable|in:draft,published',
-            'sort'   => 'nullable|string|in:tanggal_terjauh,terbaru,terlama',
-        ]);
-
         $query = Webinar::query();
 
         // =====================
         // FILTER: SEARCH
         // =====================
         if ($request->filled('search')) {
-            $query->where(function ($q) use ($request) {
-                $q->where('judul', 'like', '%' . $request->search . '%')
-                  ->orWhere('deskripsi', 'like', '%' . $request->search . '%');
-            });
+           $query->whereRaw('LOWER(judul) LIKE ?', ['%' . strtolower($request->search) . '%']);
         }
+
 
         // =====================
         // FILTER: STATUS
         // =====================
-        if ($request->filled('status')) {
+        if (in_array($request->status, ['draft', 'published'])) {
             $query->where('status', $request->status);
         }
 
         // =====================
-        // SORTING
+        // SORTING (AMAN)
         // =====================
-        switch ($request->sort) {
+        $sort = $request->get('sort', 'tanggal_terdekat');
+
+        switch ($sort) {
             case 'tanggal_terjauh':
                 $query->orderBy('tanggal', 'asc');
                 break;
@@ -65,6 +59,7 @@ class WebinarController extends Controller
 
         return view('admin.manajemen', compact('webinars'));
     }
+
 
     /**
      * STORE WEBINAR

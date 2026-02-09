@@ -475,7 +475,7 @@
     <div class="card-body">
       <div class="row g-3 align-items-end">
         {{-- Pilih Webinar --}}
-        <div class="col-md-4">
+        <div class="col-md-3">
           <label class="form-label fw-semibold">Pilih Webinar</label>
           <select name="webinar_id" class="form-select">
             <option value="">Semua webinar</option>
@@ -507,11 +507,14 @@
         </div>
 
         {{-- Actions --}}
-        <div class="col-md-2 d-flex gap-2">
-          <button type="submit" class="btn btn-brand w-100">
-            Terapkan
-          </button>
-        </div>
+        <div class="col-md-3 d-flex gap-2">
+            <button type="submit" class="btn btn-brand flex-fill">
+              Filter
+            </button>
+
+            <a href="{{ route('admin.laporan.evaluasi') }}" class="btn btn-ghost flex-fill">
+              Reset
+            </a>
       </div>
     </div>
   </div>
@@ -545,13 +548,29 @@
           <p class="text-muted small">Detail respons evaluasi untuk setiap webinar</p>
         </div>
 
-        <div class="d-flex gap-2">
-          <select class="form-select" style="min-width: 160px;">
+        <form method="GET" action="{{ route('admin.laporan.evaluasi') }}">
+          {{-- PERTAHANKAN FILTER YANG SUDAH ADA --}}
+          <input type="hidden" name="webinar_id" value="{{ request('webinar_id') }}">
+          <input type="hidden" name="start" value="{{ request('start') }}">
+          <input type="hidden" name="end" value="{{ request('end') }}">
+
+          <select name="sort"
+                  class="form-select"
+                  style="min-width: 180px;"
+                  onchange="this.form.submit()">
             <option value="">Urutkan</option>
-            <option>Rata-rata tertinggi</option>
-            <option>Rata-rata terendah</option>
-            <option>Respon terbanyak</option>
+            <option value="avg_desc" {{ request('sort') == 'avg_desc' ? 'selected' : '' }}>
+              Rata-rata tertinggi
+            </option>
+            <option value="avg_asc" {{ request('sort') == 'avg_asc' ? 'selected' : '' }}>
+              Rata-rata terendah
+            </option>
+            <option value="respon_desc" {{ request('sort') == 'respon_desc' ? 'selected' : '' }}>
+              Respon terbanyak
+            </option>
           </select>
+        </form>
+
         </div>
       </div>
 

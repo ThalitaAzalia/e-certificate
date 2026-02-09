@@ -211,7 +211,7 @@
       @endif
 
       <div class="row g-2 align-items-end">
-        <div class="col-md-4">
+        <div class="col-md-3">
           <label class="form-label fw-semibold">Cari pertanyaan</label>
           <input type="text"
                  name="q"
@@ -241,9 +241,16 @@
           </select>
         </div>
 
-        <div class="col-md-2 d-grid">
-          <button type="submit" class="btn btn-brand">Filter</button>
-        </div>
+        <div class="col-md-3 d-flex gap-2">
+            <button type="submit" class="btn btn-brand flex-fill">
+              Filter
+            </button>
+
+            <a href="{{ route('admin.form-datadiri') }}" class="btn btn-ghost flex-fill">
+              Reset
+            </a>
+
+          </div>
       </div>
     </div>
   </div>
@@ -276,7 +283,7 @@
                 <th style="width: 50px;">No</th>
                 <th>Pertanyaan</th>
                 <th style="width: 100px;">Tipe</th>
-                <th style="width: 100px;">Field</th>
+                <th style="width: 100px;">Wajib</th>
                 <th style="width: 80px;">Urutan</th>
                 <th style="width: 150px;" class="text-end">Aksi</th>
               </tr>
@@ -389,7 +396,7 @@
             </div>
 
             <div class="col-md-6">
-              <label class="form-label fw-semibold">Wajib?</label>
+              <label class="form-label fw-semibold">Wajib</label>
               <select name="required" class="form-select">
                 <option value="1">Wajib</option>
                 <option value="0">Tidak wajib</option>
@@ -512,38 +519,48 @@
         <h5 class="modal-title fw-bold">Preview Form Data Diri</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
+
       <div class="modal-body">
-        <p class="text-muted mb-4">Contoh tampilan form yang akan dilihat peserta:</p>
-        
+        <p class="text-muted mb-4">
+          Contoh tampilan form yang akan dilihat peserta:
+        </p>
+
         <form>
-          <div class="mb-3">
-            <label class="form-label fw-semibold">
-              Nama Lengkap <span class="text-danger">*</span>
-            </label>
-            <input class="form-control" placeholder="Masukkan nama lengkap">
-          </div>
+          @foreach($fields->sortBy('sort_order') as $field)
+            <div class="mb-3">
+              <label class="form-label fw-semibold">
+                {{ $field->label }}
+                @if($field->required)
+                  <span class="text-danger">*</span>
+                @endif
+              </label>
 
-          <div class="mb-3">
-            <label class="form-label fw-semibold">
-              Email <span class="text-danger">*</span>
-            </label>
-            <input type="email" class="form-control">
-          </div>
+              @if(in_array($field->type, ['text','email','number','date']))
+                <input type="{{ $field->type }}"
+                       class="form-control"
+                       placeholder="{{ $field->placeholder }}"
+                       disabled>
 
-          <div class="mb-3">
-            <label class="form-label fw-semibold">Instansi</label>
-            <select class="form-select">
-              <option>Pilih instansi</option>
-              <option>Pemda</option>
-              <option>Kementerian</option>
-            </select>
-          </div>
+              @elseif($field->type === 'textarea')
+                <textarea class="form-control"
+                          rows="3"
+                          placeholder="{{ $field->placeholder }}"
+                          disabled></textarea>
+
+              @elseif(in_array($field->type, ['select','radio','checkbox']))
+                <select class="form-select" disabled>
+                  <option>Contoh pilihan</option>
+                </select>
+              @endif
+            </div>
+          @endforeach
 
           <button type="button" class="btn btn-brand w-100">
             Simpan Data Diri
           </button>
         </form>
       </div>
+
       <div class="modal-footer">
         <button class="btn btn-ghost" data-bs-dismiss="modal">Tutup</button>
       </div>

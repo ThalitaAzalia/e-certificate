@@ -482,108 +482,82 @@
           <form method="POST" action="{{ url('/absensi') }}">
             @csrf
 
-            {{-- SATU-SATUNYA WEBINAR ID (DARI URL) --}}
             <input type="hidden" name="webinar_id" value="{{ request()->query('webinar_id') }}">
 
             @foreach ($fields as $field)
-              @php
-                // icon hanya tampilan, TIDAK mengubah database
-                $iconSvg = 'user';
-                if ($field->type === 'email') $iconSvg = 'mail';
-                elseif ($field->type === 'tel') $iconSvg = 'phone';
-                elseif ($field->type === 'number') $iconSvg = 'hash';
-                elseif ($field->type === 'date') $iconSvg = 'calendar';
-                elseif ($field->type === 'textarea') $iconSvg = 'note';
-                else $iconSvg = 'user';
-
-                $labelLower = strtolower($field->label ?? '');
-                $keyLower   = strtolower($field->field_key ?? '');
-
-                $ph = $field->placeholder; // tetap pakai dari DB kalau sudah ada
-                if (empty($ph)) {
-                  if ($field->type === 'email' || str_contains($labelLower, 'email') || str_contains($keyLower, 'email')) {
-                    $ph = 'Masukkan email aktif';
-                  } elseif ($field->type === 'tel' || str_contains($labelLower, 'handphone') || str_contains($labelLower, 'hp') || str_contains($keyLower, 'phone') || str_contains($keyLower, 'hp')) {
-                    $ph = 'Contoh: 08xxxxxxxxxxx';
-                  } elseif (str_contains($labelLower, 'nama') || str_contains($keyLower, 'nama')) {
-                    $ph = 'Masukkan nama lengkap';
-                  } else {
-                    $ph = ''; // biarkan kosong kalau bukan field yang kamu minta
-                  }
-                }
-              @endphp
-
               <div class="form-group">
-                <label class="form-label" for="f_{{ $field->field_key }}">
+
+                <label class="form-label">
                   {{ $field->label }}
-                  @if ($field->required) <span style="color:#dc2626">*</span> @endif
+                  @if ($field->required)
+                    <span style="color:#dc2626">*</span>
+                  @endif
                 </label>
 
                 <div class="input-wrapper">
-                  {{-- icon --}}
-                  @if($iconSvg === 'user')
-                    <svg class="input-icon" viewBox="0 0 24 24" fill="none">
+
+                  {{-- ICON --}}
+                  @php
+                    $icon = $field->icon();
+                  @endphp
+
+                  @if($icon === 'user')
+                    <svg class="input-icon" viewBox="0 0 24 24">
                       <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" fill="currentColor"/>
                     </svg>
-                  @elseif($iconSvg === 'mail')
-                    <svg class="input-icon" viewBox="0 0 24 24" fill="none">
+
+                  @elseif($icon === 'mail')
+                    <svg class="input-icon" viewBox="0 0 24 24">
                       <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" fill="currentColor"/>
                     </svg>
-                  @elseif($iconSvg === 'phone')
-                    <svg class="input-icon" viewBox="0 0 24 24" fill="none">
+
+                  @elseif($icon === 'phone')
+                    <svg class="input-icon" viewBox="0 0 24 24">
                       <path d="M17 1.01L7 1c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM17 19H7V5h10v14z" fill="currentColor"/>
                     </svg>
-                  @elseif($iconSvg === 'hash')
-                    <svg class="input-icon" viewBox="0 0 24 24" fill="none">
-                      <path d="M10 3L8 21M16 3l-2 18M4 8h18M3 16h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                    </svg>
-                  @elseif($iconSvg === 'calendar')
-                    <svg class="input-icon" viewBox="0 0 24 24" fill="none">
-                      <path d="M7 2v3M17 2v3M4 7h16M5 5h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                    </svg>
+
+                  @elseif($icon === 'hash' || $icon === 'number')
+                    <span class="input-icon" style="font-weight:900;font-size:18px;">#</span>
+
                   @else
-                    <svg class="input-icon" viewBox="0 0 24 24" fill="none">
-                      <path d="M4 4h16v16H4V4Zm3 4h10M7 12h10M7 16h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                    </svg>
+                    <span class="input-icon">?</span>
                   @endif
 
+
+                  {{-- INPUT --}}
                   @if ($field->type === 'textarea')
                     <textarea
-                      id="f_{{ $field->field_key }}"
                       name="{{ $field->field_key }}"
                       class="inputx has-icon"
-                      placeholder="{{ $ph }}"
+                      placeholder="{{ $field->admin_note ?: $field->placeholder }}"
                       {{ $field->required ? 'required' : '' }}
                     >{{ old($field->field_key) }}</textarea>
                   @else
                     <input
-                      id="f_{{ $field->field_key }}"
                       type="{{ $field->type }}"
                       name="{{ $field->field_key }}"
                       class="inputx has-icon"
-                      placeholder="{{ $ph }}"
+                      placeholder="{{ $field->admin_note ?: $field->placeholder }}"
                       value="{{ old($field->field_key) }}"
                       {{ $field->required ? 'required' : '' }}
                     >
                   @endif
+
                 </div>
 
                 @error($field->field_key)
                   <small class="err">{{ $message }}</small>
                 @enderror
+
               </div>
             @endforeach
 
             <button type="submit" class="btn-red">
               Kirim Absensi
             </button>
-
-            <div class="info-pills">
-              <span class="pill">🔒 Data aman</span>
-              <span class="pill">⏱ Cepat & mudah</span>
-              <span class="pill">📄 Lanjut evaluasi</span>
-            </div>
           </form>
+
+
 
           <div class="foot">
             <p style="margin:0;">

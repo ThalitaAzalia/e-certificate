@@ -362,7 +362,7 @@
                      required>
               <div class="subtxt">
                 <i class="fas fa-info-circle me-1"></i>
-                Username harus unik dan tidak mengandung spasi
+                Username harus unik
               </div>
             </div>
 
@@ -419,18 +419,6 @@
                        class="form-control"
                        placeholder="Ulangi password baru"
                        required>
-              </div>
-            </div>
-
-            <div class="alert-soft alert-info-soft mb-3">
-              <div class="d-flex align-items-start gap-2">
-                <i class="fas fa-lightbulb mt-1"></i>
-                <div class="small">
-                  <div class="fw-bold">Tips Password Aman:</div>
-                  <div>• Minimal 8 karakter</div>
-                  <div>• Kombinasi huruf besar/kecil</div>
-                  <div>• Tambahkan angka dan simbol</div>
-                </div>
               </div>
             </div>
 

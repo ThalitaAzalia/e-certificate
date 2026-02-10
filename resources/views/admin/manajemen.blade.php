@@ -671,7 +671,7 @@
                    name="search"
                    value="{{ request('search') }}"
                    class="form-control"
-                   placeholder="Cari judul, deskripsi, atau narasumber...">
+                   placeholder="Cari judul...">
           </div>
 
           <div class="col-md-3">
@@ -1300,6 +1300,7 @@
 </div>
 @endforeach
 
+
 {{-- =========================
     MODAL: EDIT WEBINAR (A + B)
 ========================= --}}
@@ -1521,7 +1522,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">Batal</button>
-          <button type="submit" class="btn btn-outline-danger">Ya, Hapus</button>
+          <button type="submit" class="btn btn-danger" style="min-width:120px; border-radius:8px; font-weight:600;">Ya, Hapus</button>
         </div>
       </form>
     </div>

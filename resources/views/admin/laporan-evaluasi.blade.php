@@ -434,6 +434,28 @@
     font-size: 0.75rem !important;
   }
 
+  /* FIX tabel kepotong kiri */
+  .table-responsive {
+    padding-left: 8px;
+    padding-right: 4px;
+  }
+
+  /* kasih ruang untuk kolom pertama */
+  .table-analytics th:first-child,
+  .table-analytics td:first-child {
+    padding-left: 14px !important;
+  }
+
+  /* biar header gak nempel */
+  .table-analytics thead th {
+    white-space: nowrap;
+  }
+
+  .card-soft > .card-body {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+
 </style>
 @endpush
 

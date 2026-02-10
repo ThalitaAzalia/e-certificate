@@ -191,11 +191,60 @@
     color: #6b7280;
     margin-top: 0.25rem;
   }
+  
+  .modal-footer .btn {
+    padding: 0.6rem 1.5rem;
+    font-weight: 600;
+  }
 
 </style>
 @endpush
 
 @section('content')
+<div class="modal fade" id="modalDeleteEvaluasi" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-danger fw-bold">
+          Konfirmasi Hapus Pertanyaan
+        </h5>
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <p class="mb-2">
+          Anda yakin ingin menghapus pertanyaan berikut?
+        </p>
+        <div class="alert alert-danger mb-0">
+          <strong id="namaPertanyaanEvaluasi">Pertanyaan</strong>
+          <div class="small text-muted mt-1">
+            Data yang sudah dihapus tidak dapat dikembalikan.
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button"
+                class="btn"
+                data-bs-dismiss="modal"
+                style="min-width:120px; border-radius:8px; font-weight:600; background:#6b7280; color:#fff; border:none;">
+          Batal
+        </button>
+
+        <form id="formDeleteEvaluasi" method="POST">
+          @csrf
+          @method('DELETE')
+          <button type="submit" class="btn btn-danger" style="min-width:120px; border-radius:8px; font-weight:600;">
+            Ya, Hapus
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="container py-4">
 
 {{-- HEADER --}}
@@ -356,16 +405,15 @@
                             data-bs-target="#modalEditEval{{ $q->id }}">
                       <i class="fas fa-edit fa-sm"></i>
                     </button>
-                    <form method="POST"
-                          action="{{ route('admin.evaluasi.destroy', $q->id) }}"
-                          class="d-inline"
-                          onsubmit="return confirm('Yakin ingin menghapus pertanyaan ini?')">
-                      @csrf
-                      @method('DELETE')
-                      <button class="btn btn-sm btn-outline-danger">
-                        <i class="fas fa-trash fa-sm"></i>
-                      </button>
-                    </form>
+                    <button type="button"
+                            class="btn btn-sm btn-outline-danger"
+                            onclick="openDeleteEvaluasi(
+                              '{{ route('admin.evaluasi.destroy', $q->id) }}',
+                              '{{ $q->question }}'
+                            )">
+                      <i class="fas fa-trash"></i>
+                    </button>
+
                   </div>
                 </td>
               </tr>
@@ -404,7 +452,6 @@
               <select name="type" class="form-select" required>
                 <option value="rating">Rating (1–5)</option>
                 <option value="text">Text</option>
-                <option value="textarea">Textarea</option>
               </select>
             </div>
 
@@ -508,7 +555,6 @@
               <select name="type" class="form-select" required>
                 <option value="rating" {{ $q->type === 'rating' ? 'selected' : '' }}>Rating (1–5)</option>
                 <option value="text" {{ $q->type === 'text' ? 'selected' : '' }}>Text</option>
-                <option value="textarea" {{ $q->type === 'textarea' ? 'selected' : '' }}>Textarea</option>
               </select>
             </div>
 
@@ -565,9 +611,6 @@
 
               @elseif($q->type === 'text')
                 <input class="form-control" disabled>
-
-              @elseif($q->type === 'textarea')
-                <textarea class="form-control" rows="3" disabled></textarea>
               @endif
             </div>
           @endforeach
@@ -584,5 +627,61 @@
     </div>
   </div>
 </div>
+{{-- MODAL HAPUS PERTANYAAN EVALUASI --}}
+<div class="modal fade" id="modalDeleteEvaluasi" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-danger fw-bold">
+          Hapus Pertanyaan Evaluasi
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <p>Anda yakin ingin menghapus pertanyaan berikut?</p>
+        <div class="alert alert-danger mb-0">
+          <strong id="evalQuestionText">Pertanyaan</strong>
+          <div class="small text-muted mt-1">
+            Tindakan ini tidak dapat dibatalkan.
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer d-flex gap-2">
+        <button type="button"
+                class="btn btn-ghost"
+                data-bs-dismiss="modal"
+                style="min-width:120px;">
+          Batal
+        </button>
+
+        <form id="formDeleteEvaluasi" method="POST">
+          @csrf
+          @method('DELETE')
+          <button type="submit"
+                  class="btn btn-brand"
+                  style="min-width:120px;">
+            Ya, Hapus
+          </button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+@push('scripts')
+<script>
+  function openDeleteEvaluasi(url, question) {
+    document.getElementById('formDeleteEvaluasi').action = url;
+    document.getElementById('namaPertanyaanEvaluasi').innerText = question;
+
+    const modal = new bootstrap.Modal(
+      document.getElementById('modalDeleteEvaluasi')
+    );
+    modal.show();
+  }
+</script>
+@endpush
 
 @endsection

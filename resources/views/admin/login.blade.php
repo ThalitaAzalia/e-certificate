@@ -243,19 +243,6 @@
     box-shadow: 0 0 0 4px rgba(155,0,0,.12);
   }
 
-  .helper{
-    display:flex;
-    justify-content:flex-end;
-    margin-top: 8px;
-    font-size: 12px;
-  }
-  .helper a{
-    color: var(--red-800);
-    font-weight: 900;
-    text-decoration: none;
-  }
-  .helper a:hover{ text-decoration: underline; }
-
   /* ====== BUTTON ====== */
   .btn-red{
     width:100%;
@@ -354,8 +341,8 @@
       <div class="blob b2"></div>
       <div class="blob b3"></div>
 
-      <h1>Hello!</h1>
-      <p>Selamat datang, silakan masuk untuk melanjutkan</p>
+      <h1>Selamat Datang, Administrator!</h1>
+      <p>Silakan masuk untuk mengakses dashboard admin</p>
     </div>
 
     {{-- CARD --}}
@@ -441,11 +428,6 @@
             <div class="mb-2">
               <label class="form-label">Password</label>
               <input class="inputx" type="password" name="password" placeholder="Masukkan password" required>
-            </div>
-
-            <div class="helper">
-              <a href="{{ url('/admin/forgot-password') }}">Lupa Password?</a>
-
             </div>
 
             <button type="submit" class="btn-red">Login</button>

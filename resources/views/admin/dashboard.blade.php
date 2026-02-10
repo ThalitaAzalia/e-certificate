@@ -791,9 +791,9 @@
     <aside class="side">
       <div class="side-head">
         <div class="brand">
-          <img src="{{ asset('images/logobadiklat.jpg') }}" alt="Logo">
+          <img src="{{ asset('images/logobapelkum.jpg') }}" alt="Logo">
           <div>
-            <p class="t1">Badiklat Hukum Jateng</p>
+            <p class="t1">Bapelkum Semarang</p>
             <p class="t2">Admin Panel</p>
           </div>
         </div>
@@ -930,25 +930,9 @@
                         </span>
                       </td>
                       <td style="padding: 14px 16px; text-align: center;">
-                        <button type="button" class="btn-expand-peserta" data-webinar-id="{{ $webinar->id }}" style="background: none; border: none; color: var(--red-700); cursor: pointer; font-size: 14px; font-weight: 600; padding: 6px 12px; border-radius: 6px; transition: all .2s ease;" onmouseover="this.style.background='rgba(155,0,0,.08)'" onmouseout="this.style.background='none'">
+                        <button type="button" class="btn-lihat-peserta" data-webinar-id="{{ $webinar->id }}" data-webinar-title="{{ $webinar->judul }}" style="background: none; border: none; color: var(--red-700); cursor: pointer; font-size: 14px; font-weight: 600; padding: 6px 12px; border-radius: 6px; transition: all .2s ease;" onmouseover="this.style.background='rgba(155,0,0,.08)'" onmouseout="this.style.background='none'">
                           Lihat Peserta
                         </button>
-                      </td>
-                    </tr>
-                    {{-- ROW DETAIL PESERTA (HIDDEN BY DEFAULT) --}}
-                    <tr class="peserta-detail-row" id="peserta-detail-{{ $webinar->id }}" style="display: none; background: rgba(155,0,0,.02);">
-                      <td colspan="4" style="padding: 0;">
-                        <div style="padding: 16px;">
-                          <div style="margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;">
-                            <h5 style="margin: 0; color: var(--ink); font-weight: 600;">Daftar Peserta</h5>
-                            <button type="button" class="btn-delete-all-webinar" data-webinar-id="{{ $webinar->id }}" style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); color: #dc2626; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all .2s ease;" onmouseover="this.style.background='rgba(239, 68, 68, 0.15)'" onmouseout="this.style.background='rgba(239, 68, 68, 0.1)'">
-                              <span style="margin-right: 4px;">🗑️</span> Hapus Semua
-                            </button>
-                          </div>
-                          <div id="peserta-list-{{ $webinar->id }}" style="max-height: 400px; overflow-y: auto;">
-                            <div style="text-align: center; padding: 20px; color: var(--muted);">Memuat data...</div>
-                          </div>
-                        </div>
                       </td>
                     </tr>
                   @endforeach
@@ -1105,37 +1089,38 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 })();
 
-// HANDLE EXPAND PESERTA
-document.querySelectorAll('.btn-expand-peserta').forEach(btn => {
-  btn.addEventListener('click', function() {
-    const webinarId = this.dataset.webinarId;
-    const detailRow = document.getElementById(`peserta-detail-${webinarId}`);
-    const pesertaList = document.getElementById(`peserta-list-${webinarId}`);
-    
-    if (detailRow.style.display === 'none') {
-      // Load peserta
-      loadPeserta(webinarId, pesertaList);
-      detailRow.style.display = 'table-row';
-      this.textContent = 'Sembunyikan Peserta';
-    } else {
-      detailRow.style.display = 'none';
-      this.textContent = 'Lihat Peserta';
+// HANDLE LIHAT PESERTA (LOAD MODAL)
+let currentWebinarId = null;
+let currentWebinarTitle = null;
 
-    }
+document.querySelectorAll('.btn-lihat-peserta').forEach(btn => {
+  btn.addEventListener('click', function() {
+    currentWebinarId = this.dataset.webinarId;
+    currentWebinarTitle = this.dataset.webinarTitle;
+    
+    const modal = document.getElementById('modalDaftarPeserta');
+    const titleEl = modal.querySelector('.modal-title');
+    titleEl.textContent = `Daftar Peserta - ${currentWebinarTitle}`;
+    
+    const pesertaContainer = document.getElementById('modalPesertaList');
+    pesertaContainer.innerHTML = '<div style="text-align: center; padding: 20px; color: var(--muted);">Memuat data...</div>';
+    
+    const bsModal = new bootstrap.Modal(modal);
+    bsModal.show();
+    
+    // Load peserta data
+    loadModalPeserta(currentWebinarId);
   });
 });
 
-// LOAD PESERTA PER WEBINAR
-function loadPeserta(webinarId, container) {
+function loadModalPeserta(webinarId) {
   fetch(`/admin/api/webinar/${webinarId}/peserta`)
     .then(res => {
-      if (!res.ok) {
-        throw new Error(`HTTP error! status: ${res.status}`);
-      }
+      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
       return res.json();
     })
     .then(data => {
-      console.log('Data received:', data);
+      const container = document.getElementById('modalPesertaList');
       
       if (!data.pesertas || data.pesertas.length === 0) {
         container.innerHTML = '<div style="text-align: center; padding: 20px; color: var(--muted);">Belum ada peserta</div>';
@@ -1162,7 +1147,7 @@ function loadPeserta(webinarId, container) {
             <td style="padding: 10px; font-size: 13px; color: var(--ink); font-weight: 500;">${peserta.nama_peserta || '-'}</td>
             <td style="padding: 10px; font-size: 13px; color: var(--muted);">${peserta.email || '-'}</td>
             <td style="padding: 10px; text-align: center;">
-              <button type="button" class="btn-delete-peserta" data-peserta-id="${peserta.id}" style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); color: #dc2626; padding: 4px 10px; border-radius: 4px; font-size: 12px; cursor: pointer; transition: all .2s ease;" onmouseover="this.style.background='rgba(239, 68, 68, 0.15)'" onmouseout="this.style.background='rgba(239, 68, 68, 0.1)'">
+              <button type="button" class="btn-hapus-peserta-modal" data-peserta-id="${peserta.id}" data-peserta-name="${peserta.nama_peserta}" style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); color: #dc2626; padding: 4px 10px; border-radius: 4px; font-size: 12px; cursor: pointer; transition: all .2s ease;" onmouseover="this.style.background='rgba(239, 68, 68, 0.15)'" onmouseout="this.style.background='rgba(239, 68, 68, 0.1)'">
                 🗑️ Hapus
               </button>
             </td>
@@ -1177,143 +1162,180 @@ function loadPeserta(webinarId, container) {
       
       container.innerHTML = html;
       
-      // Attach delete event listeners
-      container.querySelectorAll('.btn-delete-peserta').forEach(btn => {
+      // Attach delete handlers
+      container.querySelectorAll('.btn-hapus-peserta-modal').forEach(btn => {
         btn.addEventListener('click', function() {
-          deletePeserta(this.dataset.pesertaId, this);
+          showDeletePesertaModal(this.dataset.pesertaId, this.dataset.pesertaName, this);
         });
       });
     })
     .catch(err => {
-      console.error('Load peserta error:', err);
+      const container = document.getElementById('modalPesertaList');
       container.innerHTML = '<div style="text-align: center; padding: 20px; color: #dc2626;">Gagal memuat data: ' + err.message + '</div>';
     });
 }
 
-// DELETE PESERTA
-function deletePeserta(pesertaId, btn) {
-  if (!confirm('Hapus data peserta ini? Data evaluasi juga akan dihapus.')) return;
-  
-  btn.disabled = true;
-  btn.innerHTML = 'Menghapus...';
-  
-  const csrfToken = getCsrfToken();
-  
-  if (!csrfToken) {
-    alert('Error: CSRF token tidak ditemukan. Refresh halaman dan coba lagi.');
-    btn.disabled = false;
-    btn.innerHTML = '🗑️ Hapus';
-    return;
-  }
-  
-  console.log('Request: DELETE peserta', pesertaId);
-  console.log('CSRF Token:', csrfToken.substring(0, 20) + '...');
-  
-  // Prepare FormData with CSRF token
-  const formData = new FormData();
-  formData.append('_token', csrfToken);
-  formData.append('_method', 'DELETE');
-  
-  fetch(`/admin/dashboard/peserta/${pesertaId}`, {
-    method: 'POST',
-    headers: {
-      'X-CSRF-TOKEN': csrfToken,
-      'Accept': 'application/json'
-    },
-    body: formData
-  })
-  .then(res => {
-    console.log('✓ Response received, status:', res.status);
-    if (!res.ok) {
-      throw new Error(`HTTP error! status: ${res.status}`);
-    }
-    return res.json();
-  })
-  .then(data => {
-    console.log('✓ JSON parsed:', data);
-    if (data.status === 'success') {
-      btn.closest('tr').style.opacity = '0.5';
-      btn.closest('tr').style.transition = 'opacity 0.3s';
-      setTimeout(() => {
-        btn.closest('tr').remove();
-      }, 300);
-      alert(data.message);
-    } else {
-      alert('Gagal menghapus data: ' + (data.message || 'Unknown error'));
-      btn.disabled = false;
-      btn.innerHTML = '🗑️ Hapus';
-    }
-  })
-  .catch(err => {
-    console.error('✗ Error:', err);
-    alert('Terjadi kesalahan: ' + err.message);
-    btn.disabled = false;
-    btn.innerHTML = '🗑️ Hapus';
-  });
+// DELETE PESERTA MODAL
+let selectedPesertaId = null;
+let selectedPesertaBtn = null;
+let selectedPesertaData = null;
+
+function showDeletePesertaModal(pesertaId, pesertaName, btn) {
+  selectedPesertaId = pesertaId;
+  selectedPesertaBtn = btn;
+
+  // set form action and preview name
+  const form = document.getElementById('formDeletePeserta');
+  if (form) form.action = `/admin/dashboard/peserta/${pesertaId}`;
+
+  const nameEl = document.getElementById('namaPesertaDelete');
+  if (nameEl) nameEl.textContent = pesertaName || '-';
+
+  const modal = new bootstrap.Modal(document.getElementById('modalDeletePeserta'));
+  modal.show();
 }
 
-// DELETE SEMUA PESERTA PER WEBINAR
-document.querySelectorAll('.btn-delete-all-webinar').forEach(btn => {
-  btn.addEventListener('click', function() {
-    const webinarId = this.dataset.webinarId;
-    if (!confirm('Hapus SEMUA peserta di webinar ini? Tidak bisa dibatalkan!')) return;
-    
+document.addEventListener('DOMContentLoaded', function() {
+  const confirmBtn = document.getElementById('confirmDeletePesertaBtn');
+  if (!confirmBtn) return;
+
+  confirmBtn.addEventListener('click', function () {
+    const form = document.getElementById('formDeletePeserta');
+    if (!form) return;
+    // disable button to prevent double submit
     this.disabled = true;
-    const originalText = this.innerHTML;
     this.innerHTML = 'Menghapus...';
-    
-    const csrfToken = getCsrfToken();
-    
-    if (!csrfToken) {
-      alert('Error: CSRF token tidak ditemukan. Refresh halaman dan coba lagi.');
-      this.disabled = false;
-      this.innerHTML = originalText;
-      return;
+    form.submit();
+  });
+});
+
+// DELETE SEMUA PESERTA MODAL
+let selectedWebinarId = null;
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Tambah tombol "Hapus Semua" di modal
+  const modalPeserta = document.getElementById('modalDaftarPeserta');
+  if (modalPeserta) {
+    // Buat tombol di footer jika belum ada
+    const footer = modalPeserta.querySelector('.modal-footer');
+    if (!footer.querySelector('.btn-delete-all-from-modal')) {
+      const deleteAllBtn = document.createElement('button');
+      deleteAllBtn.className = 'btn btn-danger btn-delete-all-from-modal';
+      deleteAllBtn.innerHTML = '<span style="margin-right: 4px;">🗑️</span>Hapus Semua Peserta';
+      deleteAllBtn.addEventListener('click', function() {
+        showDeleteAllModal(currentWebinarId, currentWebinarTitle);
+      });
+      footer.insertBefore(deleteAllBtn, footer.querySelector('.btn-secondary').nextSibling);
     }
-    
-    console.log('Request: DELETE ALL peserta webinar', webinarId);
-    console.log('CSRF Token:', csrfToken.substring(0, 20) + '...');
-    
-    // Prepare FormData with CSRF token
-    const formData = new FormData();
-    formData.append('_token', csrfToken);
-    formData.append('_method', 'DELETE');
-    
-    fetch(`/admin/dashboard/webinar/${webinarId}/peserta`, {
-      method: 'POST',
-      headers: {
-        'X-CSRF-TOKEN': csrfToken,
-        'Accept': 'application/json'
-      },
-      body: formData
-    })
-    .then(res => {
-      console.log('✓ Response received, status:', res.status);
-      if (!res.ok) {
-        throw new Error(`HTTP error! status: ${res.status}`);
-      }
-      return res.json();
-    })
-    .then(data => {
-      console.log('✓ JSON parsed:', data);
-      if (data.status === 'success') {
-        alert(data.message);
-        // Reload page
-        window.location.reload();
-      } else {
-        alert('Gagal menghapus data: ' + (data.message || 'Unknown error'));
-        this.disabled = false;
-        this.innerHTML = originalText;
-      }
-    })
-    .catch(err => {
-      console.error('✗ Error:', err);
-      alert('Terjadi kesalahan: ' + err.message);
-      this.disabled = false;
-      this.innerHTML = originalText;
-    });
+  }
+});
+
+function showDeleteAllModal(webinarId, webinarTitle) {
+  selectedWebinarId = webinarId;
+
+  // set form action and name
+  const form = document.getElementById('formDeleteAllPeserta');
+  if (form) form.action = `/admin/dashboard/webinar/${webinarId}/peserta`;
+
+  const nameEl = document.getElementById('namaWebinarDelete');
+  if (nameEl) nameEl.textContent = webinarTitle || '-';
+
+  const modal = new bootstrap.Modal(document.getElementById('modalDeleteAll'));
+  modal.show();
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  const confirmBtn = document.getElementById('confirmDeleteAllPesertaBtn');
+  if (!confirmBtn) return;
+
+  confirmBtn.addEventListener('click', function () {
+    const form = document.getElementById('formDeleteAllPeserta');
+    if (!form) return;
+    this.disabled = true;
+    this.innerHTML = 'Menghapus...';
+    form.submit();
   });
 });
 </script>
+
+<!-- Modal: Daftar Peserta per Webinar -->
+<div class="modal fade" id="modalDaftarPeserta" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Daftar Peserta</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" id="modalPesertaList">
+        <div style="text-align: center; padding: 20px; color: var(--muted);">Memuat data...</div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Hapus Peserta Tunggal (standar form-evaluasi) -->
+<div class="modal fade" id="modalDeletePeserta" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-danger fw-bold">Hapus Peserta</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <p class="mb-2">Hapus peserta ini? Data evaluasi terkait juga akan dihapus.</p>
+
+        <div class="alert alert-danger mb-0">
+          <strong id="namaPesertaDelete">Nama Peserta</strong>
+          <div class="small text-muted mt-1">Data yang sudah dihapus tidak dapat dikembalikan.</div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+
+        <form id="formDeletePeserta" method="POST">
+          @csrf
+          @method('DELETE')
+          <button type="submit" class="btn btn-danger">Ya, Hapus</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Hapus Semua Peserta per Webinar (standar form-evaluasi) -->
+<div class="modal fade" id="modalDeleteAll" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-danger fw-bold">Hapus Semua Peserta</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <p class="mb-2">Anda akan menghapus SEMUA peserta pada webinar berikut:</p>
+
+        <div class="alert alert-danger mb-0">
+          <strong id="namaWebinarDelete">Judul Webinar</strong>
+          <div class="small text-muted mt-1">Tindakan ini akan menghapus semua data peserta dan evaluasi terkait.</div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+
+        <form id="formDeleteAllPeserta" method="POST">
+          @csrf
+          @method('DELETE')
+          <button type="submit" class="btn btn-danger">Ya, Hapus Semua</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 
 @endsection

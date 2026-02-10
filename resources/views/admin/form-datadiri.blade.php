@@ -487,25 +487,47 @@
 <div class="modal fade" id="modalDelete{{ $field->id }}" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
-      <form method="POST" action="{{ route('admin.form-datadiri.destroy', $field->id) }}">
-        @csrf
-        @method('DELETE')
-        <div class="modal-header">
-          <h5 class="modal-title fw-bold text-danger">Hapus Pertanyaan</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body">
-          <p class="mb-3">Yakin ingin menghapus pertanyaan ini?</p>
-          <div class="alert alert-warning py-2">
-            <strong>{{ $field->label }}</strong><br>
-            <small class="text-muted">{{ $field->field_key }}</small>
+
+      <div class="modal-header">
+        <h5 class="modal-title text-danger fw-bold">
+          Hapus Pertanyaan Data Diri
+        </h5>
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <p class="mb-2">
+          Anda yakin ingin menghapus pertanyaan berikut?
+        </p>
+
+        <div class="alert alert-danger mb-0">
+          <strong>{{ $field->label }}</strong>
+          <div class="small text-muted mt-1">
+            Key: {{ $field->field_key }}<br>
+            Tindakan ini tidak dapat dibatalkan.
           </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">Batal</button>
-          <button class="btn btn-outline-danger">Hapus</button>
-        </div>
-      </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button"
+                class="btn btn-ghost"
+                data-bs-dismiss="modal">
+          Batal
+        </button>
+
+        <form method="POST"
+              action="{{ route('admin.form-datadiri.destroy', $field->id) }}">
+          @csrf
+          @method('DELETE')
+          <button type="submit" class="btn btn-danger">
+            Ya, Hapus
+          </button>
+        </form>
+      </div>
+
     </div>
   </div>
 </div>

@@ -605,7 +605,7 @@
   <nav class="navbar navbar-expand-lg sticky-top navbar-light">
     <div class="container py-1">
       <a class="navbar-brand d-flex align-items-center gap-2" href="{{ url('/') }}">
-        <img src="{{ asset('images/logobadiklat.jpg') }}" class="brand-logo" alt="Logo">
+        <img src="{{ asset('images/logobapelkum.jpg') }}" class="brand-logo" alt="Logo">
         <div class="lh-sm">
           <div class="fw-bold text-dark">Balai Pelatihan Hukum Semarang</div>
           <div class="small text-dark">Layanan E-Sertifikat Webinar</div>
@@ -641,7 +641,7 @@
   <div class="offcanvas offcanvas-start offcanvas-admin" tabindex="-1" id="adminPanel">
     <div class="offcanvas-header border-bottom">
       <div class="d-flex align-items-center gap-3">
-        <img src="{{ asset('images/logobadiklat.jpg') }}" style="width:40px;height:40px;" alt="Logo">
+        <img src="{{ asset('images/logobapelkum.jpg') }}" style="width:40px;height:40px;" alt="Logo">
         <div>
           <h5 class="offcanvas-title fw-bold mb-0" style="color: var(--brand-primary);">Akses Administrasi
           </h5>

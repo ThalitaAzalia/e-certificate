@@ -267,10 +267,190 @@
     margin-bottom: 1rem;
     opacity: 0.5;
   }
+
+  /* ===== THEME MERAH ===== */
+  /* Button merah */
+  .btn-brand {
+    background-color: #b10000;
+    border-color: #b10000;
+    color: #fff;
+    font-weight: 600;
+  }
+
+
+  .btn-brand:hover {
+    background-color: #8b0000;
+    border-color: #8b0000;
+    color: #fff;
+  }
+
+  /* ===== ALERT BAR INLINE ===== */
+  .alert-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 18px;
+    border-radius: 10px;
+    margin-bottom: 16px;
+  }
+
+  .alert-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .alert-icon {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #8b0000;
+    color: #fff;
+    font-size: 13px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .alert-text {
+    font-weight: 500;
+    color: #4b0000;
+  }
+
+  .alert-close {
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    color: #6b0000;
+    cursor: pointer;
+  }
+
+  .alert-red {
+    background: #fbeaea;
+    border: 1px solid #f1bcbc;
+  }
+
+  .d-none {
+    display: none;
+  }
+
+  /* ===== ALERT BAR INLINE (HIJAU SOFT - SUCCESS) ===== */
+  .alert-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 18px;
+    border-radius: 10px;
+    margin-bottom: 18px;
+    background: #d1fae5;
+    border: 1px solid #a7f3d0;
+  }
+
+  .alert-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .alert-icon {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #10b981;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .alert-text {
+    font-weight: 500;
+    font-size: 0.95rem;
+    color: #047857;
+  }
+
+  .alert-close {
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    line-height: 1;
+    color: #059669;
+    cursor: pointer;
+  }
+
+  .alert-close:hover {
+    color: #10b981;
+  }
+
+  .d-none {
+    display: none;
+  }
+
 </style>
 @endpush
 
 @section('content')
+<div id="alertSuccess" class="alert-bar d-none">
+  <div class="alert-left">
+    <span class="alert-icon">✓</span>
+    <span class="alert-text">
+      Setting berhasil disimpan
+    </span>
+  </div>
+  <button type="button"
+          class="alert-close"
+          onclick="closeAlert()">✕</button>
+</div>
+
+<div class="modal fade" id="modalDeleteTemplate" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-danger fw-bold">
+          Konfirmasi Hapus Template Sertifikat
+        </h5>
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <p class="mb-2">
+          Anda yakin ingin menghapus template berikut?
+        </p>
+
+        <div class="alert alert-danger mb-0">
+          <strong id="namaTemplateSertifikat">
+            Nama Template
+          </strong>
+          <div class="small text-muted mt-1">
+            Template yang dihapus tidak dapat dipulihkan.
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal">
+          Batal
+        </button>
+
+        <form id="formDeleteTemplate" method="POST">
+          @csrf
+          @method('DELETE')
+          <button type="submit" class="btn btn-danger">
+            Ya, Hapus
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="container py-4">
 
 {{-- HEADER --}}
@@ -518,25 +698,24 @@
                   @endif
                 </td>
                 <td class="text-end">
-                  <div class="d-inline-flex gap-2">
-                    @if(!$template->is_active)
-                      <form method="POST" action="{{ route('admin.template-sertifikat.activate', $template->id) }}">
+                  <div class="d-inline-flex gap-2 align-items-center">
+                    @if($template->is_active)
+                      <button class="btn btn-success btn-sm" disabled style="pointer-events: none;">Aktif</button>
+                    @else
+                      <form method="POST" action="{{ route('admin.template-sertifikat.activate', $template->id) }}" style="margin:0;">
                         @csrf
-                        <button type="submit" class="btn btn-outline-success btn-sm">
-                          Aktifkan
-                        </button>
+                        <button type="submit" class="btn btn-outline-success btn-sm">Aktifkan</button>
                       </form>
                     @endif
 
-                    <form method="POST"
-                      action="{{ route('admin.template-sertifikat.destroy', $template->id) }}"
-                      onsubmit="return confirm('Yakin ingin menghapus template ini?');">
-                      @csrf
-                      @method('DELETE')
-                      <button type="submit" class="btn btn-outline-danger btn-sm">
-                        Hapus
-                      </button>
-                    </form>
+                    <button type="button"
+                            class="btn btn-outline-danger btn-sm"
+                            onclick="openDeleteTemplate(
+                              '{{ route('admin.template-sertifikat.destroy', $template->id) }}',
+                              '{{ $template->name }}'
+                            )">
+                      Hapus
+                    </button>
                   </div>
                 </td>
               </tr>
@@ -728,6 +907,23 @@
   let dragOffsetX = 0;
   let dragOffsetY = 0;
 
+function showSuccessAlert(text) {
+  const alertBox = document.getElementById('alertSuccess');
+  alertBox.querySelector('.alert-text').textContent = text;
+  alertBox.classList.remove('d-none');
+
+  // Scroll ke atas untuk menampilkan alert
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  setTimeout(() => {
+    closeAlert();
+  }, 3000);
+}
+
+function closeAlert() {
+  document.getElementById('alertSuccess').classList.add('d-none');
+}
+
   // Helper Functions
   function getPreviewScale() {
     const designWidth = 1920;
@@ -737,23 +933,6 @@
 
   function clamp(n, min, max) {
     return Math.max(min, Math.min(max, n));
-  }
-
-  function showToast(message) {
-    const toast = document.createElement('div');
-    toast.className = 'success-toast';
-    toast.innerHTML = `
-      <div class="d-flex align-items-center gap-2">
-        <i class="fas fa-check-circle"></i>
-        <span>${message}</span>
-      </div>
-    `;
-    document.body.appendChild(toast);
-
-    setTimeout(() => {
-      toast.style.opacity = '0';
-      setTimeout(() => toast.remove(), 300);
-    }, 3000);
   }
 
   function applyBoxSize() {
@@ -934,8 +1113,7 @@
       })
       .then(res => res.json())
       .then(data => {
-        showToast(data.message || 'Setting berhasil disimpan!');
-        
+        showSuccessAlert(data.message || 'Setting berhasil disimpan!');
         // Update dataset
         const option = templateSelect.options[templateSelect.selectedIndex];
         option.dataset.posX = payload.box_x;
@@ -1047,4 +1225,19 @@
 })();
 </script>
 @endpush
+
+@push('scripts')
+<script>
+  function openDeleteTemplate(url, templateName) {
+    document.getElementById('formDeleteTemplate').action = url;
+    document.getElementById('namaTemplateSertifikat').innerText = templateName;
+
+    const modal = new bootstrap.Modal(
+      document.getElementById('modalDeleteTemplate')
+    );
+    modal.show();
+  }
+</script>
+@endpush
+
 @endsection

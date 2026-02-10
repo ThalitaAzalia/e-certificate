@@ -241,7 +241,7 @@
 
       <div class="col-lg-6">
         <div class="card card-shadow rounded-16 overflow-hidden hero-card">
-          <img src="{{ asset('images/hero.jpg') }}" class="hero-img" alt="Hero Badiklat">
+          <img src="{{ asset('images/hero.jpg') }}" class="hero-img" alt="Hero Bapelkum">
           <div class="p-3 bg-white">
             <div class="fw-semibold">Balai Pelatihan Hukum Semarang</div>
             <div class="small text-muted">Pusat pengembangan kompetensi & pelatihan hukum.</div>
@@ -257,9 +257,9 @@
   <div class="container">
     <div class="row g-4 align-items-center">
       <div class="col-lg-6">
-        <h2 class="section-title mb-3">Deskripsi Umum Webinar Badiklat</h2>
+        <h2 class="section-title mb-3">Deskripsi Umum Webinar Bapelkum</h2>
         <p class="text-muted mb-3">
-          Webinar Badiklat merupakan kegiatan pengembangan kompetensi yang diselenggarakan untuk mendukung
+          Webinar Bapelkum merupakan kegiatan pengembangan kompetensi yang diselenggarakan untuk mendukung
           peningkatan pengetahuan dan kapasitas peserta di bidang hukum. Melalui pemanfaatan sistem digital,
           peserta dapat mengikuti kegiatan secara daring, melakukan absensi, mengisi evaluasi, serta memperoleh
           e-sertifikat sebagai bukti keikutsertaan.<br>
@@ -278,7 +278,7 @@
             src="{{ asset('images/tentang.jpg') }}"
             class="w-100"
             style="height:300px;object-fit:cover;object-position:30% 70%;"
-            alt="Tentang Badiklat"
+            alt="Tentang Bapelkum"
           >
         </div>
       </div>
@@ -383,7 +383,7 @@
       <div class="col-lg-7">
         <div class="card card-shadow rounded-16 overflow-hidden">
           <iframe
-            src="https://www.google.com/maps?q=Badiklat%20Hukum%20Jawa%20Tengah&output=embed"
+            src="https://www.google.com/maps?q=Bapelkum%20Semarang&output=embed"
             width="100%" height="360" style="border:0;" allowfullscreen="" loading="lazy"
             referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
@@ -442,7 +442,7 @@
       <!-- Email -->
       <div class="col-lg-6">
         <div class="contact-card" role="button" tabindex="0"
-          onclick="window.location.href='mailto:badiklat.jateng@kemenkum.go.id'">
+          onclick="window.location.href='mailto:bapelkum.jateng@kemenkum.go.id'">
           <div class="contact-title">
             <span class="contact-ico" aria-hidden="true">
               <svg viewBox="0 0 24 24" width="32" height="32" fill="none">
@@ -451,8 +451,8 @@
               </svg>
             </span>
             Email Kami
-          </div>
-          <p class="contact-desc">badiklat.jateng@kemenkum.go.id</p>
+          </div> 
+          <p class="contact-desc">bapelkum.jateng@kemenkum.go.id</p>
         </div>
       </div>
 
@@ -502,7 +502,7 @@
   <div class="container">
     <div class="row g-3 align-items-center">
       <div class="col-md-6 d-flex align-items-center gap-2">
-        <img src="{{ asset('images/logobadiklat.jpg') }}" class="brand-logo-sm" alt="Logo Badiklat">
+        <img src="{{ asset('images/logobapelkum.jpg') }}" class="brand-logo-sm" alt="Logo BApelkum">
         <div>
           <div class="fw-semibold">© {{ date('Y') }} Balai Pelatihan Hukum Semarang</div>
           <div class="small">Layanan E-Sertifikat Webinar</div>

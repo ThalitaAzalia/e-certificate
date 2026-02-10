@@ -877,9 +877,9 @@
       {{-- STAT --}}
       <div class="grid-3">
         <div class="stat s1">
-          <div class="k">Jumlah Peserta</div>
-          <div class="v">{{ $totalPeserta }}</div>
-          <div class="mini">Data dari tabel pesertas</div>
+          <div class="k">Total Webinar</div>
+          <div class="v">{{ $webinars->count() }}</div>
+          <div class="mini">Webinar terdaftar</div>
         </div>
 
         <div class="stat s2">
@@ -895,12 +895,86 @@
         </div>
       </div>
 
+      {{-- PESERTA PER WEBINAR --}}
+      <section class="panel">
+        <div class="panel-header">
+          <div>
+            <h3 class="panel-title">Peserta Per Webinar</h3>
+            <p class="panel-subtitle">Jumlah peserta terdaftar di setiap webinar</p>
+          </div>
+        </div>
+
+        <div class="panel-content">
+          @if($webinars->count() > 0)
+            <div style="overflow-x: auto;">
+              <table class="table-dashboard" style="width: 100%; border-collapse: collapse;">
+                <thead>
+                  <tr style="border-bottom: 2px solid var(--line); background: rgba(155,0,0,.04);">
+                    <th style="padding: 12px 16px; text-align: left; font-weight: 600; color: var(--ink);">No</th>
+                    <th style="padding: 12px 16px; text-align: left; font-weight: 600; color: var(--ink);">Webinar</th>
+                    <th style="padding: 12px 16px; text-align: center; font-weight: 600; color: var(--ink);">Jumlah Peserta</th>
+                    <th style="padding: 12px 16px; text-align: center; font-weight: 600; color: var(--ink);">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @foreach($webinars as $index => $webinar)
+                    <tr style="border-bottom: 1px solid var(--line);">
+                      <td style="padding: 14px 16px; color: var(--muted);">{{ $index + 1 }}</td>
+                      <td style="padding: 14px 16px;">
+                        <div style="font-weight: 600; color: var(--ink); margin-bottom: 4px;">{{ $webinar->judul }}</div>
+                        <div style="font-size: 13px; color: var(--muted);">{{ \Carbon\Carbon::parse($webinar->tanggal)->translatedFormat('d F Y') }}</div>
+                      </td>
+                      <td style="padding: 14px 16px; text-align: center;">
+                        <span style="display: inline-block; background: rgba(155,0,0,.10); color: var(--red-700); padding: 6px 14px; border-radius: 20px; font-weight: 600; font-size: 14px;">
+                          {{ $webinar->pesertas_count }} peserta
+                        </span>
+                      </td>
+                      <td style="padding: 14px 16px; text-align: center;">
+                        <button type="button" class="btn-expand-peserta" data-webinar-id="{{ $webinar->id }}" style="background: none; border: none; color: var(--red-700); cursor: pointer; font-size: 14px; font-weight: 600; padding: 6px 12px; border-radius: 6px; transition: all .2s ease;" onmouseover="this.style.background='rgba(155,0,0,.08)'" onmouseout="this.style.background='none'">
+                          Lihat Peserta
+                        </button>
+                      </td>
+                    </tr>
+                    {{-- ROW DETAIL PESERTA (HIDDEN BY DEFAULT) --}}
+                    <tr class="peserta-detail-row" id="peserta-detail-{{ $webinar->id }}" style="display: none; background: rgba(155,0,0,.02);">
+                      <td colspan="4" style="padding: 0;">
+                        <div style="padding: 16px;">
+                          <div style="margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;">
+                            <h5 style="margin: 0; color: var(--ink); font-weight: 600;">Daftar Peserta</h5>
+                            <button type="button" class="btn-delete-all-webinar" data-webinar-id="{{ $webinar->id }}" style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); color: #dc2626; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all .2s ease;" onmouseover="this.style.background='rgba(239, 68, 68, 0.15)'" onmouseout="this.style.background='rgba(239, 68, 68, 0.1)'">
+                              <span style="margin-right: 4px;">🗑️</span> Hapus Semua
+                            </button>
+                          </div>
+                          <div id="peserta-list-{{ $webinar->id }}" style="max-height: 400px; overflow-y: auto;">
+                            <div style="text-align: center; padding: 20px; color: var(--muted);">Memuat data...</div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  @endforeach
+                </tbody>
+              </table>
+            </div>
+          @else
+            <div style="padding: 40px; text-align: center; color: var(--muted);">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-bottom: 12px; opacity: 0.5;">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="9" y1="9" x2="9" y2="15"></line>
+                <line x1="15" y1="9" x2="15" y2="15"></line>
+              </svg>
+              <div style="font-weight: 500;">Belum ada webinar</div>
+              <div style="font-size: 13px;">Mulai buat webinar untuk melihat data peserta</div>
+            </div>
+          @endif
+        </div>
+      </section>
+
       {{-- AKTIVITAS TERBARU --}}
       <section class="panel">
         <div class="panel-header">
           <div>
             <h3 class="panel-title">Aktivitas Terbaru</h3>
-            <p class="panel-subtitle">Log aktivitas sistem 7 hari terakhir</p>
+            <p class="panel-subtitle">Status sistem evaluasi dan sertifikat</p>
           </div>
           <div class="panel-actions">
             <a href="{{ route('admin.webinars.index') }}" class="btn-secondary">
@@ -913,24 +987,6 @@
         </div>
 
         <div class="activity-container">
-          <div class="activity-item">
-            <div class="activity-icon">
-              <!-- Users (professional) -->
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-                <circle cx="9" cy="7" r="4" />
-                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-              </svg>
-            </div>
-            <div class="activity-content">
-              <h4 class="activity-title">Pendaftaran Peserta</h4>
-              <p class="activity-desc"><strong>{{ $totalPeserta }} peserta</strong> terdaftar di sistem</p>
-              <span class="activity-meta">Total keseluruhan data</span>
-            </div>
-          </div>
-
           <div class="activity-item">
             <div class="activity-icon">
               <!-- Clipboard Check (professional) -->
@@ -991,7 +1047,39 @@
   </div>
 </div>
 
+<!-- Hidden CSRF Token for API calls -->
+<input type="hidden" id="csrf-token" name="csrf-token" value="{{ csrf_token() }}">
+
 <script>
+// CSRF Token Helper
+function getCsrfToken() {
+  // Method 1: Dari meta tag
+  const metaToken = document.querySelector('meta[name="csrf-token"]');
+  if (metaToken && metaToken.content) {
+    console.log('✓ CSRF token dari meta:', metaToken.content.substring(0, 10) + '...');
+    return metaToken.content;
+  }
+  
+  // Method 2: Coba dari input hidden dalam form
+  const inputToken = document.querySelector('input[name="_token"]');
+  if (inputToken && inputToken.value) {
+    console.log('✓ CSRF token dari input:', inputToken.value.substring(0, 10) + '...');
+    return inputToken.value;
+  }
+  
+  console.warn('✗ CSRF token tidak ditemukan!');
+  console.log('Meta tags:', document.querySelectorAll('meta').length);
+  console.log('meta[name="csrf-token"]:', metaToken);
+  
+  return null;
+}
+
+// DOM Ready Check
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('✓ DOM Ready');
+  console.log('✓ CSRF Token Check:', getCsrfToken() ? 'Ada' : 'Tidak ada');
+});
+
 (function() {
   const navLinks = document.querySelectorAll('.navx a');
   const currentPath = window.location.pathname;
@@ -1016,6 +1104,216 @@
     }
   });
 })();
+
+// HANDLE EXPAND PESERTA
+document.querySelectorAll('.btn-expand-peserta').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const webinarId = this.dataset.webinarId;
+    const detailRow = document.getElementById(`peserta-detail-${webinarId}`);
+    const pesertaList = document.getElementById(`peserta-list-${webinarId}`);
+    
+    if (detailRow.style.display === 'none') {
+      // Load peserta
+      loadPeserta(webinarId, pesertaList);
+      detailRow.style.display = 'table-row';
+      this.textContent = 'Sembunyikan Peserta';
+    } else {
+      detailRow.style.display = 'none';
+      this.textContent = 'Lihat Peserta';
+
+    }
+  });
+});
+
+// LOAD PESERTA PER WEBINAR
+function loadPeserta(webinarId, container) {
+  fetch(`/admin/api/webinar/${webinarId}/peserta`)
+    .then(res => {
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+      return res.json();
+    })
+    .then(data => {
+      console.log('Data received:', data);
+      
+      if (!data.pesertas || data.pesertas.length === 0) {
+        container.innerHTML = '<div style="text-align: center; padding: 20px; color: var(--muted);">Belum ada peserta</div>';
+        return;
+      }
+      
+      let html = `
+        <table style="width: 100%; border-collapse: collapse;">
+          <thead>
+            <tr style="background: rgba(155,0,0,.08); border-bottom: 1px solid var(--line);">
+              <th style="padding: 10px; text-align: left; font-size: 13px; font-weight: 600; color: var(--ink);">No</th>
+              <th style="padding: 10px; text-align: left; font-size: 13px; font-weight: 600; color: var(--ink);">Nama Peserta</th>
+              <th style="padding: 10px; text-align: left; font-size: 13px; font-weight: 600; color: var(--ink);">Email</th>
+              <th style="padding: 10px; text-align: center; font-size: 13px; font-weight: 600; color: var(--ink);">Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+      
+      data.pesertas.forEach((peserta, index) => {
+        html += `
+          <tr style="border-bottom: 1px solid var(--line);">
+            <td style="padding: 10px; font-size: 13px; color: var(--muted);">${index + 1}</td>
+            <td style="padding: 10px; font-size: 13px; color: var(--ink); font-weight: 500;">${peserta.nama_peserta || '-'}</td>
+            <td style="padding: 10px; font-size: 13px; color: var(--muted);">${peserta.email || '-'}</td>
+            <td style="padding: 10px; text-align: center;">
+              <button type="button" class="btn-delete-peserta" data-peserta-id="${peserta.id}" style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); color: #dc2626; padding: 4px 10px; border-radius: 4px; font-size: 12px; cursor: pointer; transition: all .2s ease;" onmouseover="this.style.background='rgba(239, 68, 68, 0.15)'" onmouseout="this.style.background='rgba(239, 68, 68, 0.1)'">
+                🗑️ Hapus
+              </button>
+            </td>
+          </tr>
+        `;
+      });
+      
+      html += `
+          </tbody>
+        </table>
+      `;
+      
+      container.innerHTML = html;
+      
+      // Attach delete event listeners
+      container.querySelectorAll('.btn-delete-peserta').forEach(btn => {
+        btn.addEventListener('click', function() {
+          deletePeserta(this.dataset.pesertaId, this);
+        });
+      });
+    })
+    .catch(err => {
+      console.error('Load peserta error:', err);
+      container.innerHTML = '<div style="text-align: center; padding: 20px; color: #dc2626;">Gagal memuat data: ' + err.message + '</div>';
+    });
+}
+
+// DELETE PESERTA
+function deletePeserta(pesertaId, btn) {
+  if (!confirm('Hapus data peserta ini? Data evaluasi juga akan dihapus.')) return;
+  
+  btn.disabled = true;
+  btn.innerHTML = 'Menghapus...';
+  
+  const csrfToken = getCsrfToken();
+  
+  if (!csrfToken) {
+    alert('Error: CSRF token tidak ditemukan. Refresh halaman dan coba lagi.');
+    btn.disabled = false;
+    btn.innerHTML = '🗑️ Hapus';
+    return;
+  }
+  
+  console.log('Request: DELETE peserta', pesertaId);
+  console.log('CSRF Token:', csrfToken.substring(0, 20) + '...');
+  
+  // Prepare FormData with CSRF token
+  const formData = new FormData();
+  formData.append('_token', csrfToken);
+  formData.append('_method', 'DELETE');
+  
+  fetch(`/admin/dashboard/peserta/${pesertaId}`, {
+    method: 'POST',
+    headers: {
+      'X-CSRF-TOKEN': csrfToken,
+      'Accept': 'application/json'
+    },
+    body: formData
+  })
+  .then(res => {
+    console.log('✓ Response received, status:', res.status);
+    if (!res.ok) {
+      throw new Error(`HTTP error! status: ${res.status}`);
+    }
+    return res.json();
+  })
+  .then(data => {
+    console.log('✓ JSON parsed:', data);
+    if (data.status === 'success') {
+      btn.closest('tr').style.opacity = '0.5';
+      btn.closest('tr').style.transition = 'opacity 0.3s';
+      setTimeout(() => {
+        btn.closest('tr').remove();
+      }, 300);
+      alert(data.message);
+    } else {
+      alert('Gagal menghapus data: ' + (data.message || 'Unknown error'));
+      btn.disabled = false;
+      btn.innerHTML = '🗑️ Hapus';
+    }
+  })
+  .catch(err => {
+    console.error('✗ Error:', err);
+    alert('Terjadi kesalahan: ' + err.message);
+    btn.disabled = false;
+    btn.innerHTML = '🗑️ Hapus';
+  });
+}
+
+// DELETE SEMUA PESERTA PER WEBINAR
+document.querySelectorAll('.btn-delete-all-webinar').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const webinarId = this.dataset.webinarId;
+    if (!confirm('Hapus SEMUA peserta di webinar ini? Tidak bisa dibatalkan!')) return;
+    
+    this.disabled = true;
+    const originalText = this.innerHTML;
+    this.innerHTML = 'Menghapus...';
+    
+    const csrfToken = getCsrfToken();
+    
+    if (!csrfToken) {
+      alert('Error: CSRF token tidak ditemukan. Refresh halaman dan coba lagi.');
+      this.disabled = false;
+      this.innerHTML = originalText;
+      return;
+    }
+    
+    console.log('Request: DELETE ALL peserta webinar', webinarId);
+    console.log('CSRF Token:', csrfToken.substring(0, 20) + '...');
+    
+    // Prepare FormData with CSRF token
+    const formData = new FormData();
+    formData.append('_token', csrfToken);
+    formData.append('_method', 'DELETE');
+    
+    fetch(`/admin/dashboard/webinar/${webinarId}/peserta`, {
+      method: 'POST',
+      headers: {
+        'X-CSRF-TOKEN': csrfToken,
+        'Accept': 'application/json'
+      },
+      body: formData
+    })
+    .then(res => {
+      console.log('✓ Response received, status:', res.status);
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+      return res.json();
+    })
+    .then(data => {
+      console.log('✓ JSON parsed:', data);
+      if (data.status === 'success') {
+        alert(data.message);
+        // Reload page
+        window.location.reload();
+      } else {
+        alert('Gagal menghapus data: ' + (data.message || 'Unknown error'));
+        this.disabled = false;
+        this.innerHTML = originalText;
+      }
+    })
+    .catch(err => {
+      console.error('✗ Error:', err);
+      alert('Terjadi kesalahan: ' + err.message);
+      this.disabled = false;
+      this.innerHTML = originalText;
+    });
+  });
+});
 </script>
 
 @endsection

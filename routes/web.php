@@ -97,6 +97,15 @@ Route::prefix('admin')
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->name('dashboard');
 
+    Route::get('/api/webinar/{webinarId}/peserta', [DashboardController::class, 'getPesertaWebinar']);
+
+    // Handle both DELETE and POST (for _method override)
+    Route::match(['delete', 'post'], '/dashboard/peserta/{pesertaId}', [DashboardController::class, 'deletePeserta'])
+        ->name('dashboard.peserta.delete');
+
+    Route::match(['delete', 'post'], '/dashboard/webinar/{webinarId}/peserta', [DashboardController::class, 'deleteWebinarPeserta'])
+        ->name('dashboard.webinar-peserta.delete');
+
     /*
     |--------------------------------------------------------------------------
     | WEBINAR

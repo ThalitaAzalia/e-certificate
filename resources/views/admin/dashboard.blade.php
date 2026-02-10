@@ -876,10 +876,10 @@
 
       {{-- STAT --}}
       <div class="grid-3">
-        <div class="stat s1">
-          <div class="k">Total Webinar</div>
-          <div class="v">{{ $webinars->count() }}</div>
-          <div class="mini">Webinar terdaftar</div>
+        <div class="stat s3">
+          <div class="k">Total Peserta</div>
+          <div class="v">{{ $totalPeserta }}</div>
+          <div class="mini">Semua peserta</div>
         </div>
 
         <div class="stat s2">

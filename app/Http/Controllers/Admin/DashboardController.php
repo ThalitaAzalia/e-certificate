@@ -23,10 +23,14 @@ class DashboardController extends Controller
         // Asumsi sertifikat terbit setelah evaluasi
         $totalSertifikat = $totalEvaluasi;
 
+        // TOTAL PESERTA
+        $totalPeserta = Peserta::count();
+
         return view('admin.dashboard', compact(
             'webinars',
             'totalEvaluasi',
-            'totalSertifikat'
+            'totalSertifikat',
+            'totalPeserta'
         ));
     }
 

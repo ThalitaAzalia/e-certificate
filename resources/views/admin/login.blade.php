@@ -341,8 +341,8 @@
       <div class="blob b2"></div>
       <div class="blob b3"></div>
 
-      <h1>Selamat Datang, Administrator!</h1>
-      <p>Silakan masuk untuk mengakses dashboard admin</p>
+      <h1>Portal Administrasi</h1>
+      <p>Silakan masuk untuk mengakses sistem</p>
     </div>
 
     {{-- CARD --}}

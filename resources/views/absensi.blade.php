@@ -408,8 +408,8 @@
       <div class="blob b2"></div>
       <div class="blob b3"></div>
 
-      <h1>Hello!</h1>
-      <p>Isi data absensi webinar Anda dengan benar</p>
+      <h1>Absensi Webinar</h1>
+      <p>Silakan mengisi data secara lengkap dan benar</p>
     </div>
 
     {{-- CARD --}}

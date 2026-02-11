@@ -246,7 +246,7 @@
   /* ====== BUTTON ====== */
   .btn-red{
     width:100%;
-    margin-top: 14px;
+    margin-top: 30px;
     border:0;
     border-radius: 14px;
     padding: 12px 14px;

@@ -434,10 +434,11 @@
 
       <div class="modal-footer">
         <button type="button"
-                class="btn btn-secondary"
+                class="btn btn-ghost"
                 data-bs-dismiss="modal">
           Batal
         </button>
+
 
         <form id="formDeleteTemplate" method="POST">
           @csrf

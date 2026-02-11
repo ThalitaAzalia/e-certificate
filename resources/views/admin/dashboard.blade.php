@@ -958,7 +958,7 @@
         <div class="panel-header">
           <div>
             <h3 class="panel-title">Aktivitas Terbaru</h3>
-            <p class="panel-subtitle">Status sistem evaluasi dan sertifikat</p>
+            <p class="panel-subtitle">Log aktivitas sistem 7 hari terakhir</p>
           </div>
           <div class="panel-actions">
             <a href="{{ route('admin.webinars.index') }}" class="btn-secondary">
@@ -971,6 +971,24 @@
         </div>
 
         <div class="activity-container">
+          <div class="activity-item">
+            <div class="activity-icon">
+              <!-- Users (professional) -->
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+              </svg>
+            </div>
+            <div class="activity-content">
+              <h4 class="activity-title">Pendaftaran Peserta</h4>
+              <p class="activity-desc"><strong>{{ $totalPeserta }} peserta</strong> terdaftar di sistem</p>
+              <span class="activity-meta">Total keseluruhan data</span>
+            </div>
+          </div>
+
           <div class="activity-item">
             <div class="activity-icon">
               <!-- Clipboard Check (professional) -->

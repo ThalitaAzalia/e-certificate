@@ -30,19 +30,23 @@
   }
 
   .btn-brand{
-    background: var(--brand);
-    color:#fff;
-    border:none;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    padding: .45rem 1.05rem;
+    white-space: nowrap;
   }
-  .btn-brand:hover{ background: var(--brand-2); color:#fff; }
 
   .btn-ghost{
-    border:1px solid rgba(185,28,28,.35);
-    background: rgba(255,255,255,.65);
-    color: var(--brand);
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: .45rem 1.05rem;
+    white-space: nowrap;
   }
-  .btn-ghost:hover{ background: rgba(185,28,28,.08); color: var(--brand-3); }
 
+  .btn-ghost:hover{ background: rgba(185,28,28,.06); color: var(--brand-3); }
+`
   .form-control:focus, .form-select:focus{
     border-color: rgba(185,28,28,.55);
     box-shadow: 0 0 0 .25rem rgba(185,28,28,.18);
@@ -180,31 +184,185 @@
       opacity: 1;
     }
   }
+
+  /* ===== ALERT BAR INLINE (SUCCESS) ===== */
+  .alert-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 18px;
+    border-radius: 10px;
+    margin-bottom: 18px;
+    background: #d1fae5;
+    border: 1px solid #a7f3d0;
+  }
+
+  .alert-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .alert-icon {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #10b981;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .alert-text {
+    font-weight: 500;
+    font-size: 0.95rem;
+    color: #047857;
+  }
+
+  .alert-close {
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    line-height: 1;
+    color: #059669;
+    cursor: pointer;
+  }
+
+  .alert-close:hover {
+    color: #10b981;
+  }
+
+  .d-none {
+    display: none;
+  }
+
+  /* ===== HEADER CARD ===== */
+  .header-card{
+    background: linear-gradient(180deg, rgba(185,28,28,.08), rgba(255,245,245,1));
+    border: 1px solid rgba(185,28,28,.20);
+    border-radius: 18px;
+    padding: 18px 18px;
+    box-shadow:
+      0 16px 40px rgba(185,28,28,.10),
+      0 6px 16px rgba(185,28,28,.06);
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+  }
+
+  .header-card:hover{
+    transform: translateY(-3px) scale(1.01);
+    box-shadow:
+      0 22px 55px rgba(185,28,28,.14),
+      0 10px 22px rgba(185,28,28,.08);
+    border-color: rgba(185,28,28,.28);
+  }
+
+  .header-card .actions{
+    display:flex;
+    gap:12px;
+    align-items:center;
+    justify-content:flex-end;
+    flex-wrap:wrap;
+  }
+
+  /* layar besar dipaksa 1 baris biar gak turun */
+  @media (min-width: 992px){
+    .header-card .actions{ flex-wrap: nowrap; }
+  }
+
+
 </style>
 @endpush
 
 @section('content')
-<div class="container py-3">
 
-  {{-- Header --}}
-  <div class="d-flex flex-column flex-lg-row align-items-lg-center justify-content-between gap-3 mb-4">
-    <div>
-      <h1 class="page-title mb-1">Template Sertifikat</h1>
-      <div class="muted">
-        Upload template, kelola (CRUD), atur posisi & font nama peserta, dan preview sertifikat.
-      </div>
-    </div>
+{{-- ALERT DARI SESSION (UPLOAD/DELETE/AKTIFKAN) --}}
 
-    <div class="d-flex gap-2 flex-wrap">
-      <button class="btn btn-brand rounded-16" data-bs-toggle="modal" data-bs-target="#modalCreateTemplate">
-        + Upload Template
-      </button>
-      <button class="btn btn-ghost rounded-16" id="btnOpenPreview">
-        Preview Sertif
-      </button>
-      <a href="{{ url('/admin/dashboard') }}" class="btn btn-ghost rounded-16">Kembali</a>
+@if(session('error'))
+  <div class="alert-bar" style="background:#fbeaea;border:1px solid #f1bcbc;">
+    <div class="alert-left">
+      <span class="alert-icon" style="background:#b91c1c;">!</span>
+      <span class="alert-text" style="color:#7f1d1d;">{{ session('error') }}</span>
     </div>
   </div>
+
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setTimeout(() => {
+        document.querySelector('.alert-bar')?.classList.add('d-none');
+      }, 3000);
+    });
+  </script>
+@endif
+
+@if(session('success'))
+  <div id="alertSuccess" class="alert-bar">
+    <div class="alert-left">
+      <span class="alert-icon">✓</span>
+      <span class="alert-text">{{ session('success') }}</span>
+    </div>
+    <button type="button" class="alert-close" onclick="closeAlert()">✕</button>
+  </div>
+
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setTimeout(() => closeAlert(), 3000);
+    });
+  </script>
+@endif
+
+@if(session('error'))
+  <div class="alert-bar" style="background:#fbeaea;border:1px solid #f1bcbc;">
+    <div class="alert-left">
+      <span class="alert-icon" style="background:#b91c1c;">!</span>
+      <span class="alert-text" style="color:#7f1d1d;">{{ session('error') }}</span>
+    </div>
+  </div>
+@endif
+
+<div class="container py-3">
+
+  {{-- Header (CARD) --}}
+  <div class="header-card mb-4">
+    <div class="d-flex flex-column flex-lg-row align-items-lg-center justify-content-between gap-3">
+
+      <div>
+        <h1 class="page-title mb-2">Template Sertifikat</h1>
+        <div class="muted">
+          Upload template, kelola (CRUD), atur posisi & font nama peserta,<br>
+          dan preview sertifikat.
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn btn-brand d-flex align-items-center gap-1"
+                data-bs-toggle="modal"
+                data-bs-target="#modalCreateTemplate">
+          <i class="fas fa-plus fa-sm"></i>
+          <span>Upload Template</span>
+        </button>
+
+        <button class="btn btn-ghost d-flex align-items-center gap-1"
+                id="btnOpenPreview">
+          <i class="fas fa-eye fa-sm"></i>
+          <span>Preview Sertif</span>
+        </button>
+
+        <a href="{{ url('/admin/dashboard') }}"
+          class="btn btn-ghost d-flex align-items-center gap-1">
+          <i class="fas fa-arrow-left fa-sm"></i>
+          <span>Kembali</span>
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+
 
   <div class="row g-4">
     {{-- LEFT: Settings --}}
@@ -411,6 +569,8 @@
                     </td>
                     <td class="text-end">
                       <div class="d-inline-flex gap-2">
+
+                        {{-- AKTIFKAN / DIGUNAKAN --}}
                         @if(!$template->is_active)
                           <form method="POST" action="{{ route('admin.template-sertifikat.activate', $template->id) }}">
                             @csrf
@@ -422,17 +582,19 @@
                           <span class="chip">Digunakan</span>
                         @endif
 
-                        <form method="POST"
-                          action="{{ route('admin.template-sertifikat.destroy', $template->id) }}"
-                          onsubmit="return confirm('Yakin ingin menghapus template ini?');">
-                          @csrf
-                          @method('DELETE')
-                          <button type="submit" class="btn btn-outline-danger rounded-16 btn-sm">
-                            Hapus
-                          </button>
-                        </form>
+                        {{-- HAPUS (PAKAI MODAL) --}}
+                        <button type="button"
+                                class="btn btn-outline-danger rounded-16 btn-sm"
+                                onclick="openDeleteTemplate(
+                                  '{{ route('admin.template-sertifikat.destroy', $template->id) }}',
+                                  '{{ $template->name }}'
+                                )">
+                          Hapus
+                        </button>
+
                       </div>
                     </td>
+
                   </tr>
                   @empty
                   <tr>
@@ -582,7 +744,65 @@
   </div>
 </div>
 
+<div class="modal fade" id="modalDeleteTemplate" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-16">
+      <div class="modal-header">
+        <h5 class="modal-title text-danger fw-bold">
+          Konfirmasi Hapus Template Sertifikat
+        </h5>
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <p class="mb-2">
+          Anda yakin ingin menghapus template berikut?
+        </p>
+
+        <div class="alert alert-danger mb-0">
+          <strong id="namaTemplateSertifikat">
+            Nama Template
+          </strong>
+          <div class="small text-muted mt-1">
+            Template yang dihapus tidak dapat dipulihkan.
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button"
+                class="btn btn-ghost rounded-16"
+                data-bs-dismiss="modal">
+          Batal
+        </button>
+
+        <form id="formDeleteTemplate" method="POST">
+          @csrf
+          @method('DELETE')
+          <button type="submit" class="btn btn-danger rounded-16">
+            Ya, Hapus
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 @push('scripts')
+
+<script>
+  function openDeleteTemplate(url, templateName) {
+    document.getElementById('formDeleteTemplate').action = url;
+    document.getElementById('namaTemplateSertifikat').innerText = templateName;
+
+    const modal = new bootstrap.Modal(document.getElementById('modalDeleteTemplate'));
+    modal.show();
+  }
+</script>
+
 <script>
 (function () {
   'use strict';
@@ -669,6 +889,26 @@
       setTimeout(() => toast.remove(), 300);
     }, duration);
   }
+
+  /* ===== TAMBAHKAN INI (STEP 3) ===== */
+  function showSuccessAlert(text) {
+    const alertBox = document.getElementById('alertSuccess');
+    alertBox.querySelector('.alert-text').textContent = text;
+    alertBox.classList.remove('d-none');
+
+    // Scroll ke atas supaya alert terlihat
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    setTimeout(() => {
+      closeAlert();
+    }, 3000);
+  }
+
+  function closeAlert() {
+    document.getElementById('alertSuccess')?.classList.add('d-none');
+  }
+  window.closeAlert = closeAlert;
+
 
   function applyBoxSize() {
     const w = parseFloat(boxWidthInput.value) || 40;
@@ -874,7 +1114,7 @@
       })
       .then(res => res.json())
       .then(data => {
-        showToast(data.message || 'Setting berhasil disimpan!');
+        showSuccessAlert(data.message || 'Pengaturan template sertifikat berhasil disimpan.');
         
         // Update dataset
         const option = templateSelect.options[templateSelect.selectedIndex];
@@ -891,6 +1131,7 @@
         option.dataset.letterSpacing = payload.letter_spacing;
         option.dataset.lineHeight = payload.line_height;
       })
+
       .catch(err => {
         showToast(err?.message || 'Gagal menyimpan setting');
       })

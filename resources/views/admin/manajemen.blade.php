@@ -616,6 +616,32 @@
     border-radius: 10px;
   }
 
+  /* ===== Header Card: Manajemen Webinar ===== */
+  .header-card{
+    background: linear-gradient(180deg, rgba(185,28,28,.06), rgba(255,255,255,1));
+    border: 1px solid rgba(185,28,28,.14);
+    border-radius: 16px;
+    padding: 18px 18px;
+    box-shadow: 0 10px 26px rgba(185,28,28,.06);
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    will-change: transform;
+  }
+
+  .header-card:hover{
+    transform: translateY(-3px) scale(1.01);
+    box-shadow: 0 18px 40px rgba(185,28,28,.10);
+    border-color: rgba(185,28,28,.22);
+  }
+
+  .header-card .actions{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    align-items:center;
+    justify-content:flex-end;
+  }
+
+
 </style>
 @endpush
 
@@ -623,32 +649,36 @@
 <div class="container py-4">
 
   {{-- HEADER --}}
-  <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3 mb-4">
-    <div>
-      <h1 class="page-title mb-2">Manajemen Webinar</h1>
-      <p class="page-subtitle">
-        Kelola judul, deskripsi, tanggal, status publish, dan detail webinar untuk ditampilkan di landing page.
-      </p>
-    </div>
-    
-    <div class="d-flex gap-2">
-      <button class="btn btn-brand d-flex align-items-center gap-2" 
-              data-bs-toggle="modal" 
-              data-bs-target="#modalCreate">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-          <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-        </svg>
-        <span>Tambah Webinar</span>
-      </button>
-      <a href="{{ url('/admin/dashboard') }}" 
-         class="btn btn-ghost d-flex align-items-center gap-2">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-          <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z"/>
-        </svg>
-        <span>Kembali</span>
-      </a>
+  <div class="header-card mb-4">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3">
+      <div>
+        <h1 class="page-title mb-2">Manajemen Webinar</h1>
+        <p class="page-subtitle mb-0">
+          Kelola judul, deskripsi, tanggal, status publish, dan detail webinar untuk ditampilkan di landing page.
+        </p>
+      </div>
+
+      <div class="actions">
+        <button class="btn btn-brand d-flex align-items-center gap-2"
+                data-bs-toggle="modal"
+                data-bs-target="#modalCreate">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+          </svg>
+          <span>Tambah Webinar</span>
+        </button>
+
+        <a href="{{ url('/admin/dashboard') }}"
+          class="btn btn-ghost d-flex align-items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z"/>
+          </svg>
+          <span>Kembali</span>
+        </a>
+      </div>
     </div>
   </div>
+
 
   {{-- FILTER --}}
   <div class="card card-soft mb-4">

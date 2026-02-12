@@ -7,30 +7,31 @@
   <div class="row justify-content-center">
     <div class="col-lg-10 col-xl-8">
 
-      {{-- HEADER --}}
-      <div class="d-flex align-items-center justify-content-between mb-4">
-        <div>
-          <nav aria-label="breadcrumb">
-            <ol class="breadcrumb mb-2">
-              <li class="breadcrumb-item">
-                <a class="link-muted" href="{{ route('admin.laporan.evaluasi') }}">Laporan Evaluasi</a>
-              </li>
-              <li class="breadcrumb-item">
-                <a class="link-muted" href="{{ route('admin.laporan.evaluasi.peserta', $peserta->webinar_id) }}">Peserta</a>
-              </li>
-              <li class="breadcrumb-item active" aria-current="page">Detail Evaluasi</li>
-            </ol>
-          </nav>
-          <h1 class="h3 fw-bold text-dark mb-0">Detail Evaluasi Peserta</h1>
-          <div class="muted small mt-1">Rincian identitas peserta dan jawaban evaluasi.</div>
-        </div>
+      {{-- HEADER (GOV CARD) --}}
+      <div class="gov-header-card">
+        <div class="d-flex flex-column flex-lg-row justify-content-between align-items-start gap-3">
+          <div>
+            <div class="gov-breadcrumb">
+              <a class="link-muted" href="{{ route('admin.laporan.evaluasi') }}">Laporan Evaluasi</a>
+              <span class="sep">/</span>
+              <a class="link-muted" href="{{ route('admin.laporan.evaluasi.peserta', $peserta->webinar_id) }}">Peserta</a>
+              <span class="sep">/</span>
+              <span class="fw-semibold text-dark">Detail Evaluasi</span>
+            </div>
 
-        {{-- ✅ samain tombol seperti halaman Peserta Evaluasi --}}
-        <a href="{{ route('admin.laporan.evaluasi.peserta', $peserta->webinar_id) }}"
-           class="btn btn-ghost d-flex align-items-center gap-2">
-          <i class="fas fa-arrow-left me-2"></i>Kembali
-        </a>
+            <h1 class="gov-title">Detail Evaluasi Peserta</h1>
+            <p class="gov-subtitle">Rincian identitas peserta dan jawaban evaluasi.</p>
+          </div>
+
+          <div class="gov-actions">
+            <a href="{{ route('admin.laporan.evaluasi.peserta', $peserta->webinar_id) }}"
+              class="btn btn-ghost d-flex align-items-center gap-2">
+              <i class="fas fa-arrow-left"></i> Kembali
+            </a>
+          </div>
+        </div>
       </div>
+
 
       {{-- MAIN CARD (struktur tetap) --}}
       <div class="card border-0 shadow-sm card-soft">
@@ -255,5 +256,72 @@
     color: var(--ink) !important;
     opacity: .85;
   }
+
+    /* ===== GOV HEADER CARD (Detail Evaluasi) ===== */
+  .gov-header-card{
+    background:#fff;
+    border:1px solid rgba(185,28,28,.12);
+    border-radius:14px;
+    padding:18px 20px;
+    box-shadow: 0 2px 10px rgba(15,23,42,.04);
+    margin-bottom: 18px;
+  }
+
+  .gov-breadcrumb{
+    font-size:.875rem;
+    color:#6b7280;
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    align-items:center;
+    margin-bottom:10px;
+  }
+
+  .gov-breadcrumb .sep{ opacity:.6; }
+
+  .gov-title{
+    font-size:2.1rem;
+    font-weight:900;
+    letter-spacing:-.03em;
+    color:#111827;
+    margin:0;
+    line-height:1.1;
+  }
+
+  .gov-subtitle{
+    margin-top:8px;
+    color:#6b7280;
+    font-size:1rem;
+    margin-bottom:0;
+  }
+
+  .gov-actions{
+    display:flex;
+    gap:.5rem;
+    flex-wrap:wrap;
+    justify-content:flex-end;
+  }
+
+  /* Hover effect seperti card bawah (lift + shadow) */
+  .gov-header-card{
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    will-change: transform;
+  }
+
+  .gov-header-card:hover{
+    transform: translateY(-3px) scale(1.01);
+    box-shadow: 0 16px 34px rgba(15,23,42,.10);
+    border-color: rgba(185,28,28,.18);
+  }
+
+  /* Biar halus di mobile (opsional) */
+  @media (prefers-reduced-motion: reduce){
+    .gov-header-card,
+    .gov-header-card:hover{
+      transition: none !important;
+      transform: none !important;
+    }
+  }
+
 </style>
 @endpush

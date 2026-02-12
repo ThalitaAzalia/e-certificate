@@ -3,6 +3,22 @@
 @section('title', 'Dashboard Admin')
 
 @section('content')
+
+@if (session('success'))
+  <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin: 12px 16px;">
+    <strong>{{ session('success') }}</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+@endif
+
+@if (session('error'))
+  <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin: 12px 16px;">
+    <strong>{{ session('error') }}</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+@endif
+
+
 <style>
   :root{
     --red-950:#4b0000;
@@ -167,25 +183,13 @@
   }
 
   .navx a.active{
-    background: linear-gradient(180deg, rgba(255,233,234,.95), rgba(255,233,234,.70));
-    border: 1px solid rgba(155,0,0,.14);
-    color: var(--red-700);
-    box-shadow: 0 10px 22px rgba(155,0,0,.10);
-    transform: translateX(4px);
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    color: var(--ink);
+    transform: none;
   }
-  .navx a.active::after{
-    content:"";
-    position:absolute;
-    right: 14px;
-    top: 50%;
-    width: 8px;
-    height: 8px;
-    margin-top: -4px;
-    border-radius: 999px;
-    background: var(--red-700);
-    box-shadow: 0 0 0 3px rgba(155,0,0,.10);
-    animation: pulse 2s ease-in-out infinite;
-  }
+
 
   @keyframes pulse {
     0%, 100% { transform: scale(1); opacity: 1; }
@@ -784,6 +788,27 @@
   }
 </style>
 
+{{-- POP UP PANJANG DI ATAS--}}
+@if (session('success'))
+  <div style="position: fixed; top: 16px; left: 50%; transform: translateX(-50%); z-index: 9999; width: auto; max-width: 510px;">
+    <div class="alert alert-success alert-dismissible fade show" role="alert"
+         style="border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,.12);">
+      {{ session('success') }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  </div>
+@endif
+
+@if (session('error'))
+  <div style="position: fixed; top: 16px; left: 50%; transform: translateX(-50%); z-index: 9999; width: auto; max-width: 510px;"  >
+    <div class="alert alert-danger alert-dismissible fade show" role="alert"
+         style="border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,.12);">
+      {{ session('error') }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  </div>
+@endif
+
 <div class="dash-wrap">
   <div class="dash-shell">
 
@@ -896,7 +921,7 @@
       </div>
 
       {{-- PESERTA PER WEBINAR --}}
-      <section class="panel">
+      <section class="panel" id="cardPesertaPerWebinar">
         <div class="panel-header">
           <div>
             <h3 class="panel-title">Peserta Per Webinar</h3>
@@ -954,7 +979,7 @@
       </section>
 
       {{-- AKTIVITAS TERBARU --}}
-      <section class="panel">
+      <section class="panel" id="cardPesertaPerWebinar"></section>
         <div class="panel-header">
           <div>
             <h3 class="panel-title">Aktivitas Terbaru</h3>
@@ -1053,48 +1078,31 @@
 <input type="hidden" id="csrf-token" name="csrf-token" value="{{ csrf_token() }}">
 
 <script>
-// CSRF Token Helper
+// ================= CSRF =================
 function getCsrfToken() {
-  // Method 1: Dari meta tag
   const metaToken = document.querySelector('meta[name="csrf-token"]');
-  if (metaToken && metaToken.content) {
-    console.log('✓ CSRF token dari meta:', metaToken.content.substring(0, 10) + '...');
-    return metaToken.content;
-  }
-  
-  // Method 2: Coba dari input hidden dalam form
+  if (metaToken && metaToken.content) return metaToken.content;
+
+  const hidden = document.querySelector('#csrf-token');
+  if (hidden && hidden.value) return hidden.value;
+
   const inputToken = document.querySelector('input[name="_token"]');
-  if (inputToken && inputToken.value) {
-    console.log('✓ CSRF token dari input:', inputToken.value.substring(0, 10) + '...');
-    return inputToken.value;
-  }
-  
-  console.warn('✗ CSRF token tidak ditemukan!');
-  console.log('Meta tags:', document.querySelectorAll('meta').length);
-  console.log('meta[name="csrf-token"]:', metaToken);
-  
+  if (inputToken && inputToken.value) return inputToken.value;
+
   return null;
 }
 
-// DOM Ready Check
-document.addEventListener('DOMContentLoaded', function() {
-  console.log('✓ DOM Ready');
-  console.log('✓ CSRF Token Check:', getCsrfToken() ? 'Ada' : 'Tidak ada');
-});
-
-(function() {
+// ================= NAV ACTIVE (AMAN) =================
+(function () {
   const navLinks = document.querySelectorAll('.navx a');
   const currentPath = window.location.pathname;
-  
+
   navLinks.forEach(link => {
-    const href = link.getAttribute('href');
-    
-    // Hapus active class dari semua
+    const href = link.getAttribute('href') || '';
     link.classList.remove('active');
-    
-    // Tambahkan active class berdasarkan URL
+
     if (
-      (href === '/admin/dashboard' && currentPath === '/admin/dashboard') ||
+      (href.includes('/admin/dashboard') && currentPath.includes('/admin/dashboard')) ||
       (href.includes('/admin/webinars') && currentPath.includes('/admin/webinars')) ||
       (href.includes('/admin/form-datadiri') && currentPath.includes('/admin/form-datadiri')) ||
       (href.includes('/admin/evaluasi') && currentPath.includes('/admin/evaluasi')) ||
@@ -1107,174 +1115,404 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 })();
 
-// HANDLE LIHAT PESERTA (LOAD MODAL)
+// ================= MODAL CLEANUP =================
+function cleanupModalArtifacts() {
+  document.querySelectorAll('.modal-backdrop').forEach((el, idx) => {
+    if (idx > 0) el.remove();
+  });
+
+  const anyModalShown = document.querySelector('.modal.show');
+  if (!anyModalShown) {
+    document.body.classList.remove('modal-open');
+    document.body.style.removeProperty('overflow');
+    document.body.style.removeProperty('padding-right');
+  }
+}
+document.addEventListener('hidden.bs.modal', cleanupModalArtifacts);
+
+// Tutup modal A -> setelah hidden -> buka modal B
+function showModalAfterHiding(parentModalId, nextModalId) {
+  const parentEl = document.getElementById(parentModalId);
+  const nextEl = document.getElementById(nextModalId);
+  if (!parentEl || !nextEl) return;
+
+  const parent = bootstrap.Modal.getOrCreateInstance(parentEl);
+
+  parentEl.addEventListener('hidden.bs.modal', function onHidden() {
+    parentEl.removeEventListener('hidden.bs.modal', onHidden);
+    cleanupModalArtifacts();
+    bootstrap.Modal.getOrCreateInstance(nextEl).show();
+  });
+
+  parent.hide();
+}
+
+// ================= STATE =================
 let currentWebinarId = null;
 let currentWebinarTitle = null;
 
-document.querySelectorAll('.btn-lihat-peserta').forEach(btn => {
-  btn.addEventListener('click', function() {
-    currentWebinarId = this.dataset.webinarId;
-    currentWebinarTitle = this.dataset.webinarTitle;
-    
-    const modal = document.getElementById('modalDaftarPeserta');
-    const titleEl = modal.querySelector('.modal-title');
-    titleEl.textContent = `Daftar Peserta - ${currentWebinarTitle}`;
-    
-    const pesertaContainer = document.getElementById('modalPesertaList');
-    pesertaContainer.innerHTML = '<div style="text-align: center; padding: 20px; color: var(--muted);">Memuat data...</div>';
-    
-    const bsModal = new bootstrap.Modal(modal);
-    bsModal.show();
-    
-    // Load peserta data
-    loadModalPeserta(currentWebinarId);
-  });
-});
+let selectedPesertaId = null;
+let selectedPesertaBtn = null;
 
+let selectedWebinarId = null;
+
+// ================= FETCH LIST PESERTA (INI YANG BENER) =================
 function loadModalPeserta(webinarId) {
-  fetch(`/admin/api/webinar/${webinarId}/peserta`)
+  fetch(`/admin/api/webinar/${webinarId}/peserta?_ts=${Date.now()}`, {
+    method: 'GET',
+    cache: 'no-store',
+    headers: {
+      'Accept': 'application/json',
+      'Cache-Control': 'no-cache',
+      'Pragma': 'no-cache',
+    }
+  })
     .then(res => {
       if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
       return res.json();
     })
     .then(data => {
       const container = document.getElementById('modalPesertaList');
-      
+
       if (!data.pesertas || data.pesertas.length === 0) {
-        container.innerHTML = '<div style="text-align: center; padding: 20px; color: var(--muted);">Belum ada peserta</div>';
+        container.innerHTML =
+          '<div style="text-align:center; padding:20px; color: var(--muted);">Belum ada peserta</div>';
         return;
       }
-      
+
       let html = `
         <table style="width: 100%; border-collapse: collapse;">
           <thead>
             <tr style="background: rgba(155,0,0,.08); border-bottom: 1px solid var(--line);">
-              <th style="padding: 10px; text-align: left; font-size: 13px; font-weight: 600; color: var(--ink);">No</th>
-              <th style="padding: 10px; text-align: left; font-size: 13px; font-weight: 600; color: var(--ink);">Nama Peserta</th>
-              <th style="padding: 10px; text-align: left; font-size: 13px; font-weight: 600; color: var(--ink);">Email</th>
-              <th style="padding: 10px; text-align: center; font-size: 13px; font-weight: 600; color: var(--ink);">Aksi</th>
+              <th style="padding: 10px; text-align:left; font-size:13px; font-weight:600; color: var(--ink);">No</th>
+              <th style="padding: 10px; text-align:left; font-size:13px; font-weight:600; color: var(--ink);">Nama Peserta</th>
+              <th style="padding: 10px; text-align:left; font-size:13px; font-weight:600; color: var(--ink);">Email</th>
+              <th style="padding: 10px; text-align:center; font-size:13px; font-weight:600; color: var(--ink);">Aksi</th>
             </tr>
           </thead>
           <tbody>
       `;
-      
-      data.pesertas.forEach((peserta, index) => {
+
+      data.pesertas.forEach((peserta, idx) => {
         html += `
           <tr style="border-bottom: 1px solid var(--line);">
-            <td style="padding: 10px; font-size: 13px; color: var(--muted);">${index + 1}</td>
-            <td style="padding: 10px; font-size: 13px; color: var(--ink); font-weight: 500;">${peserta.nama_peserta || '-'}</td>
-            <td style="padding: 10px; font-size: 13px; color: var(--muted);">${peserta.email || '-'}</td>
-            <td style="padding: 10px; text-align: center;">
-              <button type="button" class="btn-hapus-peserta-modal" data-peserta-id="${peserta.id}" data-peserta-name="${peserta.nama_peserta}" style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); color: #dc2626; padding: 4px 10px; border-radius: 4px; font-size: 12px; cursor: pointer; transition: all .2s ease;" onmouseover="this.style.background='rgba(239, 68, 68, 0.15)'" onmouseout="this.style.background='rgba(239, 68, 68, 0.1)'">
+            <td style="padding:10px; font-size:13px; color: var(--muted);">${idx + 1}</td>
+            <td style="padding:10px; font-size:13px; color: var(--ink); font-weight:500;">${peserta.nama_peserta || '-'}</td>
+            <td style="padding:10px; font-size:13px; color: var(--muted);">${peserta.email || '-'}</td>
+            <td style="padding:10px; text-align:center;">
+              <button type="button"
+                class="btn-hapus-peserta-modal"
+                data-peserta-id="${peserta.id}"
+                data-peserta-name="${peserta.nama_peserta || ''}"
+                style="background: rgba(239,68,68,.1); border: 1px solid rgba(239,68,68,.3); color:#dc2626; padding:4px 10px; border-radius:4px; font-size:12px; cursor:pointer;">
                 🗑️ Hapus
               </button>
             </td>
           </tr>
         `;
       });
-      
-      html += `
-          </tbody>
-        </table>
-      `;
-      
+
+      html += `</tbody></table>`;
       container.innerHTML = html;
-      
-      // Attach delete handlers
+
+      // bind tombol hapus (ambil tombolnya juga biar bisa update UI)
       container.querySelectorAll('.btn-hapus-peserta-modal').forEach(btn => {
-        btn.addEventListener('click', function() {
-          showDeletePesertaModal(this.dataset.pesertaId, this.dataset.pesertaName, this);
+        btn.addEventListener('click', function () {
+          selectedPesertaBtn = this; // simpan tombol yang diklik
+          showDeletePesertaModal(this.dataset.pesertaId, this.dataset.pesertaName);
         });
       });
     })
     .catch(err => {
-      const container = document.getElementById('modalPesertaList');
-      container.innerHTML = '<div style="text-align: center; padding: 20px; color: #dc2626;">Gagal memuat data: ' + err.message + '</div>';
+      document.getElementById('modalPesertaList').innerHTML =
+        `<div style="text-align:center; padding:20px; color:#dc2626;">Gagal memuat data: ${err.message}</div>`;
     });
 }
 
-// DELETE PESERTA MODAL
-let selectedPesertaId = null;
-let selectedPesertaBtn = null;
-let selectedPesertaData = null;
+// ================= OPEN MODAL LIST PESERTA =================
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('.btn-lihat-peserta').forEach(btn => {
+    btn.addEventListener('click', function () {
+      currentWebinarId = this.dataset.webinarId;
+      currentWebinarTitle = this.dataset.webinarTitle;
 
-function showDeletePesertaModal(pesertaId, pesertaName, btn) {
-  selectedPesertaId = pesertaId;
-  selectedPesertaBtn = btn;
+      const modalEl = document.getElementById('modalDaftarPeserta');
+      modalEl.querySelector('.modal-title').textContent = `Daftar Peserta - ${currentWebinarTitle}`;
 
-  // set form action and preview name
-  const form = document.getElementById('formDeletePeserta');
-  if (form) form.action = `/admin/dashboard/peserta/${pesertaId}`;
+      document.getElementById('modalPesertaList').innerHTML =
+        '<div style="text-align:center; padding:20px; color: var(--muted);">Memuat data...</div>';
 
-  const nameEl = document.getElementById('namaPesertaDelete');
-  if (nameEl) nameEl.textContent = pesertaName || '-';
-
-  const modal = new bootstrap.Modal(document.getElementById('modalDeletePeserta'));
-  modal.show();
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-  const confirmBtn = document.getElementById('confirmDeletePesertaBtn');
-  if (!confirmBtn) return;
-
-  confirmBtn.addEventListener('click', function () {
-    const form = document.getElementById('formDeletePeserta');
-    if (!form) return;
-    // disable button to prevent double submit
-    this.disabled = true;
-    this.innerHTML = 'Menghapus...';
-    form.submit();
+      bootstrap.Modal.getOrCreateInstance(modalEl).show();
+      loadModalPeserta(currentWebinarId);
+    });
   });
-});
 
-// DELETE SEMUA PESERTA MODAL
-let selectedWebinarId = null;
-
-document.addEventListener('DOMContentLoaded', function() {
-  // Tambah tombol "Hapus Semua" di modal
+  // tambah tombol hapus semua sekali aja
   const modalPeserta = document.getElementById('modalDaftarPeserta');
   if (modalPeserta) {
-    // Buat tombol di footer jika belum ada
     const footer = modalPeserta.querySelector('.modal-footer');
-    if (!footer.querySelector('.btn-delete-all-from-modal')) {
+    if (footer && !footer.querySelector('.btn-delete-all-from-modal')) {
       const deleteAllBtn = document.createElement('button');
+      deleteAllBtn.type = 'button';
       deleteAllBtn.className = 'btn btn-danger btn-delete-all-from-modal';
-      deleteAllBtn.innerHTML = '<span style="margin-right: 4px;">🗑️</span>Hapus Semua Peserta';
-      deleteAllBtn.addEventListener('click', function() {
-        showDeleteAllModal(currentWebinarId, currentWebinarTitle);
+      deleteAllBtn.innerHTML = '<span style="margin-right:4px;">🗑️</span>Hapus Semua Peserta';
+      deleteAllBtn.addEventListener('click', function () {
+      // 1) set state hapus semua
+      selectedWebinarId = currentWebinarId;
+
+      const nameEl = document.getElementById('namaWebinarDelete');
+      if (nameEl) nameEl.textContent = currentWebinarTitle || '-';
+
+      // 2) tutup modal daftar
+      const daftarEl = document.getElementById('modalDaftarPeserta');
+      const delAllEl = document.getElementById('modalDeleteAll');
+      if (!daftarEl || !delAllEl) return;
+
+      const daftarModal = bootstrap.Modal.getOrCreateInstance(daftarEl);
+
+      // 3) setelah modal daftar benar2 tertutup, baru buka modal delete all
+      daftarEl.addEventListener('hidden.bs.modal', function onHidden() {
+        daftarEl.removeEventListener('hidden.bs.modal', onHidden);
+        bootstrap.Modal.getOrCreateInstance(delAllEl).show();
       });
-      footer.insertBefore(deleteAllBtn, footer.querySelector('.btn-secondary').nextSibling);
+
+      daftarModal.hide();
+    });
+
+
+      const closeBtn = footer.querySelector('.btn-secondary');
+      if (closeBtn) footer.insertBefore(deleteAllBtn, closeBtn);
+      else footer.appendChild(deleteAllBtn);
     }
   }
 });
 
-function showDeleteAllModal(webinarId, webinarTitle) {
-  selectedWebinarId = webinarId;
+// ================= DELETE 1 PESERTA =================
+function showDeletePesertaModal(pesertaId, pesertaName) {
+  selectedPesertaId = pesertaId;
 
-  // set form action and name
-  const form = document.getElementById('formDeleteAllPeserta');
-  if (form) form.action = `/admin/dashboard/webinar/${webinarId}/peserta`;
+  const nameEl = document.getElementById('namaPesertaDelete');
+  if (nameEl) nameEl.textContent = pesertaName || '-';
 
-  const nameEl = document.getElementById('namaWebinarDelete');
-  if (nameEl) nameEl.textContent = webinarTitle || '-';
-
-  const modal = new bootstrap.Modal(document.getElementById('modalDeleteAll'));
-  modal.show();
+  // tutup daftar -> buka delete
+  showModalAfterHiding('modalDaftarPeserta', 'modalDeletePeserta');
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-  const confirmBtn = document.getElementById('confirmDeleteAllPesertaBtn');
+document.addEventListener('DOMContentLoaded', function () {
+  const confirmBtn = document.getElementById('confirmDeletePesertaBtn');
   if (!confirmBtn) return;
 
-  confirmBtn.addEventListener('click', function () {
-    const form = document.getElementById('formDeleteAllPeserta');
-    if (!form) return;
-    this.disabled = true;
-    this.innerHTML = 'Menghapus...';
-    form.submit();
+  confirmBtn.addEventListener('click', async function () {
+    if (!selectedPesertaId) return;
+
+    const token = getCsrfToken();
+    if (!token) return alert('CSRF token tidak ditemukan.');
+
+    confirmBtn.disabled = true;
+    confirmBtn.textContent = 'Menghapus...';
+
+    try {
+      const res = await fetch(`/admin/dashboard/peserta/${selectedPesertaId}`, {
+        method: 'DELETE',
+        headers: {
+          'X-CSRF-TOKEN': token,
+          'Accept': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest',
+        },
+      });
+
+      let payload = {};
+      try { payload = await res.json(); } catch {}
+
+      if (!res.ok) {
+        const msg = payload.message || `Gagal hapus (HTTP ${res.status})`;
+        throw new Error(msg);
+      }
+
+      // ✅ simpan pesan sukses supaya muncul setelah reload
+      sessionStorage.setItem('flash_success', payload.message || 'Data peserta berhasil dihapus');
+
+      const delEl = document.getElementById('modalDeletePeserta');
+      delEl.addEventListener('hidden.bs.modal', function onHidden() {
+        delEl.removeEventListener('hidden.bs.modal', onHidden);
+        window.location.reload();
+      });
+
+      bootstrap.Modal.getOrCreateInstance(delEl).hide();
+
+
+    } catch (err) {
+      alert(err.message || 'Terjadi kesalahan.');
+    } finally {
+      confirmBtn.disabled = false;
+      confirmBtn.textContent = 'Ya, Hapus';
+      selectedPesertaId = null;
+      selectedPesertaBtn = null;
+    }
   });
 });
+
+// ================= DELETE ALL PESERTA (SAMA KAYAK HAPUS PESERTA + FALLBACK) =================
+document.addEventListener('DOMContentLoaded', function () {
+  const confirmBtnAll = document.getElementById('confirmDeleteAllPesertaBtn');
+  if (!confirmBtnAll) return;
+
+  confirmBtnAll.addEventListener('click', async function () {
+    if (!selectedWebinarId) return;
+
+    const token = getCsrfToken();
+    if (!token) return alert('CSRF token tidak ditemukan.');
+
+    confirmBtnAll.disabled = true;
+    confirmBtnAll.textContent = 'Menghapus...';
+
+    try {
+      const res = await fetch(`/admin/dashboard/webinar/${selectedWebinarId}/peserta`, {
+        method: 'DELETE',
+        headers: {
+          'X-CSRF-TOKEN': token,
+          'Accept': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest',
+        },
+      });
+
+      let payload = {};
+      try { payload = await res.json(); } catch {}
+
+      if (!res.ok) {
+        const msg = payload.message || `Gagal hapus semua (HTTP ${res.status})`;
+        throw new Error(msg);
+      }
+
+      // ✅ simpan pesan sukses (biar popup muncul setelah reload)
+      sessionStorage.setItem(
+        'flash_success',
+        payload.message || 'Semua data peserta webinar berhasil dihapus'
+      );
+
+      // ✅ tutup modal -> setelah hidden -> reload (sama seperti hapus peserta)
+      const delAllEl = document.getElementById('modalDeleteAll');
+      const modal = bootstrap.Modal.getOrCreateInstance(delAllEl);
+
+      let reloaded = false;
+      const doReload = () => {
+        if (reloaded) return;
+        reloaded = true;
+        window.location.reload();
+      };
+
+      delAllEl.addEventListener('hidden.bs.modal', function onHidden() {
+        delAllEl.removeEventListener('hidden.bs.modal', onHidden);
+        doReload();
+      });
+
+      // coba tutup normal
+      modal.hide();
+
+      // ✅ FALLBACK: kalau modal tetep kebuka (hidden event gak kepanggil), paksa tutup lalu reload
+      setTimeout(() => {
+        if (reloaded) return;
+
+        // paksa tutup modal + backdrop (hanya untuk kasus stuck)
+        delAllEl.classList.remove('show');
+        delAllEl.style.display = 'none';
+        delAllEl.setAttribute('aria-hidden', 'true');
+
+        document.body.classList.remove('modal-open');
+        document.body.style.removeProperty('overflow');
+        document.body.style.removeProperty('padding-right');
+
+        document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+
+        doReload();
+      }, 700);
+
+    } catch (err) {
+      alert(err.message || 'Terjadi kesalahan.');
+    } finally {
+      confirmBtnAll.disabled = false;
+      confirmBtnAll.textContent = 'Ya, Hapus Semua';
+      selectedWebinarId = null;
+    }
+  });
+});
+
+
 </script>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const msg = sessionStorage.getItem('flash_success');
+  if (!msg) return;
+
+  sessionStorage.removeItem('flash_success');
+
+  const wrap = document.createElement('div');
+  wrap.style.position = 'fixed';
+  wrap.style.top = '20px';
+  wrap.style.left = '50%';
+  wrap.style.transform = 'translateX(-50%)';
+  wrap.style.zIndex = '9999';
+  wrap.style.width = 'auto';
+  wrap.style.maxWidth = '700px';
+
+  wrap.innerHTML = `
+    <div class="alert alert-success alert-dismissible fade show" role="alert"
+        style="
+          border-radius:12px;
+          box-shadow:0 10px 30px rgba(0,0,0,.12);
+          margin:0;
+          padding:12px 60px 12px 18px;
+          position:relative;
+        ">
+      ${msg}
+      <button type="button"
+              class="btn-close"
+              data-bs-dismiss="alert"
+              aria-label="Close"
+              style="
+                position:absolute;
+                right:16px;
+                top:50%;
+                transform:translateY(-50%);
+              ">
+      </button>
+    </div>
+  `;
+
+
+
+  // ... setelah wrap dibuat
+  document.querySelectorAll('.alert.alert-success').forEach(el => {
+    try { bootstrap.Alert.getOrCreateInstance(el).close(); } catch(e) { el.remove(); }
+  });
+
+  const existing = document.getElementById('flash_success_toast');
+  if (existing) existing.remove();
+  wrap.id = 'flash_success_toast';
+
+  document.body.appendChild(wrap);
+
+});
+</script>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  // auto close semua alert bawaan blade (session success/error)
+  setTimeout(() => {
+    document.querySelectorAll('.alert').forEach((el) => {
+      try {
+        bootstrap.Alert.getOrCreateInstance(el).close();
+      } catch (e) {
+        el.remove();
+      }
+    });
+  }, 3000);
+});
+</script>
+
 
 <!-- Modal: Daftar Peserta per Webinar -->
 <div class="modal fade" id="modalDaftarPeserta" tabindex="-1">
@@ -1296,7 +1534,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <!-- Modal: Hapus Peserta Tunggal (standar form-evaluasi) -->
 <div class="modal fade" id="modalDeletePeserta" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered">
+  <div class="modal-dialog modal-dialog-centered" style="max-width: 500px;">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title text-danger fw-bold">Hapus Peserta</h5>
@@ -1315,11 +1553,10 @@ document.addEventListener('DOMContentLoaded', function() {
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
 
-        <form id="formDeletePeserta" method="POST">
-          @csrf
-          @method('DELETE')
-          <button type="submit" class="btn btn-danger">Ya, Hapus</button>
-        </form>
+        <button type="button" id="confirmDeletePesertaBtn" class="btn btn-danger">
+          Ya, Hapus
+        </button>
+
       </div>
     </div>
   </div>
@@ -1327,7 +1564,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <!-- Modal: Hapus Semua Peserta per Webinar (standar form-evaluasi) -->
 <div class="modal fade" id="modalDeleteAll" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered">
+  <div class="modal-dialog modal-dialog-centered" style="max-width: 500px;">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title text-danger fw-bold">Hapus Semua Peserta</h5>
@@ -1346,11 +1583,13 @@ document.addEventListener('DOMContentLoaded', function() {
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
 
-        <form id="formDeleteAllPeserta" method="POST">
+        <form id="formDeleteAllPeserta">
           @csrf
-          @method('DELETE')
-          <button type="submit" class="btn btn-danger">Ya, Hapus Semua</button>
+          <button type="button" id="confirmDeleteAllPesertaBtn" class="btn btn-danger">
+            Ya, Hapus Semua
+          </button>
         </form>
+
       </div>
     </div>
   </div>

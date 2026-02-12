@@ -395,6 +395,18 @@
     50% { transform: translateY(-8px) rotate(2deg); }
   }
   .people-float { animation: peopleFloat 3s ease-in-out infinite; }
+
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button{
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type="number"]{
+    -moz-appearance: textfield; /* Firefox */
+    appearance: textfield;
+  }
+
 </style>
 @endpush
 

@@ -160,6 +160,31 @@
     margin-top: 0.25rem;
   }
 
+  /* ===== Header Card (Form Data Diri) ===== */
+  .header-card{
+    background: linear-gradient(180deg, rgba(185,28,28,.06), rgba(255,255,255,1));
+    border: 1px solid rgba(185,28,28,.14);
+    border-radius: 16px;
+    padding: 18px 18px;
+    box-shadow: 0 10px 26px rgba(185,28,28,.06);
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    will-change: transform;
+  }
+
+  .header-card:hover{
+    transform: translateY(-3px) scale(1.01);
+    box-shadow: 0 18px 40px rgba(185,28,28,.10);
+    border-color: rgba(185,28,28,.22);
+  }
+
+  .header-card .actions{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    align-items:center;
+    justify-content:flex-end;
+  }
+
 </style>
 @endpush
 
@@ -167,34 +192,39 @@
 <div class="container py-4">
 
 {{-- HEADER --}}
-<div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3 mb-4">
-  <div>
-    <h1 class="page-title mb-2">Form Data Diri</h1>
-    <p class="text-muted mb-0">
-      Kelola pertanyaan data diri untuk absensi.
-    </p>
-  </div>
-  
-  <div class="d-flex gap-2">
-    <button class="btn btn-brand d-flex align-items-center gap-1" 
-            data-bs-toggle="modal" 
-            data-bs-target="#modalCreateQuestion">
-      <i class="fas fa-plus fa-sm"></i>
-      <span>Tambah</span>
-    </button>
-    <button class="btn btn-ghost d-flex align-items-center gap-1"
-            data-bs-toggle="modal"
-            data-bs-target="#modalPreviewForm">
-      <i class="fas fa-eye fa-sm"></i>
-      <span>Preview</span>
-    </button>
-    <a href="{{ url('/admin/dashboard') }}" 
-       class="btn btn-ghost d-flex align-items-center gap-1">
-      <i class="fas fa-arrow-left fa-sm"></i>
-      <span>Kembali</span>
-    </a>
+<div class="header-card mb-4">
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3">
+    <div>
+      <h1 class="page-title mb-2">Form Data Diri</h1>
+      <p class="text-muted mb-0">
+        Kelola pertanyaan data diri untuk absensi.
+      </p>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-brand d-flex align-items-center gap-1"
+              data-bs-toggle="modal"
+              data-bs-target="#modalCreateQuestion">
+        <i class="fas fa-plus fa-sm"></i>
+        <span>Tambah</span>
+      </button>
+
+      <button class="btn btn-ghost d-flex align-items-center gap-1"
+              data-bs-toggle="modal"
+              data-bs-target="#modalPreviewForm">
+        <i class="fas fa-eye fa-sm"></i>
+        <span>Preview</span>
+      </button>
+
+      <a href="{{ url('/admin/dashboard') }}"
+         class="btn btn-ghost d-flex align-items-center gap-1">
+        <i class="fas fa-arrow-left fa-sm"></i>
+        <span>Kembali</span>
+      </a>
+    </div>
   </div>
 </div>
+
 
 {{-- FILTER --}}
 <form method="GET" action="{{ route('admin.form-datadiri') }}">

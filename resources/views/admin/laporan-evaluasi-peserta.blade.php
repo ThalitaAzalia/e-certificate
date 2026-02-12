@@ -171,34 +171,79 @@
     flex-wrap: wrap;
   }
   
+  /* ===== Header Card (buat judul + breadcrumb + action) ===== */
+  .header-card{
+    background: linear-gradient(180deg, rgba(185,28,28,.06), rgba(255,255,255,1));
+    border: 1px solid rgba(185,28,28,.14);
+    border-radius: 16px;
+    padding: 18px 18px;
+    box-shadow: 0 10px 26px rgba(185,28,28,.06);
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    will-change: transform;
+    margin-bottom: 18px;
+  }
+
+  .header-card:hover{
+    transform: translateY(-3px) scale(1.01);
+    box-shadow: 0 18px 40px rgba(185,28,28,.10);
+    border-color: rgba(185,28,28,.22);
+  }
+
+  .header-card .breadcrumb-mini{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-top: 6px;
+    font-size: .95rem;
+  }
+
+  .header-card .breadcrumb-mini .sep{
+    color: rgba(107,114,128,.9);
+  }
+
+  .header-card .actions{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    align-items:center;
+    justify-content:flex-end;
+  }
+
+
 </style>
 @endpush
 
 @section('content')
 <div class="container py-3">
 
-  {{-- Header --}}
-  <div class="d-flex flex-column flex-lg-row align-items-lg-center justify-content-between gap-3 mb-4">
-    <div>
-      <h1 class="page-title mb-1">Daftar Peserta Evaluasi</h1>
-      <div class="muted">
-        <a class="link-muted" href="{{ route('admin.laporan.evaluasi') }}">Laporan Evaluasi</a>
-        <span class="mx-2">/</span>
-        <span class="fw-semibold" style="color:var(--ink);">{{ $webinar->judul ?? 'Webinar' }}</span>
+  {{-- Header (CARD) --}}
+  <div class="header-card">
+    <div class="d-flex flex-column flex-lg-row align-items-lg-center justify-content-between gap-3">
+      <div>
+        <h1 class="page-title mb-1">Daftar Peserta Evaluasi</h1>
+
+        <div class="breadcrumb-mini">
+          <a class="link-muted" href="{{ route('admin.laporan.evaluasi') }}">Laporan Evaluasi</a>
+          <span class="sep">/</span>
+          <span class="fw-semibold" style="color:var(--ink);">
+            {{ $webinar->judul ?? 'Webinar' }}
+          </span>
+        </div>
+      </div>
+
+      <div class="actions">
+        <span class="chip">
+          <i class="fas fa-users fa-sm"></i> {{ $pesertas->count() }} Peserta
+        </span>
+
+        <a href="{{ route('admin.laporan.evaluasi') }}" class="btn btn-ghost d-flex align-items-center gap-2">
+          <i class="fas fa-arrow-left fa-sm"></i> Kembali
+        </a>
       </div>
     </div>
-
-    <div class="d-flex gap-2 flex-wrap">
-      <span class="chip">
-        <i class="fas fa-users fa-sm"></i> {{ $pesertas->count() }} Peserta
-      </span>
-
-      {{-- ✅ FIX: hapus rounded-16 biar tombol sama kaya laporan evaluasi --}}
-      <a href="{{ route('admin.laporan.evaluasi') }}" class="btn btn-ghost d-flex align-items-center gap-2">
-        <i class="fas fa-arrow-left fa-sm"></i> Kembali
-      </a>
-    </div>
   </div>
+
 
   {{-- Webinar info --}}
   <div class="card card-soft rounded-16 mb-4">

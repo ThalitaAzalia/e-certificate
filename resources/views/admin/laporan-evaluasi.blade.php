@@ -30,6 +30,11 @@
     border: 1px solid var(--border-soft);
     border-radius: 12px;
     box-shadow: 0 2px 8px rgba(185, 28, 28, 0.05);
+    overflow: visible !important; /* ✅ FIX supaya footer/pagination gak kepotong */
+  }
+
+  .card-soft .card-body{
+    overflow: visible !important; /* ✅ FIX tambahan */
   }
 
   .btn-brand {
@@ -434,11 +439,14 @@
     font-size: 0.75rem !important;
   }
 
-  /* FIX tabel kepotong kiri */
   .table-responsive {
     padding-left: 8px;
     padding-right: 4px;
+    overflow-x: auto;
+    overflow-y: visible !important; /* ✅ FIX */
+    padding-bottom: 10px;           /* ✅ FIX biar pagination aman */
   }
+
 
   /* kasih ruang untuk kolom pertama */
   .table-analytics th:first-child,
@@ -456,6 +464,45 @@
     padding-right: 1.25rem;
   }
 
+  .table-footer{
+    padding: 18px 22px 18px !important; 
+    overflow: visible !important;
+  }
+
+  .table-footer nav{
+    margin-left: auto;       /* dorong pagination ke kanan */
+    padding-left: 12px;      /* jarak dari teks */
+  }
+  
+  .table-footer .pagination{
+    margin-right: 6px;       /* ruang kanan ekstra */
+  }
+
+  /* ===== Header Card (Laporan Evaluasi) ===== */
+  .header-card{
+    background: linear-gradient(180deg, rgba(185,28,28,.06), rgba(255,255,255,1));
+    border: 1px solid rgba(185,28,28,.14);
+    border-radius: 16px;
+    padding: 18px 18px;
+    box-shadow: 0 10px 26px rgba(185,28,28,.06);
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    will-change: transform;
+  }
+
+  .header-card:hover{
+    transform: translateY(-3px) scale(1.01);
+    box-shadow: 0 18px 40px rgba(185,28,28,.10);
+    border-color: rgba(185,28,28,.22);
+  }
+
+  .header-card .actions{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    align-items:center;
+    justify-content:flex-end;
+  }
+
 </style>
 @endpush
 
@@ -468,28 +515,32 @@
 <div class="container py-4">
 
   {{-- HEADER --}}
-  <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3 mb-4">
-    <div>
-      <h1 class="page-title mb-2">Laporan Evaluasi</h1>
-      <p class="text-muted mb-0">
-        Analisis evaluasi peserta webinar. Klik judul webinar untuk melihat detail.
-      </p>
-    </div>
-    
-    <div class="d-flex gap-2">
-      <button class="btn btn-excel d-flex align-items-center gap-1" 
-              data-bs-toggle="modal" 
-              data-bs-target="#modalExport">
-        <i class="fas fa-file-excel fa-sm"></i>
-        <span>Export Excel</span>
-      </button>
-      <a href="{{ url('/admin/dashboard') }}" 
-         class="btn btn-ghost d-flex align-items-center gap-1">
-        <i class="fas fa-arrow-left fa-sm"></i>
-        <span>Kembali</span>
-      </a>
+  <div class="header-card mb-4">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3">
+      <div>
+        <h1 class="page-title mb-2">Laporan Evaluasi</h1>
+        <p class="text-muted mb-0">
+          Analisis evaluasi peserta webinar. Klik judul webinar untuk melihat detail.
+        </p>
+      </div>
+
+      <div class="actions">
+        <button class="btn btn-excel d-flex align-items-center gap-1"
+                data-bs-toggle="modal"
+                data-bs-target="#modalExport">
+          <i class="fas fa-file-excel fa-sm"></i>
+          <span>Export Excel</span>
+        </button>
+
+        <a href="{{ url('/admin/dashboard') }}"
+          class="btn btn-ghost d-flex align-items-center gap-1">
+          <i class="fas fa-arrow-left fa-sm"></i>
+          <span>Kembali</span>
+        </a>
+      </div>
     </div>
   </div>
+
 
   {{-- FILTER --}}
 <form method="GET" action="{{ route('admin.laporan.evaluasi') }}">
@@ -678,7 +729,7 @@
         </div>
 
         {{-- Pagination --}}
-        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-2 mt-4 pt-3 border-top">
+        <div class="table-footer d-flex flex-column flex-md-row justify-content-between align-items-center gap-2 mt-4 pt-3 border-top">
           <div class="text-muted small">
             Menampilkan {{ $webinars->count() }} dari {{ $allWebinars->count() }} webinar
           </div>

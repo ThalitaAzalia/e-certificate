@@ -70,14 +70,33 @@ class EvaluasiController extends Controller
             abort(403, 'Evaluasi sudah pernah diisi.');
         }
 
-        // 3. simpan jawaban
+        // 3. Get all questions to validate
+        $allQuestions = EvaluasiQuestion::orderBy('urutan')->get();
+        
+        // 4. Build validation rules - semua pertanyaan wajib diisi
+        $validationRules = [];
+        foreach ($allQuestions as $question) {
+            $validationRules['answers.' . $question->id] = 'required|string|max:2000';
+        }
+
+        // 5. Validate
+        $validated = $request->validate(
+            $validationRules,
+            [
+                'required' => 'Semua pertanyaan evaluasi harus diisi.',
+                'string' => 'Jawaban harus berupa teks yang valid.',
+                'max' => 'Jawaban tidak boleh melebihi 2000 karakter.',
+            ]
+        );
+
+        // 6. simpan jawaban
         // prefetch questions to avoid N+1 queries
-        $questionIds = array_keys((array) $request->answers);
+        $questionIds = array_keys((array) $validated['answers']);
         $questions = EvaluasiQuestion::whereIn('id', $questionIds)
             ->get()
             ->keyBy('id');
 
-        foreach ($request->answers as $questionId => $answer) {
+        foreach ($validated['answers'] as $questionId => $answer) {
             $q = $questions[$questionId] ?? null;
 
             EvaluasiAnswer::create([

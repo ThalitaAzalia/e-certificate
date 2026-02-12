@@ -4,501 +4,227 @@
 
 @push('head')
 <style>
-  :root {
-    --brand: #b91c1c;
-    --brand-2: #dc2626;
-    --brand-3: #991b1b;
-    --bg-page: #fafafa;
-    --bg-card: #ffffff;
-    --border-soft: rgba(185, 28, 28, 0.12);
-    --ink: #111827;
-    --muted: #6b7280;
-    --shadow-soft: 0 2px 8px rgba(185, 28, 28, 0.05);
+  :root{
+    --brand:#b91c1c;
+    --brand-2:#dc2626;
+    --brand-3:#991b1b;
+    --bg-page:#f7e8e8;
+    --bg-card:#fff5f5;
+    --border-soft: rgba(185,28,28,.18);
+    --ink:#111827;
+    --muted:#6b7280;
   }
 
-  body { 
-    background: var(--bg-page); 
-    font-family: 'Inter', -apple-system, sans-serif;
-    color: var(--ink);
-  }
+  body{ background: var(--bg-page); }
 
-  .page-title {
-    font-weight: 900;
-    letter-spacing: -0.025em;
-    color: var(--brand-3);
-    font-size: 1.75rem;
-    line-height: 1.1;
-  }
+  .page-title{ font-weight:900; letter-spacing:-.2px; color:var(--brand-3); }
+  .muted{ color:var(--muted); }
+  .rounded-16{ border-radius:16px; }
 
-  .card-soft {
+  .card-soft{
     background: var(--bg-card) !important;
     border: 1px solid var(--border-soft);
-    border-radius: 12px;
-    box-shadow: var(--shadow-soft);
+    box-shadow:
+      0 20px 45px rgba(185,28,28,.08),
+      0 6px 16px rgba(185,28,28,.06);
   }
 
-  .btn-brand {
+  .btn-brand{
     background: var(--brand);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-weight: 600;
-    padding: 0.5rem 1.25rem;
-    transition: background 0.2s;
+    color:#fff;
+    border:none;
   }
+  .btn-brand:hover{ background: var(--brand-2); color:#fff; }
 
-  .btn-brand:hover {
-    background: var(--brand-2);
-    color: white;
-  }
-
-  .btn-ghost {
-    border: 1px solid rgba(185, 28, 28, 0.2);
-    background: white;
+  .btn-ghost{
+    border:1px solid rgba(185,28,28,.35);
+    background: rgba(255,255,255,.65);
     color: var(--brand);
-    border-radius: 8px;
-    font-weight: 500;
-    padding: 0.5rem 1.25rem;
-    transition: all 0.2s;
+  }
+  .btn-ghost:hover{ background: rgba(185,28,28,.08); color: var(--brand-3); }
+
+  .form-control:focus, .form-select:focus{
+    border-color: rgba(185,28,28,.55);
+    box-shadow: 0 0 0 .25rem rgba(185,28,28,.18);
   }
 
-  .btn-ghost:hover {
-    background: rgba(185, 28, 28, 0.05);
-    color: var(--brand-3);
-  }
+  .hint{ font-size:.875rem; color: var(--muted); }
+  .divider-soft{ height:1px; background: rgba(185,28,28,.14); border-radius:999px; }
 
-  .badge-pill {
-    border-radius: 50px;
-    padding: 0.25rem 0.75rem;
-    font-weight: 600;
-    font-size: 0.75rem;
-    border: 1px solid;
-  }
-
-  .badge-active {
-    background: rgba(46, 125, 50, 0.1);
-    color: #2e7d32;
-    border-color: rgba(46, 125, 50, 0.2);
-  }
-
-  .badge-inactive {
-    background: rgba(156, 163, 175, 0.1);
-    color: #6b7280;
-    border-color: rgba(156, 163, 175, 0.2);
-  }
-
-  .badge-count {
-    background: rgba(185, 28, 28, 0.08);
-    color: var(--brand-3);
-    border-color: rgba(185, 28, 28, 0.15);
-  }
-
-  .form-control, .form-select {
-    border-radius: 6px;
-    border: 1px solid #e5e7eb;
-    padding: 0.5rem 0.75rem;
-    font-size: 0.875rem;
-    transition: all 0.2s;
-  }
-
-  .form-control:focus, .form-select:focus {
-    border-color: var(--brand);
-    box-shadow: 0 0 0 2px rgba(185, 28, 28, 0.1);
-  }
-
-  .table-header {
-    background: rgba(185, 28, 28, 0.05);
-    color: var(--brand-3);
-    font-weight: 600;
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-
-  .modal-content {
-    border-radius: 12px;
-    border: none;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-  }
-
-  .template-thumb {
-    width: 80px;
-    height: 60px;
-    border-radius: 8px;
-    object-fit: cover;
-    border: 1px solid rgba(185, 28, 28, 0.15);
-    background: #fff;
-  }
-
-  .preview-container {
-    background: #fff;
-    border: 1px solid rgba(185, 28, 28, 0.15);
-    border-radius: 12px;
-    padding: 1.25rem;
+  .preview-shell{
+    background: rgba(255,255,255,.55);
+    border: 1px dashed rgba(185,28,28,.25);
+    border-radius: 16px;
+    padding: 12px;
   }
 
   .preview-stage {
     position: relative;
     width: 100%;
+    max-width: 960px;
     aspect-ratio: 16 / 9;
-    background: #f8fafc;
-    border-radius: 10px;
-    overflow: hidden;
+    background: #fff;
     margin: 0 auto;
+    overflow: hidden;
   }
 
-  .preview-image {
+  .preview-img{
     position: absolute;
-    inset: 0;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     object-fit: contain;
-    background: white;
+    pointer-events: none;
   }
 
-  .draggable-box {
+  .name-box {
     position: absolute;
-    border: 2px dashed rgba(185, 28, 28, 0.35);
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(2px);
+    border: 2px dashed rgba(220, 38, 38, 0.5);
     display: flex;
     align-items: center;
     justify-content: center;
+    text-align: center;
     cursor: move;
     user-select: none;
-    transition: all 0.2s;
+    transition: border-color 0.2s;
   }
 
-  .draggable-box:hover {
-    border-color: rgba(185, 28, 28, 0.6);
-    background: rgba(255, 255, 255, 0.95);
+  .name-box:hover {
+    border-color: rgba(220, 38, 38, 0.8);
   }
 
-  .draggable-box.dragging {
-    border-style: solid;
+  .name-box.dragging {
     border-color: var(--brand);
-    box-shadow: 0 8px 20px rgba(185, 28, 28, 0.15);
+    border-style: solid;
+    cursor: grabbing;
   }
 
-  .draggable-text {
-    padding: 0.75rem;
-    text-align: center;
+  .name-text {
+    width: 100%;
+    padding: 8px;
+    white-space: normal;
     word-break: break-word;
-    width: 100%;
   }
 
-  .range-slider {
-    width: 100%;
-    height: 6px;
-    -webkit-appearance: none;
-    appearance: none;
-    background: #e5e7eb;
-    border-radius: 3px;
-    outline: none;
+  .toolbar-mini{
+    display:flex;
+    gap:8px;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
   }
 
-  .range-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background: var(--brand);
-    cursor: pointer;
-    border: 2px solid white;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  .chip{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:.35rem .6rem;
+    border-radius:999px;
+    font-weight:800;
+    font-size:.85rem;
+    border:1px solid rgba(185,28,28,.20);
+    background: rgba(185,28,28,.06);
+    color: var(--brand-3);
   }
 
-  .range-value {
-    min-width: 3rem;
-    text-align: center;
-    font-weight: 600;
-    color: var(--ink);
-    font-size: 0.875rem;
-    background: rgba(185, 28, 28, 0.06);
-    padding: 0.25rem 0.5rem;
-    border-radius: 6px;
-    border: 1px solid rgba(185, 28, 28, 0.15);
+  .table td, .table th{ vertical-align: middle; }
+  thead tr{ background: rgba(185,28,28,.06); }
+
+  .thumb{
+    width: 84px;
+    height: 52px;
+    border-radius: 10px;
+    object-fit: cover;
+    border: 1px solid rgba(185,28,28,.18);
+    background: #fff;
   }
 
-  .divider {
-    height: 1px;
-    background: rgba(185, 28, 28, 0.12);
-    margin: 1rem 0;
-    border: none;
-  }
-
-  .btn-sm {
-    padding: 0.375rem 0.75rem;
-    font-size: 0.8125rem;
-  }
-
-  .btn-outline-success, .btn-outline-danger {
-    border-radius: 6px;
-  }
-
-  .text-muted { color: var(--muted) !important; }
-
-  .card-soft .card-body { padding: 1.25rem; }
-
-  .form-label { 
-    margin-bottom: .35rem; 
-    font-weight: 600;
-    font-size: 0.875rem;
+  input[type="range"]{ width: 100%; }
+  .range-row{ display:flex; gap:10px; align-items:center; }
+  .range-val{
+    min-width: 64px;
+    text-align: right;
+    font-weight: 800;
     color: var(--ink);
   }
 
-  .helper-text {
-    font-size: 0.8125rem;
-    color: var(--muted);
-    margin-top: 0.25rem;
-    line-height: 1.4;
+  .sticky-actions{
+    position: sticky;
+    bottom: 0;
+    background: linear-gradient(180deg, rgba(255,245,245,0), rgba(255,245,245,1) 40%);
+    padding-top: 10px;
+    margin-top: 6px;
   }
 
-  .empty-state {
-    text-align: center;
-    padding: 2rem 1rem;
-    color: var(--muted);
-  }
-
-  .empty-state-icon {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-    opacity: 0.5;
-  }
-
-  /* ===== THEME MERAH ===== */
-  /* Button merah */
-  .btn-brand {
-    background-color: #b10000;
-    border-color: #b10000;
-    color: #fff;
-    font-weight: 600;
-  }
-
-
-  .btn-brand:hover {
-    background-color: #8b0000;
-    border-color: #8b0000;
-    color: #fff;
-  }
-
-  /* ===== ALERT BAR INLINE ===== */
-  .alert-bar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 14px 18px;
-    border-radius: 10px;
-    margin-bottom: 16px;
-  }
-
-  .alert-left {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .alert-icon {
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    background: #8b0000;
-    color: #fff;
-    font-size: 13px;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .alert-text {
-    font-weight: 500;
-    color: #4b0000;
-  }
-
-  .alert-close {
-    background: transparent;
-    border: none;
-    font-size: 20px;
-    color: #6b0000;
-    cursor: pointer;
-  }
-
-  .alert-red {
-    background: #fbeaea;
-    border: 1px solid #f1bcbc;
-  }
-
-  .d-none {
-    display: none;
-  }
-
-  /* ===== ALERT BAR INLINE (HIJAU SOFT - SUCCESS) ===== */
-  .alert-bar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 14px 18px;
-    border-radius: 10px;
-    margin-bottom: 18px;
-    background: #d1fae5;
-    border: 1px solid #a7f3d0;
-  }
-
-  .alert-left {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .alert-icon {
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
+  .success-toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
     background: #10b981;
-    color: #fff;
-    font-size: 13px;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    color: white;
+    padding: 16px 24px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    z-index: 9999;
+    animation: slideIn 0.3s ease-out;
   }
 
-  .alert-text {
-    font-weight: 500;
-    font-size: 0.95rem;
-    color: #047857;
+  @keyframes slideIn {
+    from {
+      transform: translateX(400px);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
   }
-
-  .alert-close {
-    background: transparent;
-    border: none;
-    font-size: 20px;
-    line-height: 1;
-    color: #059669;
-    cursor: pointer;
-  }
-
-  .alert-close:hover {
-    color: #10b981;
-  }
-
-  .d-none {
-    display: none;
-  }
-
 </style>
 @endpush
 
 @section('content')
-<div id="alertSuccess" class="alert-bar d-none">
-  <div class="alert-left">
-    <span class="alert-icon">✓</span>
-    <span class="alert-text">
-      Setting berhasil disimpan
-    </span>
-  </div>
-  <button type="button"
-          class="alert-close"
-          onclick="closeAlert()">✕</button>
-</div>
+<div class="container py-3">
 
-<div class="modal fade" id="modalDeleteTemplate" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title text-danger fw-bold">
-          Konfirmasi Hapus Template Sertifikat
-        </h5>
-        <button type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"></button>
-      </div>
-
-      <div class="modal-body">
-        <p class="mb-2">
-          Anda yakin ingin menghapus template berikut?
-        </p>
-
-        <div class="alert alert-danger mb-0">
-          <strong id="namaTemplateSertifikat">
-            Nama Template
-          </strong>
-          <div class="small text-muted mt-1">
-            Template yang dihapus tidak dapat dipulihkan.
-          </div>
-        </div>
-      </div>
-
-      <div class="modal-footer">
-        <button type="button"
-                class="btn btn-ghost"
-                data-bs-dismiss="modal">
-          Batal
-        </button>
-
-
-        <form id="formDeleteTemplate" method="POST">
-          @csrf
-          @method('DELETE')
-          <button type="submit" class="btn btn-danger">
-            Ya, Hapus
-          </button>
-        </form>
+  {{-- Header --}}
+  <div class="d-flex flex-column flex-lg-row align-items-lg-center justify-content-between gap-3 mb-4">
+    <div>
+      <h1 class="page-title mb-1">Template Sertifikat</h1>
+      <div class="muted">
+        Upload template, kelola (CRUD), atur posisi & font nama peserta, dan preview sertifikat.
       </div>
     </div>
+
+    <div class="d-flex gap-2 flex-wrap">
+      <button class="btn btn-brand rounded-16" data-bs-toggle="modal" data-bs-target="#modalCreateTemplate">
+        + Upload Template
+      </button>
+      <button class="btn btn-ghost rounded-16" id="btnOpenPreview">
+        Preview Sertif
+      </button>
+      <a href="{{ url('/admin/dashboard') }}" class="btn btn-ghost rounded-16">Kembali</a>
+    </div>
   </div>
-</div>
 
-<div class="container py-4">
+  <div class="row g-4">
+    {{-- LEFT: Settings --}}
+    <div class="col-lg-4">
+      <div class="card card-soft rounded-16">
+        <div class="card-body">
+          <div class="fw-semibold mb-2">Pengaturan Nama di Sertifikat</div>
+          <div class="hint">Atur posisi dan gaya teks nama. Simulasi real-time di panel preview.</div>
 
-{{-- HEADER --}}
-<div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3 mb-4">
-  <div>
-    <h1 class="page-title mb-2">Template Sertifikat</h1>
-    <p class="text-muted mb-0">
-      Kelola template sertifikat, atur posisi nama peserta, dan lihat preview.
-    </p>
-  </div>
-  
-  <div class="d-flex gap-2">
-    <button class="btn btn-brand d-flex align-items-center gap-1" 
-            data-bs-toggle="modal" 
-            data-bs-target="#modalCreateTemplate">
-      <i class="fas fa-plus fa-sm"></i>
-      <span>Upload Template</span>
-    </button>
-    <button class="btn btn-ghost d-flex align-items-center gap-1"
-            data-bs-toggle="modal"
-            data-bs-target="#modalPreviewEval">
-      <i class="fas fa-eye fa-sm"></i>
-      <span>Preview</span>
-    </button>
-    <a href="{{ url('/admin/dashboard') }}" 
-       class="btn btn-ghost d-flex align-items-center gap-1">
-      <i class="fas fa-arrow-left fa-sm"></i>
-      <span>Kembali</span>
-    </a>
-  </div>
-</div>
+          <div class="divider-soft my-3"></div>
 
-<div class="row g-4">
-  {{-- LEFT COLUMN: SETTINGS --}}
-  <div class="col-lg-4">
-    <div class="card card-soft">
-      <div class="card-body">
-        <h5 class="fw-semibold mb-3">Pengaturan Teks Nama</h5>
-        <p class="text-muted mb-3">Atur posisi dan gaya teks nama pada sertifikat.</p>
-
-        <div class="mb-3">
-          <label class="form-label">Pilih Template</label>
-          <select id="templateSelect" class="form-select">
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Pilih Template</label>
+          <select id="templateSelect" class="form-select rounded-16">
             @foreach ($templates as $template)
               <option
                 value="{{ $template->id }}"
                 data-image="{{ asset('certificates/'.$template->file_name) }}"
+                data-width="{{ $template->width_px }}"
+                data-height="{{ $template->height_px }}"
                 data-pos-x="{{ $template->box_x ?? 50 }}"
                 data-pos-y="{{ $template->box_y ?? 55 }}"
                 data-box-width="{{ $template->box_width ?? 40 }}"
@@ -516,345 +242,341 @@
               </option>
             @endforeach
           </select>
-          <div class="helper-text">Pilih template untuk mulai mengatur posisi teks</div>
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label">Nama Preview</label>
-          <input id="nameInput" class="form-control" value="NAMA PESERTA" />
-          <div class="helper-text">Nama ini akan ditampilkan pada preview</div>
-        </div>
-
-        <div class="divider"></div>
-
-        <h6 class="fw-semibold mb-3">Posisi Teks</h6>
-        
-        <div class="row g-3 mb-3">
-          <div class="col-6">
-            <label class="form-label">Posisi X</label>
-            <div class="d-flex align-items-center gap-2">
-              <input id="posX" type="range" class="range-slider" min="0" max="100" value="50" />
-              <div id="posXVal" class="range-value">50%</div>
+            <div class="hint mt-1">
+              Pilih template untuk langsung melihat preview sertifikat.
             </div>
-            <div class="helper-text">0% kiri • 100% kanan</div>
           </div>
-          <div class="col-6">
-            <label class="form-label">Posisi Y</label>
-            <div class="d-flex align-items-center gap-2">
-              <input id="posY" type="range" class="range-slider" min="0" max="100" value="55" />
-              <div id="posYVal" class="range-value">55%</div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Nama (contoh preview)</label>
+            <input id="nameInput" class="form-control rounded-16" value="NAMA PESERTA" />
+          </div>
+
+          <div class="row g-2">
+            <div class="col-6">
+              <label class="form-label fw-semibold">Posisi X (%)</label>
+              <div class="range-row">
+                <input id="posX" type="range" min="0" max="100" value="50" />
+                <div id="posXVal" class="range-val">50%</div>
+              </div>
+              <div class="hint">0 kiri • 100 kanan</div>
             </div>
-            <div class="helper-text">0% atas • 100% bawah</div>
+            <div class="col-6">
+              <label class="form-label fw-semibold">Posisi Y (%)</label>
+              <div class="range-row">
+                <input id="posY" type="range" min="0" max="100" value="55" />
+                <div id="posYVal" class="range-val">55%</div>
+              </div>
+              <div class="hint">0 atas • 100 bawah</div>
+            </div>
           </div>
-        </div>
 
-        <div class="row g-3 mb-3">
-          <div class="col-6">
-            <label class="form-label">Lebar Box</label>
-            <input id="boxWidth" type="number" class="form-control" value="40" min="5" max="100">
-            <div class="helper-text">% dari lebar</div>
-          </div>
-          <div class="col-6">
-            <label class="form-label">Tinggi Box</label>
-            <input id="boxHeight" type="number" class="form-control" value="10" min="3" max="100">
-            <div class="helper-text">% dari tinggi</div>
-          </div>
-        </div>
+          <div class="divider-soft my-3"></div>
+          <div class="fw-semibold mb-2">Ukuran Text Box</div>
 
-        <div class="divider"></div>
+          <div class="row g-2">
+            <div class="col-6">
+              <label class="form-label fw-semibold">Lebar Box (%)</label>
+              <input id="boxWidth" type="number" class="form-control rounded-16" value="40" min="5" max="100">
+            </div>
+            <div class="col-6">
+              <label class="form-label fw-semibold">Tinggi Box (%)</label>
+              <input id="boxHeight" type="number" class="form-control rounded-16" value="10" min="3" max="100">
+            </div>
+          </div>
 
-        <h6 class="fw-semibold mb-3">Pengaturan Tipografi</h6>
-        
-        <div class="row g-2 mb-2">
-          <div class="col-7">
-            <label class="form-label">Font</label>
-            <select id="fontFamily" class="form-select">
-              <option value="Georgia, serif">Georgia</option>
-              <option value='"Times New Roman", Times, serif'>Times New Roman</option>
-              <option value="Arial, Helvetica, sans-serif">Arial</option>
-              <option value='"Trebuchet MS", sans-serif'>Trebuchet MS</option>
-              <option value='"Courier New", Courier, monospace'>Courier New</option>
-            </select>
-          </div>
-          <div class="col-5">
-            <label class="form-label">Ukuran (px)</label>
-            <input id="fontSize" type="number" class="form-control" value="44" min="8" max="140">
-          </div>
-        </div>
+          <div class="divider-soft my-3"></div>
 
-        <div class="row g-2 mb-2">
-          <div class="col-6">
-            <label class="form-label">Warna</label>
-            <input id="fontColor" type="color" class="form-control form-control-color" value="#111827">
+          <div class="row g-2">
+            <div class="col-7">
+              <label class="form-label fw-semibold">Font</label>
+              <select id="fontFamily" class="form-select rounded-16">
+                <option value="Georgia, serif">Georgia</option>
+                <option value='"Times New Roman", Times, serif'>Times New Roman</option>
+                <option value="Arial, Helvetica, sans-serif">Arial</option>
+                <option value='"Trebuchet MS", sans-serif'>Trebuchet MS</option>
+                <option value='"Courier New", Courier, monospace'>Courier New</option>
+              </select>
+            </div>
+            <div class="col-5">
+              <label class="form-label fw-semibold">Ukuran (px)</label>
+              <input id="fontSize" type="number" class="form-control rounded-16" value="44" min="8" max="140">
+            </div>
           </div>
-          <div class="col-6">
-            <label class="form-label">Perataan</label>
-            <select id="textAlign" class="form-select">
-              <option value="left">Kiri</option>
-              <option value="center">Tengah</option>
-              <option value="right">Kanan</option>
-            </select>
-          </div>
-        </div>
 
-        <div class="row g-2 mb-3">
-          <div class="col-6">
-            <label class="form-label">Tebal</label>
-            <select id="fontWeight" class="form-select">
-              <option value="400">Normal</option>
-              <option value="600">Semibold</option>
-              <option value="700">Bold</option>
-              <option value="800">Extra Bold</option>
-            </select>
+          <div class="row g-2 mt-2">
+            <div class="col-6">
+              <label class="form-label fw-semibold">Warna</label>
+              <input id="fontColor" type="color" class="form-control form-control-color rounded-16" value="#111827">
+            </div>
+            <div class="col-6">
+              <label class="form-label fw-semibold">Perataan</label>
+              <select id="textAlign" class="form-select rounded-16">
+                <option value="left">Kiri</option>
+                <option value="center">Tengah</option>
+                <option value="right">Kanan</option>
+              </select>
+            </div>
           </div>
-          <div class="col-6">
-            <label class="form-label">Italic</label>
-            <select id="fontStyle" class="form-select">
-              <option value="normal">Tidak</option>
-              <option value="italic">Ya</option>
-            </select>
-          </div>
-        </div>
 
-        <div class="row g-2 mb-3">
-          <div class="col-6">
-            <label class="form-label">Letter Spacing (px)</label>
-            <input id="letterSpacing" type="number" class="form-control" value="1" min="-2" max="20">
+          <div class="row g-2 mt-2">
+            <div class="col-6">
+              <label class="form-label fw-semibold">Tebal</label>
+              <select id="fontWeight" class="form-select rounded-16">
+                <option value="400">Normal</option>
+                <option value="600">Semi Bold</option>
+                <option value="700">Bold</option>
+                <option value="800">Extra Bold</option>
+              </select>
+            </div>
+            <div class="col-6">
+              <label class="form-label fw-semibold">Italic</label>
+              <select id="fontStyle" class="form-select rounded-16">
+                <option value="normal">Off</option>
+                <option value="italic">On</option>
+              </select>
+            </div>
           </div>
-          <div class="col-6">
-            <label class="form-label">Line Height</label>
-            <input id="lineHeight" type="number" class="form-control" value="1.1" step="0.05" min="0.8" max="2">
+
+          <div class="row g-2 mt-2">
+            <div class="col-6">
+              <label class="form-label fw-semibold">Letter Spacing (px)</label>
+              <input id="letterSpacing" type="number" class="form-control rounded-16" value="1" min="-2" max="20">
+            </div>
+            <div class="col-6">
+              <label class="form-label fw-semibold">Line Height</label>
+              <input id="lineHeight" type="number" class="form-control rounded-16" value="1.1" step="0.05" min="0.8" max="2">
+            </div>
           </div>
-        </div>
 
-        <div class="divider"></div>
+          <div class="divider-soft my-3"></div>
 
-        <div class="d-flex gap-2">
-          <button type="button" class="btn btn-ghost flex-grow-1" id="btnResetStyle">
-            Reset
-          </button>
-          <button type="button" class="btn btn-brand flex-grow-1" id="btnSaveSetting">
-            Simpan Setting
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  {{-- RIGHT COLUMN: TEMPLATES & PREVIEW --}}
-  <div class="col-lg-8">
-    <div class="card card-soft">
-      <div class="card-body">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-          <div class="d-flex align-items-center gap-3">
-            <h5 class="fw-semibold mb-0">Daftar Template</h5>
-            <span class="badge-pill badge-count">{{ count($templates) }} template</span>
-            <span class="badge-pill badge-count">
-              Drag: <span id="dragStatus">ON</span>
-            </span>
-          </div>
-          <div class="d-flex gap-2">
-            <button class="btn btn-ghost btn-sm" id="btnToggleDrag">
-              Toggle Drag
+          <div class="d-flex gap-2 flex-wrap">
+            <button type="button" class="btn btn-ghost rounded-16" id="btnResetStyle">Reset</button>
+            <button type="button" class="btn btn-brand rounded-16 flex-grow-1" id="btnSaveSetting">
+              Simpan Setting
             </button>
           </div>
-        </div>
 
-        @if($templates->isEmpty())
-        <div class="empty-state">
-          <div class="empty-state-icon">
-            <i class="fas fa-certificate"></i>
-          </div>
-          <p class="text-muted">Belum ada template sertifikat</p>
-          <button class="btn btn-brand btn-sm" data-bs-toggle="modal" data-bs-target="#modalCreateTemplate">
-            Upload Template Pertama
-          </button>
-        </div>
-        @else
-        <div class="table-responsive mb-4">
-          <table class="table table-hover align-middle">
-            <thead class="table-header">
-              <tr>
-                <th style="width: 80px;">Preview</th>
-                <th>Nama Template</th>
-                <th style="width: 120px;">Status</th>
-                <th style="width: 180px;" class="text-end">Aksi</th>
-              </tr>
-            </thead>
-            <tbody>
-              @foreach ($templates as $template)
-              <tr>
-                <td>
-                  <img class="template-thumb" src="{{ asset('certificates/'.$template->file_name) }}" alt="{{ $template->name }}">
-                </td>
-                <td>
-                  <div class="fw-semibold">{{ $template->name }}</div>
-                  <div class="text-muted small">{{ $template->file_name }}</div>
-                </td>
-                <td>
-                  @if($template->is_active)
-                    <span class="badge-pill badge-active">Aktif</span>
-                  @else
-                    <span class="badge-pill badge-inactive">Nonaktif</span>
-                  @endif
-                </td>
-                <td class="text-end">
-                  <div class="d-inline-flex gap-2 align-items-center">
-                    @if($template->is_active)
-                      <button class="btn btn-success btn-sm" disabled style="pointer-events: none;">Aktif</button>
-                    @else
-                      <form method="POST" action="{{ route('admin.template-sertifikat.activate', $template->id) }}" style="margin:0;">
-                        @csrf
-                        <button type="submit" class="btn btn-outline-success btn-sm">Aktifkan</button>
-                      </form>
-                    @endif
-
-                    <button type="button"
-                            class="btn btn-outline-danger btn-sm"
-                            onclick="openDeleteTemplate(
-                              '{{ route('admin.template-sertifikat.destroy', $template->id) }}',
-                              '{{ $template->name }}'
-                            )">
-                      Hapus
-                    </button>
-                  </div>
-                </td>
-              </tr>
-              @endforeach
-            </tbody>
-          </table>
-        </div>
-        @endif
-
-        <div class="preview-container">
-          <div class="d-flex justify-content-between align-items-center mb-3">
-            <h6 class="fw-semibold mb-0">Preview Sertifikat</h6>
-            <div class="d-flex gap-2">
-              <button class="btn btn-ghost btn-sm" id="btnCenterName">
-                Pusatkan Nama
-              </button>
-              <button class="btn btn-ghost btn-sm" id="btnFitToSafe">
-                Posisi Aman
-              </button>
-            </div>
-          </div>
-
-          <div class="preview-stage" id="previewStageMain">
-            <img id="previewImgMain"
-                 class="preview-image"
-                 src="https://dummyimage.com/1600x900/ffffff/111827&text=Pilih+Template"
-                 alt="Template Preview">
-
-            <div id="nameBoxMain" class="draggable-box">
-              <div id="nameTextMain" class="draggable-text">NAMA PESERTA</div>
-            </div>
-          </div>
-
-          <div class="text-center mt-3">
-            <p class="helper-text mb-0">
-              Tips: Geser slider atau drag teks nama langsung di preview
-            </p>
+          <div class="hint mt-2">
+            Klik "Simpan Setting" untuk menyimpan konfigurasi ke database.
           </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
 
-{{-- MODAL: UPLOAD TEMPLATE --}}
-<div class="modal fade" id="modalCreateTemplate" tabindex="-1">
-  <div class="modal-dialog modal-lg modal-dialog-centered">
-    <div class="modal-content">
-      <form method="POST" action="{{ route('admin.template-sertifikat.store') }}" enctype="multipart/form-data">
-        @csrf
-        <div class="modal-header">
-          <h5 class="modal-title fw-bold">Upload Template Sertifikat</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body">
+    {{-- RIGHT: List + Preview --}}
+    <div class="col-lg-8">
+      <div class="card card-soft rounded-16">
+        <div class="card-body">
+          <div class="toolbar-mini mb-3">
+            <div class="d-flex align-items-center gap-2 flex-wrap">
+              <div class="fw-semibold">Daftar Template</div>
+              <span class="chip">{{ count($templates) }} template</span>
+              <span class="chip">Drag: <span id="dragStatus">ON</span></span>
+            </div>
+            <div class="d-flex gap-2">
+              <button class="btn btn-ghost rounded-16 btn-sm" id="btnToggleDrag">Toggle Drag</button>
+            </div>
+          </div>
+
           <div class="row g-3">
-            <div class="col-md-8">
-              <label class="form-label">Nama Template</label>
-              <input type="text" name="name" class="form-control" 
-                     placeholder="Contoh: Sertifikat Webinar Januari" required>
-            </div>
-
-            <div class="col-md-4">
-              <label class="form-label">Status</label>
-              <select class="form-select" disabled>
-                <option selected>Nonaktif</option>
-              </select>
-              <div class="helper-text">Template baru otomatis nonaktif.</div>
-            </div>
-
+            {{-- Table --}}
             <div class="col-12">
-              <label class="form-label">File Template (PNG / JPG)</label>
-              <input type="file" name="file" id="uploadTemplateInput" 
-                     class="form-control" accept="image/png,image/jpeg" required>
-              <div class="helper-text">Rekomendasi: 1920×1080 (landscape)</div>
+              <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                  <thead>
+                    <tr class="muted">
+                      <th style="width:72px;">Preview</th>
+                      <th>Nama Template</th>
+                      <th style="width:160px;">Status</th>
+                      <th style="width:220px;" class="text-end">Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  @forelse ($templates as $template)
+                  <tr>
+                    <td>
+                      <img class="thumb" src="{{ asset('certificates/'.$template->file_name) }}">
+                    </td>
+                    <td>
+                      <div class="fw-semibold">{{ $template->name }}</div>
+                      <div class="small muted">{{ $template->file_name }}</div>
+                    </td>
+                    <td>
+                      @if($template->is_active)
+                        <span class="chip">Aktif</span>
+                      @else
+                        <span class="chip">Nonaktif</span>
+                      @endif
+                    </td>
+                    <td class="text-end">
+                      <div class="d-inline-flex gap-2">
+                        @if(!$template->is_active)
+                          <form method="POST" action="{{ route('admin.template-sertifikat.activate', $template->id) }}">
+                            @csrf
+                            <button type="submit" class="btn btn-outline-success rounded-16 btn-sm">
+                              Aktifkan
+                            </button>
+                          </form>
+                        @else
+                          <span class="chip">Digunakan</span>
+                        @endif
+
+                        <form method="POST"
+                          action="{{ route('admin.template-sertifikat.destroy', $template->id) }}"
+                          onsubmit="return confirm('Yakin ingin menghapus template ini?');">
+                          @csrf
+                          @method('DELETE')
+                          <button type="submit" class="btn btn-outline-danger rounded-16 btn-sm">
+                            Hapus
+                          </button>
+                        </form>
+                      </div>
+                    </td>
+                  </tr>
+                  @empty
+                  <tr>
+                    <td colspan="4" class="text-center muted">
+                      Belum ada template sertifikat
+                    </td>
+                  </tr>
+                  @endforelse
+                  </tbody>
+                </table>
+              </div>
             </div>
 
-            <div id="ratioWarning" class="alert alert-warning mt-2 d-none">
-              <div class="d-flex gap-2">
-                <i class="fas fa-exclamation-triangle"></i>
-                <div>
-                  <strong class="d-block">Rasio Template Tidak 16:9</strong>
-                  <div class="small mt-1">
-                    Template yang diunggah tidak menggunakan rasio 16:9.
-                    Disarankan agar posisi teks tetap konsisten saat generate sertifikat.
+            {{-- Preview --}}
+            <div class="col-12">
+              <div class="preview-shell">
+                <div class="d-flex align-items-center justify-content-between gap-2 flex-wrap mb-2">
+                  <div class="fw-semibold">Preview Sertifikat</div>
+                  <div class="d-flex gap-2 flex-wrap">
+                    <button class="btn btn-ghost rounded-16 btn-sm" id="btnCenterName">Pusatkan Nama</button>
+                    <button class="btn btn-ghost rounded-16 btn-sm" id="btnFitToSafe">Posisi Aman</button>
+                  </div>
+                </div>
+
+                <div class="preview-stage" id="previewStageMain">
+                  <img id="previewImgMain"
+                       class="preview-img"
+                       src="https://dummyimage.com/1600x900/ffffff/111827&text=Pilih+Template"
+                       alt="Template Preview">
+
+                  <div id="nameBoxMain" class="name-box">
+                    <div id="nameTextMain" class="name-text">NAMA PESERTA</div>
+                  </div>
+                </div>
+
+                <div class="sticky-actions d-flex align-items-center justify-content-between gap-2 flex-wrap mt-3">
+                  <div class="hint">
+                    Tips: Geser slider X/Y atau drag teks nama langsung di preview.
                   </div>
                 </div>
               </div>
             </div>
 
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{-- Modal: Upload Template --}}
+<div class="modal fade" id="modalCreateTemplate" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content rounded-16">
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold">Upload Template Sertifikat</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <form method="POST" action="{{ route('admin.template-sertifikat.store') }}" enctype="multipart/form-data">
+          @csrf
+
+          <div class="row g-3">
+            <div class="col-md-8">
+              <label class="form-label fw-semibold">Nama Template</label>
+              <input type="text" name="name" class="form-control rounded-16" 
+                     placeholder="Contoh: Sertifikat Webinar Januari" required>
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label fw-semibold">Status</label>
+              <select class="form-select rounded-16" disabled>
+                <option selected>Nonaktif</option>
+              </select>
+              <div class="hint mt-1">Template baru otomatis nonaktif.</div>
+            </div>
+
+            <div class="col-12">
+              <label class="form-label fw-semibold">File Template (PNG / JPG)</label>
+              <input type="file" name="file" id="uploadTemplateInput" 
+                     class="form-control rounded-16" accept="image/png,image/jpeg" required>
+              <div class="hint mt-1">Rekomendasi: 1920×1080 (landscape)</div>
+            </div>
+
+            <div id="ratioWarning" class="alert alert-warning rounded-16 mt-2 d-none">
+              <strong>⚠️ Rasio Template Tidak 16:9</strong>
+              <div class="small mt-1">
+                Template yang diunggah tidak menggunakan rasio 16:9.
+                Disarankan agar posisi teks tetap konsisten saat generate sertifikat.
+              </div>
+            </div>
+
             <div id="forceUploadWrapper" class="form-check mt-2 d-none">
               <input class="form-check-input" type="checkbox" id="forceUpload">
-              <label class="form-check-label" for="forceUpload">
+              <label class="form-check-label fw-semibold" for="forceUpload">
                 Saya mengerti dan tetap ingin mengunggah template ini
               </label>
             </div>
 
             <div class="col-12">
-              <label class="form-label">Preview Upload</label>
-              <div class="preview-stage" style="aspect-ratio:16/9;">
-                <img id="uploadPreviewImg" class="preview-image"
-                     src="https://dummyimage.com/1600x900/f3f4f6/374151&text=Preview+Upload">
+              <div class="fw-semibold mb-2">Preview Upload</div>
+              <div class="preview-shell">
+                <div class="preview-stage" style="aspect-ratio:16/9;">
+                  <img id="uploadPreviewImg" class="preview-img"
+                       src="https://dummyimage.com/1600x900/f3f4f6/374151&text=Preview+Upload">
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">Batal</button>
-          <button type="submit" class="btn btn-brand" id="btnSubmitTemplate" disabled>
-            Simpan Template
-          </button>
-        </div>
-      </form>
+
+          <div class="modal-footer mt-4">
+            <button type="button" class="btn btn-ghost rounded-16" data-bs-dismiss="modal">Batal</button>
+            <button type="submit" class="btn btn-brand rounded-16" id="btnSubmitTemplate" disabled>
+              Simpan Template
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </div>
 
-{{-- MODAL: PREVIEW FULL --}}
-<div class="modal fade" id="modalPreviewEval" tabindex="-1">
-  <div class="modal-dialog modal-xl modal-dialog-centered">
-    <div class="modal-content">
+{{-- Modal: Preview Full --}}
+<div class="modal fade" id="modalPreviewEval" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content rounded-16">
       <div class="modal-header">
         <h5 class="modal-title fw-bold">Preview Sertifikat (Fullscreen)</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
-        <div class="preview-stage" id="previewStageModal">
-          <img id="previewImgModal" class="preview-image" src="" alt="Template Preview">
-          <div id="nameBoxModal" class="draggable-box">
-            <div id="nameTextModal" class="draggable-text">NAMA PESERTA</div>
+        <div class="preview-shell">
+          <div class="preview-stage" id="previewStageModal">
+            <img id="previewImgModal" class="preview-img" src="" alt="Template Preview">
+            <div id="nameBoxModal" class="name-box">
+              <div id="nameTextModal" class="name-text">NAMA PESERTA</div>
+            </div>
           </div>
         </div>
-        <div class="helper-text mt-2 text-center">
-          Preview ini mengikuti setting dari panel kiri.
-        </div>
+        <div class="hint mt-2">Preview ini mengikuti setting dari panel kiri.</div>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-ghost" data-bs-dismiss="modal">Tutup</button>
+        <button class="btn btn-ghost rounded-16" data-bs-dismiss="modal">Tutup</button>
       </div>
     </div>
   </div>
@@ -865,13 +587,17 @@
 (function () {
   'use strict';
 
-  // Elements
+  // ===============================
+  // ELEMENTS
+  // ===============================
   const templateSelect = document.getElementById('templateSelect');
   const nameInput = document.getElementById('nameInput');
+
   const posX = document.getElementById('posX');
   const posY = document.getElementById('posY');
   const posXVal = document.getElementById('posXVal');
   const posYVal = document.getElementById('posYVal');
+
   const boxWidthInput = document.getElementById('boxWidth');
   const boxHeightInput = document.getElementById('boxHeight');
   const fontFamily = document.getElementById('fontFamily');
@@ -882,13 +608,19 @@
   const textAlign = document.getElementById('textAlign');
   const letterSpacing = document.getElementById('letterSpacing');
   const lineHeight = document.getElementById('lineHeight');
+
+  // Main preview
   const previewImgMain = document.getElementById('previewImgMain');
   const previewStageMain = document.getElementById('previewStageMain');
   const nameBoxMain = document.getElementById('nameBoxMain');
   const nameTextMain = document.getElementById('nameTextMain');
+
+  // Modal preview
   const previewImgModal = document.getElementById('previewImgModal');
   const nameBoxModal = document.getElementById('nameBoxModal');
   const nameTextModal = document.getElementById('nameTextModal');
+
+  // Buttons
   const btnResetStyle = document.getElementById('btnResetStyle');
   const btnCenterName = document.getElementById('btnCenterName');
   const btnFitToSafe = document.getElementById('btnFitToSafe');
@@ -896,6 +628,8 @@
   const dragStatus = document.getElementById('dragStatus');
   const btnOpenPreview = document.getElementById('btnOpenPreview');
   const btnSaveSetting = document.getElementById('btnSaveSetting');
+
+  // Upload
   const uploadTemplateInput = document.getElementById('uploadTemplateInput');
   const uploadPreviewImg = document.getElementById('uploadPreviewImg');
   const ratioWarning = document.getElementById('ratioWarning');
@@ -908,32 +642,32 @@
   let dragOffsetX = 0;
   let dragOffsetY = 0;
 
-function showSuccessAlert(text) {
-  const alertBox = document.getElementById('alertSuccess');
-  alertBox.querySelector('.alert-text').textContent = text;
-  alertBox.classList.remove('d-none');
+  // ===============================
+  // HELPER FUNCTIONS
+  // ===============================
 
-  // Scroll ke atas untuk menampilkan alert
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-
-  setTimeout(() => {
-    closeAlert();
-  }, 3000);
-}
-
-function closeAlert() {
-  document.getElementById('alertSuccess').classList.add('d-none');
-}
-
-  // Helper Functions
   function getPreviewScale() {
-    const designWidth = 1920;
+    const option = templateSelect.options[templateSelect.selectedIndex];
+    const designWidth = parseFloat(option.dataset.width) || 1920;
     const stageWidth = previewStageMain.clientWidth;
     return stageWidth / designWidth;
   }
 
+
   function clamp(n, min, max) {
     return Math.max(min, Math.min(max, n));
+  }
+
+  function showToast(message, duration = 3000) {
+    const toast = document.createElement('div');
+    toast.className = 'success-toast';
+    toast.textContent = message;
+    document.body.appendChild(toast);
+
+    setTimeout(() => {
+      toast.style.opacity = '0';
+      setTimeout(() => toast.remove(), 300);
+    }, duration);
   }
 
   function applyBoxSize() {
@@ -962,26 +696,27 @@ function closeAlert() {
   }
 
   function applyNameStyles() {
-    const txt = nameInput.value || 'NAMA PESERTA';
-    const scale = getPreviewScale();
+  const txt = nameInput.value || 'NAMA PESERTA';
+  const scale = getPreviewScale(); // ⬅️ KUNCI UTAMA
 
-    const styles = {
-      fontFamily: fontFamily.value,
-      fontSize: (fontSize.value * scale) + 'px',
-      color: fontColor.value,
-      fontWeight: fontWeight.value,
-      fontStyle: fontStyle.value,
-      textAlign: textAlign.value,
-      letterSpacing: (letterSpacing.value * scale) + 'px',
-      lineHeight: lineHeight.value || 1.1
-    };
+  const styles = {
+    fontFamily: fontFamily.value,
+    fontSize: (fontSize.value * scale) + 'px',
+    color: fontColor.value,
+    fontWeight: fontWeight.value,
+    fontStyle: fontStyle.value,
+    textAlign: textAlign.value,
+    letterSpacing: (letterSpacing.value * scale) + 'px',
+    lineHeight: lineHeight.value || 1.1
+  };
 
-    nameTextMain.textContent = txt;
-    Object.assign(nameTextMain.style, styles);
+  nameTextMain.textContent = txt;
+  Object.assign(nameTextMain.style, styles);
 
-    nameTextModal.textContent = txt;
-    Object.assign(nameTextModal.style, styles);
-  }
+  nameTextModal.textContent = txt;
+  Object.assign(nameTextModal.style, styles);
+}
+
 
   function loadTemplateFromDB() {
     const option = templateSelect.options[templateSelect.selectedIndex];
@@ -1017,22 +752,30 @@ function closeAlert() {
     applyNameStyles();
   }
 
-  // Event Listeners
+  // ===============================
+  // EVENT LISTENERS
+  // ===============================
+
+  // Template selection
   if (templateSelect) {
     templateSelect.addEventListener('change', loadTemplateFromDB);
   }
 
+  // Position sliders
   posX.addEventListener('input', () => setNamePositionPercent(posX.value, posY.value));
   posY.addEventListener('input', () => setNamePositionPercent(posX.value, posY.value));
 
+  // Box size
   boxWidthInput.addEventListener('input', applyBoxSize);
   boxHeightInput.addEventListener('input', applyBoxSize);
 
+  // Style inputs
   [nameInput, fontFamily, fontSize, fontColor, fontWeight, fontStyle, 
    textAlign, letterSpacing, lineHeight].forEach(el => {
     if (el) el.addEventListener('input', applyNameStyles);
   });
 
+  // Reset button
   if (btnResetStyle) {
     btnResetStyle.addEventListener('click', () => {
       nameInput.value = 'NAMA PESERTA';
@@ -1053,6 +796,7 @@ function closeAlert() {
     });
   }
 
+  // Center name
   if (btnCenterName) {
     btnCenterName.addEventListener('click', () => {
       setNamePositionPercent(50, 50);
@@ -1060,6 +804,7 @@ function closeAlert() {
     });
   }
 
+  // Fit to safe area
   if (btnFitToSafe) {
     btnFitToSafe.addEventListener('click', () => {
       setNamePositionPercent(50, 55);
@@ -1067,6 +812,7 @@ function closeAlert() {
     });
   }
 
+  // Toggle drag
   if (btnToggleDrag) {
     btnToggleDrag.addEventListener('click', () => {
       dragEnabled = !dragEnabled;
@@ -1076,32 +822,46 @@ function closeAlert() {
     });
   }
 
+  // Open preview modal
+  if (btnOpenPreview) {
+    btnOpenPreview.addEventListener('click', () => {
+      const modal = new bootstrap.Modal(document.getElementById('modalPreviewEval'));
+      modal.show();
+    });
+  }
+
+  // Save settings
   if (btnSaveSetting) {
     btnSaveSetting.addEventListener('click', function () {
       const templateId = templateSelect.value;
       if (!templateId) {
-        alert('Pilih template terlebih dahulu');
+        showToast('Pilih template terlebih dahulu');
         return;
       }
 
       const payload = {
-        box_x: posX.value,
-        box_y: posY.value,
-        box_width: boxWidthInput.value,
-        box_height: boxHeightInput.value,
-        font_family: fontFamily.value,
-        font_size: fontSize.value,
-        font_color: fontColor.value,
-        font_weight: fontWeight.value,
-        font_style: fontStyle.value,
-        letter_spacing: letterSpacing.value,
-        line_height: lineHeight.value,
-        text_align: textAlign.value,
-        _token: '{{ csrf_token() }}'
-      };
+      // ⬇️ INI WAJIB ADA (SESUIAI VALIDASI BACKEND)
+      box_x: posX.value,
+      box_y: posY.value,
+      box_width: boxWidthInput.value,
+      box_height: boxHeightInput.value,
+
+      // FONT
+      font_family: fontFamily.value,
+      font_size: fontSize.value,
+      font_color: fontColor.value,
+      font_weight: fontWeight.value,
+      font_style: fontStyle.value,
+      letter_spacing: letterSpacing.value,
+      line_height: lineHeight.value,
+      text_align: textAlign.value,
+
+      _token: '{{ csrf_token() }}'
+    };
+
 
       btnSaveSetting.disabled = true;
-      btnSaveSetting.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i> Menyimpan...';
+      btnSaveSetting.textContent = 'Menyimpan...';
 
       fetch(`/admin/template-sertifikat/${templateId}/setting`, {
         method: 'POST',
@@ -1114,7 +874,8 @@ function closeAlert() {
       })
       .then(res => res.json())
       .then(data => {
-        showSuccessAlert(data.message || 'Setting berhasil disimpan!');
+        showToast(data.message || 'Setting berhasil disimpan!');
+        
         // Update dataset
         const option = templateSelect.options[templateSelect.selectedIndex];
         option.dataset.posX = payload.box_x;
@@ -1131,8 +892,7 @@ function closeAlert() {
         option.dataset.lineHeight = payload.line_height;
       })
       .catch(err => {
-        console.error(err);
-        alert('Gagal menyimpan setting');
+        showToast(err?.message || 'Gagal menyimpan setting');
       })
       .finally(() => {
         btnSaveSetting.disabled = false;
@@ -1141,7 +901,9 @@ function closeAlert() {
     });
   }
 
-  // Drag functionality
+  // ===============================
+  // DRAG FUNCTIONALITY
+  // ===============================
   nameBoxMain.addEventListener('mousedown', function (e) {
     if (!dragEnabled) return;
     
@@ -1179,7 +941,9 @@ function closeAlert() {
     }
   });
 
-  // Upload validation
+  // ===============================
+  // UPLOAD VALIDATION
+  // ===============================
   if (uploadTemplateInput) {
     uploadTemplateInput.addEventListener('change', function (e) {
       const file = e.target.files[0];
@@ -1218,7 +982,9 @@ function closeAlert() {
     });
   }
 
-  // Initialize
+  // ===============================
+  // INITIALIZATION
+  // ===============================
   if (templateSelect && templateSelect.options.length > 0) {
     loadTemplateFromDB();
   }
@@ -1226,19 +992,4 @@ function closeAlert() {
 })();
 </script>
 @endpush
-
-@push('scripts')
-<script>
-  function openDeleteTemplate(url, templateName) {
-    document.getElementById('formDeleteTemplate').action = url;
-    document.getElementById('namaTemplateSertifikat').innerText = templateName;
-
-    const modal = new bootstrap.Modal(
-      document.getElementById('modalDeleteTemplate')
-    );
-    modal.show();
-  }
-</script>
-@endpush
-
 @endsection

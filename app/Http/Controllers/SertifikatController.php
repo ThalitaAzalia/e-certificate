@@ -86,7 +86,8 @@ class SertifikatController extends Controller
             'template'     => $template,
             'imageBase64'  => $imageBase64,
             'imageMime'    => $imageMime,
-        ])->setPaper([0, 0, $width, $height]);
+        ])->setPaper('a4', 'landscape');
+
 
         // ===============================
         // DOWNLOAD FILE

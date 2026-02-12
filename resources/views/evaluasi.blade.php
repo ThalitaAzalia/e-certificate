@@ -282,6 +282,13 @@ body::before{
   background: rgba(239, 68, 68, 0.1);
   border-color: rgba(239, 68, 68, 0.3);
 }
+
+/* invalid state */
+.form-control.is-invalid,
+.form-select.is-invalid{
+  border-color: #ef4444;
+  box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.15), 0 12px 28px rgba(239, 68, 68, 0.12);
+}
 </style>
 
 {{-- HERO --}}
@@ -335,17 +342,19 @@ body::before{
             {{-- TEXT --}}
             @if($q->type === 'text')
               <input type="text"
-                     class="form-control"
+                     class="form-control @error('answers.'.$q->id) is-invalid @enderror"
                      name="answers[{{ $q->id }}]"
                      placeholder="Tuliskan jawaban Anda"
+                     required
                      value="{{ old('answers.'.$q->id) }}">
 
             {{-- TEXTAREA --}}
             @elseif($q->type === 'textarea')
-              <textarea class="form-control"
+              <textarea class="form-control @error('answers.'.$q->id) is-invalid @enderror"
                         rows="4"
                         name="answers[{{ $q->id }}]"
-                        placeholder="Tuliskan masukan/saran Anda">{{ old('answers.'.$q->id) }}</textarea>
+                        placeholder="Tuliskan masukan/saran Anda"
+                        required>{{ old('answers.'.$q->id) }}</textarea>
 
             {{-- RATING --}}
             @elseif($q->type === 'rating')
@@ -362,6 +371,7 @@ body::before{
                           name="answers[{{ $q->id }}]"
                           value="{{ $i }}"
                           class="visually-hidden-input"
+                          required
                           @checked(old('answers.'.$q->id) == $i)>
 
                     <span class="rating-dot">{{ $i }}</span>
@@ -402,11 +412,63 @@ document.addEventListener('DOMContentLoaded', function() {
   const form = document.getElementById('evaluationForm');
   if (!form) return;
 
-  form.addEventListener('submit', function() {
-    const submitBtn = this.querySelector('button[type="submit"]');
-    if (!submitBtn) return;
-    submitBtn.disabled = true;
-    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Mengirim...';
+  // Client-side validation on submit
+  form.addEventListener('submit', function(e) {
+    // Check if the form is valid using HTML5 validation
+    if (!form.checkValidity()) {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      // Mark all invalid fields
+      const inputs = form.querySelectorAll('input, textarea, select');
+      inputs.forEach(input => {
+        if (!input.checkValidity() && input.name.includes('answers')) {
+          input.classList.add('is-invalid');
+          
+          // For radio buttons, add class to the parent label
+          if (input.type === 'radio') {
+            const label = input.closest('label');
+            if (label) {
+              label.parentElement.parentElement.classList.add('has-errors');
+            }
+          }
+        }
+      });
+      
+      // Scroll to first invalid field
+      const firstInvalid = form.querySelector('input:invalid, textarea:invalid');
+      if (firstInvalid) {
+        firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        firstInvalid.focus();
+      }
+      
+      return false;
+    }
+
+    // If valid, disable button and show loading state
+    const submitBtn = form.querySelector('button[type="submit"]');
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Mengirim...';
+    }
+  });
+
+  // Remove is-invalid class when user starts typing/selecting
+  const inputs = form.querySelectorAll('input, textarea, select');
+  inputs.forEach(input => {
+    if (input.name.includes('answers')) {
+      input.addEventListener('change', function() {
+        if (this.checkValidity()) {
+          this.classList.remove('is-invalid');
+        }
+      });
+      
+      input.addEventListener('input', function() {
+        if (this.checkValidity()) {
+          this.classList.remove('is-invalid');
+        }
+      });
+    }
   });
 });
 </script>

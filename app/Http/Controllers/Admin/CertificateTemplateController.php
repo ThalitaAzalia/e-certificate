@@ -34,20 +34,35 @@ class CertificateTemplateController extends Controller
         // simpan ke public/certificates
         $file->move(public_path('certificates'), $fileName);
 
+        // ambil ukuran asli gambar
+        [$width, $height] = getimagesize(public_path('certificates/' . $fileName));
+
         CertificateTemplate::create([
             'name'        => $request->name,
-            'file_name'  => $fileName,
-            'is_active'  => false,
+            'file_name'   => $fileName,
+            'is_active'   => false,
 
-            // default setting nama
-            'pos_x'       => 50,
-            'pos_y'       => 55,
+            // ukuran asli template
+            'width_px'  => $width,
+            'height_px' => $height,
+
+            // box default
+            'box_x'      => 50,
+            'box_y'      => 55,
+            'box_width'  => 40,
+            'box_height' => 10,
+
+            // font
             'font_family' => 'Arial',
-            'font_size'   => 36,
-            'font_color'  => '#000000',
+            'font_size'   => 44,
+            'font_color'  => '#111827',
             'font_weight' => 700,
             'font_style'  => 'normal',
+            'letter_spacing' => 1,
+            'line_height'    => 1.1,
+            'text_align'     => 'center',
         ]);
+
 
         return redirect()
             ->route('admin.template-sertifikat.index')

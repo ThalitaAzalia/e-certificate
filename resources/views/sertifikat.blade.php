@@ -52,8 +52,6 @@
               </p>
             </div>
 
-            {{-- (DIHAPUS) Detail Sertifikat: Tanggal Terbit --}}
-
             {{-- Tombol Unduh --}}
             <div class="text-center pt-2">
               <a href="{{ route('sertifikat.download') }}" class="btn-download-certificate btn btn-lg w-100 py-3 fw-semibold shadow-sm">
@@ -67,7 +65,6 @@
                 <div class="mt-1 small text-white opacity-75">Sertifikat digital resolusi tinggi (HD)</div>
               </a>
 
-              {{-- (DIHAPUS) Opsi Tambahan: Butuh bantuan / Pusat Bantuan --}}
             </div>
           </div>
 
@@ -86,9 +83,8 @@
     </div>
   </div>
 </div>
-
 <style>
-/* (CSS kamu tetap, tidak perlu diubah) */
+
 .certificate-container{
   background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
   min-height: 100vh;
@@ -201,14 +197,14 @@
   color: #2b2b2b;
 }
 /* =====================================
-   TOMBOL UNDUH – LEBIH PENDEK & RINGKAS
+   TOMBOL UNDUH 
    ===================================== */
 
 .btn-download-certificate{
-  width: auto !important;          /* HAPUS full width */
-  max-width: 250px;                /* PANJANG DIPENDEKIN */
-  margin: 0 auto;                  /* tetap di tengah */
-  padding: 12px 16px !important;   /* lebih ramping */
+  width: auto !important;          
+  max-width: 250px;                
+  margin: 0 auto;                 
+  padding: 12px 16px !important;   
   border-radius: 14px !important;
   display: block;
 }
@@ -217,7 +213,7 @@
 .btn-download-certificate > div:first-child{
   font-size: 14px;
   font-weight: 700;
-  white-space: nowrap;             /* biar nggak melebar */
+  white-space: nowrap;  
 }
 
 /* icon */
@@ -226,7 +222,6 @@
   height: 15px;
 }
 
-/* teks kecil */
 .btn-download-certificate .small{
   font-size: 11px;
   margin-top: 2px !important;
@@ -234,7 +229,6 @@
   opacity: .8;
 }
 
-/* mobile makin pendek */
 @media (max-width: 572px){
   .btn-download-certificate{
     max-width: 260px;

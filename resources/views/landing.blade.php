@@ -4,33 +4,29 @@
 @push('styles')
 <style>
   /* ===========================
-     FLOATING CARD: KHUSUS LANDING PAGE
-     (biar card di halaman lain nggak ikut melayang)
+     FLOATING CARD
      =========================== */
   @keyframes floatCard{
     0%, 100% { transform: translateY(0px); }
     50%      { transform: translateY(-8px); }
   }
-
-  /* Target hanya card yg ada di landing (card-shadow), bukan semua .card global */
+  
   .landing-page .card.card-shadow{
     animation: floatCard 4s ease-in-out infinite;
     will-change: transform;
   }
 
-  /* beda timing biar nggak bareng */
   .landing-page .card.card-shadow:nth-of-type(2){ animation-duration: 4.6s; }
   .landing-page .card.card-shadow:nth-of-type(3){ animation-duration: 5.2s; }
   .landing-page .card.card-shadow:nth-of-type(4){ animation-duration: 5.8s; }
 
-  /* hover (landing saja) */
   .landing-page .card.card-shadow:hover{
     transform: translateY(-8px) scale(1.01);
     transition: transform .25s ease, box-shadow .25s ease;
   }
 
   /* ===========================
-     KONTAK: FIX jadi 2x2 kartu
+      KONTAK
      =========================== */
   #kontak .contact-card{
     background:#fff;
@@ -71,7 +67,6 @@
     flex: 0 0 auto;
   }
 
-  /* Hover jadi merah */
   #kontak .contact-card:hover{
     background:#9b0000;
     border-color: rgba(155,0,0,.35);
@@ -84,12 +79,10 @@
     color:#fff !important;
   }
 
-  /* click feel */
   #kontak .contact-card:active{
     transform: translateY(-1px) scale(.99);
   }
 
-  /* default merah (Kontak Kami) */
   #kontak .contact-card.is-red{
     background:#9b0000;
     border-color: rgba(155,0,0,.35);
@@ -101,7 +94,7 @@
     color:#fff !important;
   }
 
-  /* ====== KECILIN NAVBAR (HEADER MENU) ====== */
+  /* ====== HEADER (MENU) ====== */
   .navbar{
     padding-top: 8px !important;
     padding-bottom: 8px !important;
@@ -180,7 +173,6 @@
     min-height: 54px !important;
   }
 
-  /* paksa logo supaya gak ikut ukuran asli gambar */
   .navbar .navbar-brand img,
   .navbar .brand-logo{
     width: 34px !important;
@@ -190,7 +182,6 @@
     object-fit: contain !important;
   }
 
-  /* kecilin teks brand */
   .navbar .navbar-brand .fw-bold{
     font-size: 14px !important;
     line-height: 1.1 !important;
@@ -200,14 +191,12 @@
     line-height: 1.1 !important;
   }
 
-  /* kecilin menu kanan */
   .navbar .navbar-nav .nav-link{
     padding: 6px 10px !important;
     font-size: 13px !important;
     line-height: 1.1 !important;
   }
 
-  /* kecilin tombol hamburger */
   .navbar .navbar-toggler{
     padding: 4px 8px !important;
   }
@@ -383,7 +372,7 @@
       <div class="col-lg-7">
         <div class="card card-shadow rounded-16 overflow-hidden">
           <iframe
-            src="https://www.google.com/maps?q=Bapelkum%20Semarang&output=embed"
+            src="https://www.google.com/maps?q=Jl.%20Raya%20Mr.%20Moch%20Ichsan%20No.114,%20Wates,%20Kec.%20Ngaliyan,%20Kota%20Semarang,%20Jawa%20Tengah%2050188&output=embed"
             width="100%" height="360" style="border:0;" allowfullscreen="" loading="lazy"
             referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
@@ -409,7 +398,7 @@
   </div>
 </section>
 
-<!-- KONTAK (2x2 KARTU + hover merah, telepon default merah) -->
+<!-- KONTAK -->
 <section id="kontak" class="py-5">
   <div class="container">
     <div class="d-flex align-items-end justify-content-between flex-wrap gap-2 mb-4">
@@ -488,7 +477,7 @@
             </span>
             Office Hours
           </div>
-          <p class="contact-desc text-uppercase fw-bold" style="font-size:18px;">
+          <p class="contact-desc fw-bold" style="font-size:18px;">
             Senin – Jumat (08:00 WIB – 16:00 WIB)
           </p>
         </div>

@@ -43,26 +43,23 @@
   }
   .btn-brand:hover { background: var(--brand-2) !important; }
 
-/* hover (tetap soft) */
-.btn-ghost:hover {
-  background: rgba(185, 28, 28, 0.06);
-}
+  .btn-ghost:hover {
+    background: rgba(185, 28, 28, 0.06);
+  }
 
-/* SAAT DI KLIK */
-.btn-ghost:active,
-.btn-ghost.active {
-  background: var(--brand);
-  color: #fff;
-  border-color: var(--brand);
-  box-shadow: 0 6px 14px rgba(185, 28, 28, 0.35);
-  transform: scale(0.97);
-}
+  .btn-ghost:active,
+  .btn-ghost.active {
+    background: var(--brand);
+    color: #fff;
+    border-color: var(--brand);
+    box-shadow: 0 6px 14px rgba(185, 28, 28, 0.35);
+    transform: scale(0.97);
+  }
 
-/* icon ikut berubah */
-.btn-ghost:active i,
-.btn-ghost.active i {
-  color: #fff;
-}
+  .btn-ghost:active i,
+  .btn-ghost.active i {
+    color: #fff;
+  }
 
   .btn-ghost:hover { background: rgba(185, 28, 28, 0.05) !important; }
 
@@ -165,7 +162,7 @@
   .alert-error-soft   { background: #fef2f2; border-color: #fecaca; color: #991b1b; }
   .alert-info-soft    { background: #eff6ff; border-color: #bfdbfe; color: #1e40af; }
 
-  /* Notif (gantikan class tailwind fixed bottom-4 right-4) */
+  /* Notif */
   .toast-note {
     position: fixed;
     right: 16px;
@@ -196,13 +193,12 @@
   }
   .alert-blue-soft i { color: #1e40af; }
 
-  /* ===== FIX FINAL: BUTTON MODAL HAPUS FOTO PROFIL ===== */
   .btn-modal-cancel{
     background:#fff !important;
-    color:#111827 !important; /* hitam */
+    color:#111827 !important;
     border:1.5px solid rgba(220,38,38,.45) !important;
     border-radius:16px !important;
-    padding:.45rem 1.15rem !important; /* kecilin */
+    padding:.45rem 1.15rem !important; 
     font-weight:600 !important;
     min-width:110px;
     transition:all .15s ease;
@@ -213,18 +209,16 @@
     border-color:rgba(220,38,38,.7) !important;
   }
 
-  /* pas klik: teks jadi merah */
   .btn-modal-cancel:active{
     color:#dc2626 !important;
   }
 
-  /* tombol Ya, Hapus */
   .btn-modal-delete{
     background:#dc2626 !important;
     color:#fff !important;
     border:1.5px solid #dc2626 !important;
     border-radius:16px !important;
-    padding:.45rem 1.15rem !important; /* samain kecil */
+    padding:.45rem 1.15rem !important;
     font-weight:600 !important;
     min-width:110px;
     transition:all .15s ease;

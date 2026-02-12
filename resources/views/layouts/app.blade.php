@@ -53,7 +53,6 @@
       line-height: 1.6;
     }
 
-    /* Elegant background with subtle red texture */
     body::before {
       content: '';
       position: fixed;
@@ -69,7 +68,6 @@
       pointer-events: none;
     }
 
-    /* Subtle grid pattern */
     body::after {
       content: '';
       position: fixed;
@@ -233,7 +231,6 @@
       border-radius: 22px;
       overflow: hidden;
 
-      /* shadow elegan (soft + depth) */
       box-shadow:
         0 20px 55px rgba(17, 24, 39, 0.12),
         0 8px 22px rgba(17, 24, 39, 0.08);
@@ -242,7 +239,6 @@
       position: relative;
     }
 
-    /* garis merah tipis di atas (aksen premium) */
     .card-elegant::before{
       content: "";
       position: absolute;
@@ -251,7 +247,6 @@
       background: linear-gradient(90deg, var(--brand-primary), var(--brand-secondary));
     }
 
-    /* hover halus */
     .card-elegant:hover{
       transform: translateY(-6px);
       box-shadow:
@@ -259,12 +254,10 @@
         0 12px 30px rgba(17, 24, 39, 0.10);
     }
 
-    /* isi card lebih nyaman */
     .card-elegant .card-body{
       padding: 30px;
     }
 
-    /* judul lebih elegan */
     .card-elegant .card-title,
     .card-elegant h1,
     .card-elegant h2,
@@ -276,13 +269,11 @@
       letter-spacing: .2px;
     }
 
-    /* teks lebih soft tapi tetap jelas */
     .card-elegant p,
     .card-elegant .card-text{
       color: var(--text-secondary);
     }
 
-    /* divider dalam card */
     .card-elegant hr{
       border: none;
       height: 1px;
@@ -485,116 +476,105 @@
       -webkit-backdrop-filter: blur(10px);
       border: 1px solid rgba(255, 255, 255, 0.2);
     }
-    /* PAKSA semua card jadi lebih menonjol (Bootstrap .card + .card-elegant) */
-.card,
-.card-elegant,
-.admin-card{
-  background: #ffffff !important;
-  border: 1px solid rgba(0,0,0,.14) !important;
-  border-radius: 22px !important;
 
-  box-shadow:
-    0 18px 45px rgba(0,0,0,.14),
-    0 6px 18px rgba(0,0,0,.10) !important;
+  .card,
+  .card-elegant,
+  .admin-card{
+    background: #ffffff !important;
+    border: 1px solid rgba(0,0,0,.14) !important;
+    border-radius: 22px !important;
 
-  overflow: hidden;
-}
+    box-shadow:
+      0 18px 45px rgba(0,0,0,.14),
+      0 6px 18px rgba(0,0,0,.10) !important;
 
-/* hover lebih elegan */
-.card:hover,
-.card-elegant:hover,
-.admin-card:hover{
-  transform: translateY(-4px);
-  transition: .2s ease;
-  box-shadow:
-    0 28px 65px rgba(0,0,0,.18),
-    0 10px 26px rgba(0,0,0,.12) !important;
-}
+    overflow: hidden;
+  }
 
-/* MODEL CARD CLEAN (nggak aneh, lebih elegan & jelas) */
-.card,
-.card-elegant,
-.admin-card{
-  background: #ffffff !important;
-  border: 1px solid rgba(15, 23, 42, 0.12) !important; /* border soft tapi jelas */
-  border-radius: 18px !important;
+  .card:hover,
+  .card-elegant:hover,
+  .admin-card:hover{
+    transform: translateY(-4px);
+    transition: .2s ease;
+    box-shadow:
+      0 28px 65px rgba(0,0,0,.18),
+      0 10px 26px rgba(0,0,0,.12) !important;
+  }
 
-  /* shadow lembut, tidak lebay */
-  box-shadow:
-    0 12px 28px rgba(15, 23, 42, 0.10),
-    0 3px 10px rgba(15, 23, 42, 0.06) !important;
+  /* MODEL CARD CLEAN */
+  .card,
+  .card-elegant,
+  .admin-card{
+    background: #ffffff !important;
+    border: 1px solid rgba(15, 23, 42, 0.12) !important; /* border soft tapi jelas */
+    border-radius: 18px !important;
 
-  overflow: hidden;
-  transform: none;
-}
+    box-shadow:
+      0 12px 28px rgba(15, 23, 42, 0.10),
+      0 3px 10px rgba(15, 23, 42, 0.06) !important;
 
-/* hover halus */
-.card:hover,
-.card-elegant:hover,
-.admin-card:hover{
-  box-shadow:
-    0 18px 42px rgba(15, 23, 42, 0.14),
-    0 6px 16px rgba(15, 23, 42, 0.08) !important;
-  transform: translateY(-2px);
-  transition: transform .18s ease, box-shadow .18s ease;
-}
+    overflow: hidden;
+    transform: none;
+  }
 
-/* padding biar isi card lebih lega (tanpa ganggu layout) */
-.card .card-body,
-.card-elegant .card-body{
-  padding: 22px;
-}
+  .card:hover,
+  .card-elegant:hover,
+  .admin-card:hover{
+    box-shadow:
+      0 18px 42px rgba(15, 23, 42, 0.14),
+      0 6px 16px rgba(15, 23, 42, 0.08) !important;
+    transform: translateY(-2px);
+    transition: transform .18s ease, box-shadow .18s ease;
+  }
 
-/* teks dalam card biar lebih rapi */
-.card .card-title,
-.card-elegant .card-title{
-  font-weight: 800;
-  color: var(--text-primary);
-}
+  .card .card-body,
+  .card-elegant .card-body{
+    padding: 22px;
+  }
 
-.card p,
-.card small,
-.card .text-muted{
-  color: var(--text-secondary) !important;
-}
-/* ✅ ANIMASI NGAMBANG KHUSUS LANDING PAGE SAJA */
-.landing-page .card,
-.landing-page .card-elegant{
-  animation: floatCard 4s ease-in-out infinite;
-  will-change: transform;
-}
+  .card .card-title,
+  .card-elegant .card-title{
+    font-weight: 800;
+    color: var(--text-primary);
+  }
 
-/* beda-beda timing biar nggak bareng (khusus landing) */
-.landing-page .card:nth-child(2),
-.landing-page .card-elegant:nth-child(2){
-  animation-duration: 4.6s;
-}
-.landing-page .card:nth-child(3),
-.landing-page .card-elegant:nth-child(3){
-  animation-duration: 5.2s;
-}
-.landing-page .card:nth-child(4),
-.landing-page .card-elegant:nth-child(4){
-  animation-duration: 5.8s;
-}
+  .card p,
+  .card small,
+  .card .text-muted{
+    color: var(--text-secondary) !important;
+  }
 
+  .landing-page .card,
+  .landing-page .card-elegant{
+    animation: floatCard 4s ease-in-out infinite;
+    will-change: transform;
+  }
 
-/* hover lebih naik */
-.card:hover,
-.card-elegant:hover,
-.admin-card:hover{
-  transform: translateY(-8px) scale(1.01);
-  transition: transform .25s ease, box-shadow .25s ease;
-}
+  .landing-page .card:nth-child(2),
+  .landing-page .card-elegant:nth-child(2){
+    animation-duration: 4.6s;
+  }
+  .landing-page .card:nth-child(3),
+  .landing-page .card-elegant:nth-child(3){
+    animation-duration: 5.2s;
+  }
+  .landing-page .card:nth-child(4),
+  .landing-page .card-elegant:nth-child(4){
+    animation-duration: 5.8s;
+  }
 
-/* keyframes gerak ngambang */
-@keyframes floatCard{
-  0%, 100% { transform: translateY(0px); }
-  50%      { transform: translateY(-8px); }
-}
+  .card:hover,
+  .card-elegant:hover,
+  .admin-card:hover{
+    transform: translateY(-8px) scale(1.01);
+    transition: transform .25s ease, box-shadow .25s ease;
+  }
 
-
-  </style>
+  @keyframes floatCard{
+    0%, 100% { transform: translateY(0px); }
+    50%      { transform: translateY(-8px); }
+  }
+</style>
 
   @stack('styles')
   @stack('head')

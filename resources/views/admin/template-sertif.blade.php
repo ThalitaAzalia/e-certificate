@@ -46,7 +46,7 @@
   }
 
   .btn-ghost:hover{ background: rgba(185,28,28,.06); color: var(--brand-3); }
-`
+
   .form-control:focus, .form-select:focus{
     border-color: rgba(185,28,28,.55);
     box-shadow: 0 0 0 .25rem rgba(185,28,28,.18);
@@ -163,16 +163,18 @@
 
   .success-toast {
     position: fixed;
-    top: 20px;
+    top: 90px;          /* turun biar ga nabrak navbar */
     right: 20px;
-    background: #10b981;
-    color: white;
-    padding: 16px 24px;
+    background: #dbeafe; /* biru muda */
+    color: #1e3a8a;      /* biru tua */
+    border: 1px solid #93c5fd;
+    padding: 14px 18px;
     border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.12);
     z-index: 9999;
     animation: slideIn 0.3s ease-out;
   }
+
 
   @keyframes slideIn {
     from {
@@ -298,19 +300,19 @@
   </script>
 @endif
 
-@if(session('success'))
-  <div id="alertSuccess" class="alert-bar">
-    <div class="alert-left">
-      <span class="alert-icon">✓</span>
-      <span class="alert-text">{{ session('success') }}</span>
-    </div>
-    <button type="button" class="alert-close" onclick="closeAlert()">✕</button>
+{{-- ALERT SUCCESS (SELALU ADA untuk dipakai session & fetch) --}}
+<div id="alertSuccess" class="alert-bar d-none" style="background:#dbeafe;border:1px solid #93c5fd;">
+  <div class="alert-left">
+    <span class="alert-icon" style="background:#2563eb;">✓</span>
+    <span class="alert-text" style="color:#1e3a8a;"></span>
   </div>
+  <button type="button" class="alert-close" style="color:#2563eb;" onclick="closeAlert()">✕</button>
+</div>
 
+@if(session('success'))
   <script>
     window.addEventListener('DOMContentLoaded', () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      setTimeout(() => closeAlert(), 3000);
+      window.showSuccessAlert(@json(session('success')));
     });
   </script>
 @endif
@@ -893,21 +895,25 @@
   /* ===== TAMBAHKAN INI (STEP 3) ===== */
   function showSuccessAlert(text) {
     const alertBox = document.getElementById('alertSuccess');
-    alertBox.querySelector('.alert-text').textContent = text;
+    if (!alertBox) return;
+
+    const textEl = alertBox.querySelector('.alert-text');
+    if (textEl) textEl.textContent = text || 'Pengaturan template sertifikat berhasil disimpan.';
+
     alertBox.classList.remove('d-none');
 
-    // Scroll ke atas supaya alert terlihat
     window.scrollTo({ top: 0, behavior: 'smooth' });
-
-    setTimeout(() => {
-      closeAlert();
-    }, 3000);
+    setTimeout(() => closeAlert(), 3000);
   }
 
   function closeAlert() {
     document.getElementById('alertSuccess')?.classList.add('d-none');
   }
+
+  // ✅ bikin global supaya bisa dipanggil dari script Blade
   window.closeAlert = closeAlert;
+  window.showSuccessAlert = showSuccessAlert;
+
 
 
   function applyBoxSize() {
@@ -937,7 +943,7 @@
 
   function applyNameStyles() {
   const txt = nameInput.value || 'NAMA PESERTA';
-  const scale = getPreviewScale(); // ⬅️ KUNCI UTAMA
+  const scale = getPreviewScale(); 
 
   const styles = {
     fontFamily: fontFamily.value,
@@ -991,10 +997,6 @@
 
     applyNameStyles();
   }
-
-  // ===============================
-  // EVENT LISTENERS
-  // ===============================
 
   // Template selection
   if (templateSelect) {
@@ -1080,7 +1082,6 @@
       }
 
       const payload = {
-      // ⬇️ INI WAJIB ADA (SESUIAI VALIDASI BACKEND)
       box_x: posX.value,
       box_y: posY.value,
       box_width: boxWidthInput.value,

@@ -205,7 +205,7 @@
   .modal-delete-eval .btn-del-cancel{
     background: #fff;
     border: 1px solid rgba(220,38,38,.35);
-    color: #dc2626; /* default merah */
+    color: #dc2626;
     border-radius: 12px;
     padding: .55rem 1.35rem;
     font-weight: 700;
@@ -213,7 +213,7 @@
   }
 
   .modal-delete-eval .btn-del-cancel:active{
-    color: #111827; /* pas diklik jadi hitam */
+    color: #111827;
     background: rgba(220,38,38,.06);
     border-color: rgba(220,38,38,.6);
     transform: scale(.98);
@@ -240,7 +240,7 @@
     overflow-y: visible !important;
   }
 
-  /* ===== Header Card (Form Evaluasi) ===== */
+  /* ===== Header ===== */
   .header-card{
     background: linear-gradient(180deg, rgba(185,28,28,.06), rgba(255,255,255,1));
     border: 1px solid rgba(185,28,28,.14);

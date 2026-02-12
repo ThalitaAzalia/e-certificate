@@ -574,7 +574,7 @@
     box-shadow: 0 22px 55px rgba(20,24,31,.12);
   }
 
-  /* ACTIVITY PANEL - PROFESSIONAL VERSION */
+  /* ACTIVITY PANEL */
   .panel-header {
     display: flex;
     align-items: center;
@@ -1156,7 +1156,7 @@ let selectedPesertaBtn = null;
 
 let selectedWebinarId = null;
 
-// ================= FETCH LIST PESERTA (INI YANG BENER) =================
+// ================= FETCH LIST PESERTA =================
 function loadModalPeserta(webinarId) {
   fetch(`/admin/api/webinar/${webinarId}/peserta?_ts=${Date.now()}`, {
     method: 'GET',
@@ -1215,7 +1215,7 @@ function loadModalPeserta(webinarId) {
       html += `</tbody></table>`;
       container.innerHTML = html;
 
-      // bind tombol hapus (ambil tombolnya juga biar bisa update UI)
+      // bind tombol hapus 
       container.querySelectorAll('.btn-hapus-peserta-modal').forEach(btn => {
         btn.addEventListener('click', function () {
           selectedPesertaBtn = this; // simpan tombol yang diklik
@@ -1247,7 +1247,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  // tambah tombol hapus semua sekali aja
   const modalPeserta = document.getElementById('modalDaftarPeserta');
   if (modalPeserta) {
     const footer = modalPeserta.querySelector('.modal-footer');
@@ -1257,7 +1256,7 @@ document.addEventListener('DOMContentLoaded', function () {
       deleteAllBtn.className = 'btn btn-danger btn-delete-all-from-modal';
       deleteAllBtn.innerHTML = '<span style="margin-right:4px;">🗑️</span>Hapus Semua Peserta';
       deleteAllBtn.addEventListener('click', function () {
-      // 1) set state hapus semua
+      // 1) set state hapus semua 
       selectedWebinarId = currentWebinarId;
 
       const nameEl = document.getElementById('namaWebinarDelete');
@@ -1329,7 +1328,7 @@ document.addEventListener('DOMContentLoaded', function () {
         throw new Error(msg);
       }
 
-      // ✅ simpan pesan sukses supaya muncul setelah reload
+      // simpan pesan sukses 
       sessionStorage.setItem('flash_success', payload.message || 'Data peserta berhasil dihapus');
 
       const delEl = document.getElementById('modalDeletePeserta');
@@ -1352,7 +1351,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
-// ================= DELETE ALL PESERTA (SAMA KAYAK HAPUS PESERTA + FALLBACK) =================
+// ================= DELETE ALL PESERTA =================
 document.addEventListener('DOMContentLoaded', function () {
   const confirmBtnAll = document.getElementById('confirmDeleteAllPesertaBtn');
   if (!confirmBtnAll) return;
@@ -1384,13 +1383,13 @@ document.addEventListener('DOMContentLoaded', function () {
         throw new Error(msg);
       }
 
-      // ✅ simpan pesan sukses (biar popup muncul setelah reload)
+      // simpan pesan sukses 
       sessionStorage.setItem(
         'flash_success',
         payload.message || 'Semua data peserta webinar berhasil dihapus'
       );
 
-      // ✅ tutup modal -> setelah hidden -> reload (sama seperti hapus peserta)
+      // tutup modal -> setelah hidden -> reload page
       const delAllEl = document.getElementById('modalDeleteAll');
       const modal = bootstrap.Modal.getOrCreateInstance(delAllEl);
 
@@ -1406,14 +1405,11 @@ document.addEventListener('DOMContentLoaded', function () {
         doReload();
       });
 
-      // coba tutup normal
+  
       modal.hide();
-
-      // ✅ FALLBACK: kalau modal tetep kebuka (hidden event gak kepanggil), paksa tutup lalu reload
       setTimeout(() => {
         if (reloaded) return;
 
-        // paksa tutup modal + backdrop (hanya untuk kasus stuck)
         delAllEl.classList.remove('show');
         delAllEl.style.display = 'none';
         delAllEl.setAttribute('aria-hidden', 'true');
@@ -1482,8 +1478,6 @@ document.addEventListener('DOMContentLoaded', function () {
   `;
 
 
-
-  // ... setelah wrap dibuat
   document.querySelectorAll('.alert.alert-success').forEach(el => {
     try { bootstrap.Alert.getOrCreateInstance(el).close(); } catch(e) { el.remove(); }
   });
@@ -1500,7 +1494,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-  // auto close semua alert bawaan blade (session success/error)
+  // auto close alert session success/error
   setTimeout(() => {
     document.querySelectorAll('.alert').forEach((el) => {
       try {
@@ -1532,7 +1526,7 @@ document.addEventListener('DOMContentLoaded', function () {
   </div>
 </div>
 
-<!-- Modal: Hapus Peserta Tunggal (standar form-evaluasi) -->
+<!-- Modal: Hapus Peserta Tunggal -->
 <div class="modal fade" id="modalDeletePeserta" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered" style="max-width: 500px;">
     <div class="modal-content">
@@ -1562,7 +1556,7 @@ document.addEventListener('DOMContentLoaded', function () {
   </div>
 </div>
 
-<!-- Modal: Hapus Semua Peserta per Webinar (standar form-evaluasi) -->
+<!-- Modal: Hapus Semua Peserta per Webinar -->
 <div class="modal fade" id="modalDeleteAll" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered" style="max-width: 500px;">
     <div class="modal-content">

@@ -97,7 +97,7 @@ public function updateSetting(Request $request, $id)
 
     return response()->json([
         'status'  => 'success',
-        'message' => 'Setting template (text box) berhasil disimpan'
+        'message' => 'Pengaturan template berhasil disimpan'
     ]);
 }
 

@@ -372,9 +372,6 @@
     height: 12px;
   }
 
-  /* =========================
-     MODALS
-  ========================= */
   .modal-content {
     border-radius: 12px;
     border: none;
@@ -394,7 +391,7 @@
   }
 
   /* =========================
-   MODALS (FIX: tidak kepotong)
+   MODALS DESKTOP
   ========================= */
   .modal-content {
     border-radius: 12px;
@@ -415,14 +412,12 @@
     margin: 0;
   }
 
-  /* ✅ FIX UTAMA: jangan pakai max-height fixed, biarkan bootstrap yang handle scroll */
   .modal-body {
     padding: 1.5rem;
     max-height: none;
     overflow: visible;
   }
 
-  /* ✅ Footer selalu kelihatan (tidak ketutup) */
   .modal-footer {
     border-top: 1px solid var(--border-soft);
     padding: 1rem 1.5rem;
@@ -433,7 +428,7 @@
     z-index: 3;
   }
   /* =========================
-    PAGINATION (FIX: Laravel links)
+    PAGINATION 
   ========================= */
   .pagination-wrap nav {
     margin: 0;
@@ -463,7 +458,6 @@
     background: rgba(185, 28, 28, 0.05);
   }
 
-  /* biar disabled ga “gede” */
   .pagination-wrap .page-item.disabled .page-link {
     opacity: .5;
   }
@@ -509,7 +503,7 @@
       gap: 0.25rem;
     }
   }
-  /* ===== MODAL STYLE KODE B (SCOPED) ===== */
+  /* ===== MODAL (SCOPED) ===== */
   .modal-b .modal-content{
     background: var(--bg-card);
     border: 1px solid rgba(185,28,28,.25);
@@ -540,9 +534,9 @@
   .rounded-16{
     border-radius:16px !important;
   }
-  /* ==== KECILIN CARD DI DALAM MODAL-B ==== */
+
   .modal-b .modal-dialog{
-    --bs-modal-padding: 0.75rem;      /* padding default bootstrap modal */
+    --bs-modal-padding: 0.75rem;  
   }
 
   .modal-b .modal-header{
@@ -553,28 +547,25 @@
     padding: 1rem 1.25rem;
   }
 
-  /* bikin card di modal lebih tipis */
   .modal-b .card.card-soft{
     border-radius: 12px !important;
     box-shadow: 0 10px 25px rgba(185,28,28,.06), 0 4px 12px rgba(185,28,28,.05);
   }
 
   .modal-b .card.card-soft .card-body{
-    padding: 1rem !important;   /* sebelumnya besar */
+    padding: 1rem !important;   
   }
 
-  /* input biar lebih compact */
   .modal-b .form-control,
   .modal-b .form-select{
     padding: .45rem .75rem;
-    border-radius: 12px; /* lebih kecil dari 16 */
+    border-radius: 12px; 
   }
 
   .modal-b textarea.form-control{
-    min-height: 110px;  /* biar ga tinggi banget */
+    min-height: 110px;  
   }
-
-  /* kalau masih ada element icon yg kebaca sebagai span, amanin juga */
+  
   .pagination-wrap .page-link span[aria-hidden="true"] {
     display: none;
   }
@@ -585,10 +576,10 @@
     line-height: 1.2;
   }
   /* =========================
-    PAGINATION (BLUE STYLE like Laporan Evaluasi)
+    PAGINATION 
   ========================= */
   .pagination-wrap .page-link {
-    color: #0d6efd !important;            /* biru bootstrap */
+    color: #0d6efd !important;    
     border-color: #dee2e6 !important;
   }
 
@@ -598,7 +589,7 @@
   }
 
   .pagination-wrap .page-item.active .page-link {
-    background-color: #0d6efd !important; /* biru */
+    background-color: #0d6efd !important; 
     border-color: #0d6efd !important;
     color: #fff !important;
   }
@@ -616,7 +607,7 @@
     border-radius: 10px;
   }
 
-  /* ===== Header Card: Manajemen Webinar ===== */
+  /* ===== Header Card ===== */
   .header-card{
     background: linear-gradient(180deg, rgba(185,28,28,.06), rgba(255,255,255,1));
     border: 1px solid rgba(185,28,28,.14);
@@ -897,7 +888,6 @@
                       @endif
                     </li>
 
-                    {{-- Angka halaman (dibatasi biar rapih: current-1, current, current+1) --}}
                     @php
                       $current = $webinars->currentPage();
                       $last = $webinars->lastPage();
@@ -905,12 +895,10 @@
                       $start = max(1, $current - 1);
                       $end = min($last, $current + 1);
 
-                      // kalau di awal/akhir, tetep usahain tampil 3 angka kalau bisa
                       if ($current <= 2) { $end = min($last, 3); }
                       if ($current >= $last - 1) { $start = max(1, $last - 2); }
                     @endphp
 
-                    {{-- kalau start > 1 tampil halaman 1 --}}
                     @if ($start > 1)
                       <li class="page-item">
                         <a class="page-link" href="{{ $webinars->url(1) }}">1</a>
@@ -931,7 +919,6 @@
                       </li>
                     @endfor
 
-                    {{-- kalau end < last tampil halaman terakhir --}}
                     @if ($end < $last)
                       @if ($end < $last - 1)
                         <li class="page-item disabled"><span class="page-link">…</span></li>
@@ -979,7 +966,7 @@
 </div>
 
 {{-- =========================
-    MODAL: CREATE WEBINAR (A + B) + old()
+    MODAL: CREATE WEBINAR 
 ========================= --}}
 <div class="modal fade modal-b" id="modalCreate" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
@@ -1001,7 +988,6 @@
               <div class="card card-soft rounded-16">
                 <div class="card-body">
 
-                  {{-- BONUS: tampilkan error general (opsional) --}}
                   @if ($errors->any() && request()->isMethod('post'))
                     <div class="alert alert-danger mb-3">
                       <div class="fw-semibold mb-1">Gagal menyimpan.</div>
@@ -1161,7 +1147,6 @@
   </div>
 </div>
 
-{{-- BONUS UX: kalau validasi gagal, modalCreate otomatis kebuka lagi --}}
 @if ($errors->any() && request()->isMethod('post'))
   <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -1172,7 +1157,7 @@
 @endif
 
 {{-- =========================
-    MODAL: DETAIL (A + B)
+    MODAL: DETAIL
 ========================= --}}
 @foreach($webinars as $webinar)
 <div class="modal fade" id="modalDetail{{ $webinar->id }}" tabindex="-1" aria-hidden="true">
@@ -1255,7 +1240,7 @@
           </div>
 
           {{-- =========================
-              KANAN: CARD PREVIEW (STYLE B)
+              KANAN: CARD PREVIEW 
           ========================= --}}
           <div class="col-lg-5">
             <div class="card card-soft">
@@ -1332,7 +1317,7 @@
 
 
 {{-- =========================
-    MODAL: EDIT WEBINAR (A + B)
+    MODAL: EDIT WEBINAR 
 ========================= --}}
 @foreach($webinars as $webinar)
 <div class="modal fade modal-b" id="modalEdit{{ $webinar->id }}" tabindex="-1" aria-hidden="true">

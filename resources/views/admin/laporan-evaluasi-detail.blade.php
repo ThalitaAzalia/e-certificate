@@ -7,7 +7,7 @@
   <div class="row justify-content-center">
     <div class="col-lg-10 col-xl-8">
 
-      {{-- HEADER (GOV CARD) --}}
+      {{-- HEADER (CARD) --}}
       <div class="gov-header-card">
         <div class="d-flex flex-column flex-lg-row justify-content-between align-items-start gap-3">
           <div>
@@ -33,7 +33,7 @@
       </div>
 
 
-      {{-- MAIN CARD (struktur tetap) --}}
+      {{-- MAIN CARD --}}
       <div class="card border-0 shadow-sm card-soft">
 
         {{-- CARD HEADER --}}
@@ -206,7 +206,6 @@
     border: 1px solid rgba(185,28,28,.14);
   }
 
-  /* ✅ btn-ghost SAMAIN persis kaya halaman Peserta Evaluasi */
   .btn-ghost{
     border: 1px solid rgba(185, 28, 28, 0.20);
     background: #fff;
@@ -244,20 +243,18 @@
 
   .rating-display{ font-size: 1.1rem; }
 
-  /* ✅ hanya nomor jadi item */
   .detail-evaluasi .badge-number-item{
     color: var(--ink) !important;
     border-color: #e5e7eb !important;
     background: #f9fafb !important;
   }
 
-  /* ✅ label jadi item */
   .detail-evaluasi .label-item{
     color: var(--ink) !important;
     opacity: .85;
   }
 
-    /* ===== GOV HEADER CARD (Detail Evaluasi) ===== */
+    /* ===== GOV HEADER CARD ===== */
   .gov-header-card{
     background:#fff;
     border:1px solid rgba(185,28,28,.12);
@@ -302,7 +299,6 @@
     justify-content:flex-end;
   }
 
-  /* Hover effect seperti card bawah (lift + shadow) */
   .gov-header-card{
     transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
     will-change: transform;
@@ -314,7 +310,6 @@
     border-color: rgba(185,28,28,.18);
   }
 
-  /* Biar halus di mobile (opsional) */
   @media (prefers-reduced-motion: reduce){
     .gov-header-card,
     .gov-header-card:hover{

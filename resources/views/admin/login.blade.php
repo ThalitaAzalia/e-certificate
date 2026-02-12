@@ -20,7 +20,6 @@
     --card-radius:28px;
   }
 
-  /* ✅ BACKGROUND page: ga kosong, ada motif + glow */
   body{
     margin:0;
     background:
@@ -39,7 +38,6 @@
     position:relative;
   }
 
-  /* ✅ motif topographic halus (biar gak kosong) */
   .login-stage::before{
     content:"";
     position:absolute;
@@ -63,14 +61,12 @@
     background: #fff;
     position:relative;
 
-    /* ✅ lebih jelas: ring + shadow */
     box-shadow:
       0 30px 85px rgba(0,0,0,.22),
       0 0 0 1px rgba(0,0,0,.06),
       0 0 0 10px rgba(155,0,0,.04);
   }
 
-  /* ✅ glow halus belakang phone */
   .phone::before{
     content:"";
     position:absolute;
@@ -143,7 +139,6 @@
     z-index:2;
   }
 
-  /* ✅ CARD lebih jelas: border + shadow + ring */
   .cardx{
     border-radius: var(--card-radius);
     border: 1px solid rgba(155,0,0,.10);
@@ -156,7 +151,6 @@
     position:relative;
   }
 
-  /* ✅ subtle highlight di card */
   .cardx::before{
     content:"";
     position:absolute;
@@ -301,7 +295,6 @@
     transform: translateY(-1px);
   }
 
-  /* ✅ footer dihapus kalau kamu sudah hapus register */
   .foot{
     text-align:center;
     font-size: 12px;
@@ -355,7 +348,7 @@
 
         <div class="card-body">
 
-          {{-- ANIMASI (GEDUNG + ORANG PRESENTASI) --}}
+          {{-- ANIMASI --}}
           <div class="anim-panel">
             <svg viewBox="0 0 360 180" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
               <!-- soft background -->

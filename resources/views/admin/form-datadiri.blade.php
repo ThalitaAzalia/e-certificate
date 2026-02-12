@@ -116,7 +116,7 @@
     font-size: 0.75rem;
     color: #6b7280;
   }
-  /* === Samain feel tabel kayak halaman Laporan Evaluasi (foto 1) === */
+  
   .table-analytics {
     --bs-table-bg: transparent;
     --bs-table-striped-bg: rgba(185, 28, 28, 0.02);
@@ -153,14 +153,13 @@
     line-height: 1.35;
   }
 
-  /* Subtext di bawah judul */
   .row-sub {
     font-size: 0.8125rem;
     color: #6b7280;
     margin-top: 0.25rem;
   }
 
-  /* ===== Header Card (Form Data Diri) ===== */
+  /* ===== Header Card ===== */
   .header-card{
     background: linear-gradient(180deg, rgba(185,28,28,.06), rgba(255,255,255,1));
     border: 1px solid rgba(185,28,28,.14);
@@ -191,7 +190,7 @@
 @section('content')
 <div class="container py-4">
 
-{{-- HEADER --}}
+{{-- HEADER (CARD) --}}
 <div class="header-card mb-4">
   <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3">
     <div>

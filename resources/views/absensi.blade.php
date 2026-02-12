@@ -258,7 +258,7 @@
     transform: translateY(-1px);
   }
 
-  /* invalid highlight (tanpa JS) */
+  /* invalid highlight */
   .inputx:invalid:focus{
     border-color: #ef4444;
     box-shadow: 0 0 0 4px rgba(239,68,68,.14);
@@ -403,7 +403,7 @@
   }
 
   input[type="number"]{
-    -moz-appearance: textfield; /* Firefox */
+    -moz-appearance: textfield; 
     appearance: textfield;
   }
 
@@ -476,7 +476,7 @@
 
           {{-- ALERTS --}}
           @if(session('success'))
-            <div class="alertx success">✅ {{ session('success') }}</div>
+            <div class="alertx success"> {{ session('success') }}</div>
           @endif
 
           @if ($errors->any())
@@ -490,7 +490,7 @@
             </div>
           @endif
 
-          {{-- FORM (✅ LOGIC DATABASE TETAP PAKAI $fields) --}}
+          {{-- FORM ( LOGIC DATABASE TETAP PAKAI $fields) --}}
           <form method="POST" action="{{ url('/absensi') }}">
             @csrf
 
@@ -568,8 +568,6 @@
               Kirim Absensi
             </button>
           </form>
-
-
 
           <div class="foot">
             <p style="margin:0;">

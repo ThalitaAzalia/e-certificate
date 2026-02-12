@@ -30,11 +30,11 @@
     border: 1px solid var(--border-soft);
     border-radius: 12px;
     box-shadow: 0 2px 8px rgba(185, 28, 28, 0.05);
-    overflow: visible !important; /* ✅ FIX supaya footer/pagination gak kepotong */
+    overflow: visible !important;
   }
 
   .card-soft .card-body{
-    overflow: visible !important; /* ✅ FIX tambahan */
+    overflow: visible !important; 
   }
 
   .btn-brand {
@@ -77,7 +77,6 @@
     font-size: 0.75rem;
   }
 
-  /* FIX: class jangan pakai huruf kapital & tanda '-' yang aneh */
   .badge-average {
     background: rgba(46, 125, 50, 0.1);
     color: #2e7d32;
@@ -357,7 +356,7 @@
   .table-analytics tbody tr:hover {
     background: rgba(185, 28, 28, 0.03);
   }
-  /* ==== Compact card grafik (mirip screenshot) ==== */
+  /* ==== Compact card grafik ==== */
   .wave-card-compact{
     padding: 14px 16px !important;
   }
@@ -378,11 +377,10 @@
   }
 
   .chart-wrap{
-    height: 120px;          /* ini yang bikin pendek kayak gambar */
+    height: 120px;       
     position: relative;
   }
 
-  /* Biar label bawah chart gak “nabrak” */
   #waveChart{
     width: 100% !important;
     height: 100% !important;
@@ -393,7 +391,6 @@
     overflow: hidden;
   }
 
-  /* layer kilap */
   .btn-excel::before {
     content: "";
     position: absolute;
@@ -443,18 +440,15 @@
     padding-left: 8px;
     padding-right: 4px;
     overflow-x: auto;
-    overflow-y: visible !important; /* ✅ FIX */
-    padding-bottom: 10px;           /* ✅ FIX biar pagination aman */
+    overflow-y: visible !important; 
+    padding-bottom: 10px;          
   }
 
-
-  /* kasih ruang untuk kolom pertama */
   .table-analytics th:first-child,
   .table-analytics td:first-child {
     padding-left: 14px !important;
   }
 
-  /* biar header gak nempel */
   .table-analytics thead th {
     white-space: nowrap;
   }
@@ -470,15 +464,15 @@
   }
 
   .table-footer nav{
-    margin-left: auto;       /* dorong pagination ke kanan */
-    padding-left: 12px;      /* jarak dari teks */
+    margin-left: auto;  
+    padding-left: 12px;      
   }
   
   .table-footer .pagination{
-    margin-right: 6px;       /* ruang kanan ekstra */
+    margin-right: 6px;  
   }
 
-  /* ===== Header Card (Laporan Evaluasi) ===== */
+  /* ===== Header Card ===== */
   .header-card{
     background: linear-gradient(180deg, rgba(185,28,28,.06), rgba(255,255,255,1));
     border: 1px solid rgba(185,28,28,.14);
@@ -514,7 +508,7 @@
 
 <div class="container py-4">
 
-  {{-- HEADER --}}
+  {{-- HEADER (CARD) --}}
   <div class="header-card mb-4">
     <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3">
       <div>
@@ -622,7 +616,6 @@
         </div>
 
         <form method="GET" action="{{ route('admin.laporan.evaluasi') }}">
-          {{-- PERTAHANKAN FILTER YANG SUDAH ADA --}}
           <input type="hidden" name="webinar_id" value="{{ request('webinar_id') }}">
           <input type="hidden" name="start" value="{{ request('start') }}">
           <input type="hidden" name="end" value="{{ request('end') }}">

@@ -14,13 +14,11 @@
   --card-radius:18px;
 }
 
-/* ✅ BACKGROUND seperti login */
 body{
   margin:0;
   background:#ffe9ee;
 }
 
-/* ✅ motif topographic */
 body::before{
   content:"";
   position:fixed;
@@ -104,14 +102,12 @@ body::before{
   z-index:1;
 }
 
-/* form overlap */
 .form-wrap{
   margin-top:-95px;
   position:relative;
   z-index:3;
 }
 
-/* ✅ CARD seperti login */
 .evaluation-card{
   border-radius:28px;
   box-shadow:
@@ -233,7 +229,7 @@ body::before{
   border:0;
 }
 
-/* selected state (tanpa JS pun tetap works via :has untuk browser modern) */
+/* selected state */
 .rating-pill:has(input:checked){
   border-color: var(--red-main);
   background: var(--red-light);
@@ -283,7 +279,6 @@ body::before{
   border-color: rgba(239, 68, 68, 0.3);
 }
 
-/* invalid state */
 .form-control.is-invalid,
 .form-select.is-invalid{
   border-color: #ef4444;
@@ -312,7 +307,6 @@ body::before{
   <div class="card evaluation-card">
     <div class="card-body p-4 p-md-5" style="position:relative; z-index:2;">
 
-      {{-- optional: kalau controller kamu set session success / errors --}}
       @if(session('success'))
         <div class="alert alert-success mb-4">{{ session('success') }}</div>
       @endif

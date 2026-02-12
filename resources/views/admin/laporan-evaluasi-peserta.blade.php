@@ -60,23 +60,20 @@
     background: rgba(185, 28, 28, 0.05);
     color: var(--brand-3);
   }
-  /* ONLY color behavior — bentuk tetap */
+ 
   .btn-ghost{
-    color: var(--brand); /* merah default */
+    color: var(--brand); 
   }
 
-  /* saat hover / fokus */
   .btn-ghost:hover,
   .btn-ghost:focus{
-    color: #111827; /* hitam */
+    color: #111827;
   }
 
-  /* saat diklik */
   .btn-ghost:active{
-    color: #111827; /* hitam */
+    color: #111827;
   }
 
-  /* tombol aksi "Detail" -> bentuk & nuansanya sama seperti btn-ghost */
   .btn-outline-brand{
     border: 1px solid rgba(185, 28, 28, 0.20);
     background: #fff;
@@ -90,7 +87,6 @@
     color: var(--brand-3);
   }
 
-  /* ukuran kecil tetap rapi (btn-sm bootstrap kadang override padding) */
   .btn.btn-sm.btn-outline-brand{
     padding: .35rem .9rem;
     font-size: .875rem;
@@ -171,7 +167,7 @@
     flex-wrap: wrap;
   }
   
-  /* ===== Header Card (buat judul + breadcrumb + action) ===== */
+  /* ===== Header Card ===== */
   .header-card{
     background: linear-gradient(180deg, rgba(185,28,28,.06), rgba(255,255,255,1));
     border: 1px solid rgba(185,28,28,.14);
